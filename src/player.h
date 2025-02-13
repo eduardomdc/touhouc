@@ -2,6 +2,7 @@
 
 static const int playerSize = 5;
 static const float playerSpeed = 100;
+static const Color playerColor = WHITE;
 
 void setupPlayer();
 void renderPlayer();

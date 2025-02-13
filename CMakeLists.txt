@@ -10,6 +10,7 @@ set(MY_SOURCES
     src/main.c
     src/touhou.c
     src/player.c
+    src/bullets.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

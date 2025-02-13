@@ -1,6 +1,8 @@
 #include "player.h"
 #include "touhou.h"
+#include "bullets.h"
 #include <raymath.h>
+#include <stdio.h>
 
 void setupPlayer(){
     player.pos.x = hRes/2;
@@ -21,6 +23,17 @@ void updatePlayer(){
     if (IsKeyDown(KEY_RIGHT)){
         inputDirection.x += 1;
     }
+    if (IsKeyPressed(KEY_SPACE)){
+        printf("fire!\n");
+        Bullet bullet;
+        bullet.pos = player.pos;
+        bullet.active = true;
+        bullet.radius = 2;
+        Vector2 vel = {0, -100};
+        bullet.vel = vel;
+        addBulletToList(bullet, &playerBulletList);
+    }
+
     Vector2 inputDirectionNormalized = Vector2Normalize(inputDirection);
 
     float distance = playerSpeed*GetFrameTime();
@@ -29,5 +42,5 @@ void updatePlayer(){
 }
 
 void renderPlayer(){
-    DrawCircleV(player.pos, playerSize, RED);
+    DrawCircleV(player.pos, playerSize, playerColor);
 }
