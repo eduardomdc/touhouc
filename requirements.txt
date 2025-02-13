@@ -1,0 +1,10 @@
+Arcade like game
+- C with raylib
+- Player shoots projectiles
+- Enemies take hits
+- Enemies shoot back
+- There are power ups
+- Music
+- Sound effects
+
+Idea: Touhou like game
