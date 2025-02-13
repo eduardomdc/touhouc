@@ -1,6 +1,14 @@
-#include <stdio.h>
+#include "raylib.h"
+#include "touhou.h"
 
 int main(){
-    printf("Hello candle\n");
+    InitWindow(hRes, vRes, "TouhouC");
+    SetTargetFPS(fps);
+    setupGame();
+    while(!WindowShouldClose()){
+        renderGame();
+        updateGame();
+    }
+    CloseWindow();
     return 0;
 }

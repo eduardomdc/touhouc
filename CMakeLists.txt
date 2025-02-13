@@ -8,6 +8,7 @@ find_package(raylib REQUIRED)
 
 set(MY_SOURCES
     src/main.c
+    src/touhou.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

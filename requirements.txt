@@ -6,5 +6,6 @@ Arcade like game
 - There are power ups
 - Music
 - Sound effects
+- Player dies
 
 Idea: Touhou like game
