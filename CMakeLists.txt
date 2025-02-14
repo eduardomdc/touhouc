@@ -11,6 +11,7 @@ set(MY_SOURCES
     src/touhou.c
     src/player.c
     src/bullets.c
+    src/timer.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

@@ -42,7 +42,6 @@ int addBulletToList(Bullet bullet, BulletList* bulletList){
     for (int i=0; i < bulletList->len; i++){
         Bullet thisBullet = bulletList->bullets[i];
         if (!thisBullet.active){
-            printf("bullet added to %d\n",i);
             bulletList->bullets[i] = bullet;
             return 0;
         }
