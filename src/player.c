@@ -9,8 +9,8 @@ Player player = {0};
 void setupPlayer(){
     player.pos.x = hRes/2;
     player.pos.y = vRes/2;
-    player.bulletSpeed = 200;
-    player.fireRate = 5;
+    player.bulletSpeed = 500;
+    player.fireRate = 15;
     player.lifes = 3;
     player.fireTimer = createTimer(1/player.fireRate);
 }

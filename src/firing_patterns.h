@@ -1,3 +1,6 @@
-#include "enemy.h"
+#ifndef FIRING_PATTERNS_H
+#define FIRING_PATTERNS_H
 
-void fireStar(void* enemy);
+void fireShower(void* enemy);
+
+#endif

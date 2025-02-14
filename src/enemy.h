@@ -7,13 +7,15 @@
 typedef struct Enemy {
     Vector2 pos;
     Vector2 fireDirection;
-    Color color; // future: texture pointer
     float radius;
+    float bulletSpeed;
     Timer fireTimer;
     void (*firePattern)(void* enemy);
+    Color color; // future: texture pointer
     bool alive;
 } Enemy;
 
 void renderEnemy(Enemy enemy);
+void updateEnemy(Enemy* enemy);
 
 #endif

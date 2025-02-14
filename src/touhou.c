@@ -19,9 +19,19 @@ void updateGame(){
     if (!gameOver){
         updatePlayer();
     }
+    updateEnemies();
     updatePlayerBulletList();
     updateEnemyBulletList();
     updateSpawner();
+}
+
+void updateEnemies(){
+    for(int i=0; i < MAX_ENEMIES; i++){
+        Enemy* enemy = &enemyList[i];
+        if (enemy->alive){
+            updateEnemy(enemy);
+        }
+    }
 }
 
 #include <stdio.h>

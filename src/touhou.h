@@ -8,6 +8,7 @@ static const int fps = 60;
 void setupGame();
 void renderGame();
 void updateGame();
+void updateEnemies();
 bool onScreen(Vector2 pos, float radius);
 
 extern bool gameOver;

@@ -10,7 +10,8 @@ Enemy makeEnemy(Vector2 pos){
     enemy.color = RED;
     Vector2 dir = {0, 1};
     enemy.fireDirection = dir;
-    enemy.firePattern = fireStar;
-    enemy.fireTimer = createTimer(0.2);
+    enemy.firePattern = fireShower;
+    enemy.fireTimer = createTimer(0.01);
+    enemy.bulletSpeed = 200;
     return enemy;
 }
