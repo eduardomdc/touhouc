@@ -5,8 +5,8 @@
 
 Bullet enemyBullets[MAX_ENEMY_BULLETS] = {0};
 Bullet playerBullets[MAX_PLAYER_BULLETS] = {0};
-BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, ORANGE};
-BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, BLUE};
+BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, ORANGE, ENEMY};
+BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, BLUE, PLAYER};
 
 void renderBulletList(BulletList bulletList){
     for (int i=0; i < bulletList.len; i++){

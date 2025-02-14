@@ -2,12 +2,17 @@
 #include "touhou.h"
 #include "player.h"
 #include "bullets.h"
+#include "spawner.h"
+#include "enemy.h"
+#include <time.h>
 
 bool gameOver;
 
 void setupGame(){
+    SetRandomSeed(time(NULL));
     gameOver = false;
     setupPlayer();
+    setupSpawner();
 }
 
 void updateGame(){
@@ -16,6 +21,16 @@ void updateGame(){
     }
     updateBulletList(&enemyBulletList);
     updateBulletList(&playerBulletList);
+    updateSpawner();
+}
+
+#include <stdio.h>
+void renderEnemies(){
+    for (int i=0; i < MAX_ENEMIES; i++){
+        if (enemyList[i].alive){
+            renderEnemy(enemyList[i]);
+        }
+    }
 }
 
 void renderGame(){
@@ -24,6 +39,7 @@ void renderGame(){
     // painter's algorithm
     renderBulletList(enemyBulletList);
     renderBulletList(playerBulletList);
+    renderEnemies();
     renderPlayer();
     EndDrawing();
 }

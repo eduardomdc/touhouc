@@ -15,8 +15,7 @@ void setupPlayer(){
     player.fireTimer = createTimer(1/player.fireRate);
 }
 
-void updatePlayer(){
-    updateTimer(&player.fireTimer);
+void handleInput(){
     Vector2 inputDirection = {0,0};
     if (IsKeyDown(KEY_UP)){
         inputDirection.y -= 1;
@@ -37,11 +36,20 @@ void updatePlayer(){
         playerFire();
     }
 
-    Vector2 inputDirectionNormalized = Vector2Normalize(inputDirection);
+    Vector2 inputDir = Vector2Normalize(inputDirection);
 
+    movePlayer(inputDir);
+}
+
+void movePlayer(Vector2 inputDir){
     float distance = playerSpeed*GetFrameTime();
-    Vector2 playerMovement = Vector2Scale(inputDirectionNormalized, distance);
+    Vector2 playerMovement = Vector2Scale(inputDir, distance);
     player.pos = Vector2Add(player.pos, playerMovement);
+}
+
+void updatePlayer(){
+    updateTimer(&player.fireTimer);
+    handleInput();
 }
 
 void renderPlayer(){

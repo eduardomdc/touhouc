@@ -12,6 +12,10 @@ set(MY_SOURCES
     src/player.c
     src/bullets.c
     src/timer.c
+    src/enemy.c
+    src/enemy_factory.c
+    src/firing_patterns.c
+    src/spawner.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

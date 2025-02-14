@@ -12,6 +12,8 @@ void setupPlayer();
 void renderPlayer();
 void updatePlayer();
 void playerFire();
+void handleInput();
+void movePlayer(Vector2 inputDir);
 
 typedef struct Player {
     Vector2 pos;

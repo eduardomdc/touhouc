@@ -1,3 +1,6 @@
+#ifndef TIMER_H
+#define TIMER_H
+
 /*
 Timer counts until 'duration' has passed
 then ready is set to true.
@@ -13,3 +16,5 @@ typedef struct Timer {
 Timer createTimer(double duration);
 void updateTimer(Timer* timer);
 void resetTimer(Timer* timer);
+
+#endif
