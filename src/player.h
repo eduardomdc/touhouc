@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <raylib.h>
 
 static const int playerSize = 5;
@@ -11,6 +14,9 @@ void updatePlayer();
 typedef struct Player {
     Vector2 pos;
     unsigned int lifes;
+    float bulletSpeed;
 } Player;
 
-static Player player;
+extern Player player;
+
+#endif

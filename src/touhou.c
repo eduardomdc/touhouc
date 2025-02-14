@@ -3,6 +3,8 @@
 #include "player.h"
 #include "bullets.h"
 
+bool gameOver;
+
 void setupGame(){
     gameOver = false;
     setupPlayer();
@@ -24,4 +26,21 @@ void renderGame(){
     renderBulletList(playerBulletList);
     renderPlayer();
     EndDrawing();
+}
+
+bool onScreen(Vector2 pos, float radius){
+    // checks if a circle is visible in the game screen
+    if (pos.x+radius < 0){
+        return false;
+    }
+    if (pos.x-radius > hRes){
+        return false;
+    }
+    if (pos.y+radius < 0){
+        return false;
+    }
+    if (pos.y-radius > vRes){
+        return false;
+    }
+    return true;
 }

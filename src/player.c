@@ -4,9 +4,13 @@
 #include <raymath.h>
 #include <stdio.h>
 
+Player player = {0};
+
 void setupPlayer(){
     player.pos.x = hRes/2;
     player.pos.y = vRes/2;
+    player.bulletSpeed = 200;
+    player.lifes = 3;
 }
 
 void updatePlayer(){
@@ -29,8 +33,9 @@ void updatePlayer(){
         bullet.pos = player.pos;
         bullet.active = true;
         bullet.radius = 2;
-        Vector2 vel = {0, -100};
-        bullet.vel = vel;
+        Vector2 dir = {0, -1};
+        bullet.direction = dir;
+        bullet.speed = player.bulletSpeed;
         addBulletToList(bullet, &playerBulletList);
     }
 

@@ -1,4 +1,5 @@
 #include "bullets.h"
+#include "touhou.h"
 #include <raymath.h>
 #include <stdio.h>
 
@@ -16,13 +17,21 @@ void renderBulletList(BulletList bulletList){
     }
 }
 
+Bullet moveBullet(Bullet bullet, float deltaTime){
+    Vector2 moved = Vector2Scale(bullet.direction, bullet.speed*deltaTime);
+    bullet.pos = Vector2Add(bullet.pos, moved);
+    return bullet;
+}
+
 void updateBulletList(BulletList* bulletList){
-    float deltat = GetFrameTime();
+    float deltaTime = GetFrameTime();
     for (int i=0; i < bulletList->len; i++){
         Bullet bullet = bulletList->bullets[i];
         if (bullet.active){
-            Vector2 moved = Vector2Scale(bullet.vel, deltat);
-            bullet.pos = Vector2Add(bullet.pos, moved);
+            bullet = moveBullet(bullet, deltaTime);
+        }
+        if (!onScreen(bullet.pos, bullet.radius)){
+            bullet.active = false;
         }
         bulletList->bullets[i] = bullet;
     }

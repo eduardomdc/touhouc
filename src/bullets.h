@@ -8,7 +8,8 @@
 
 typedef struct Bullet {
     Vector2 pos;
-    Vector2 vel;
+    Vector2 direction;
+    float speed;
     float radius;
     bool active;
 } Bullet;
