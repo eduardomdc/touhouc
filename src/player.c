@@ -46,7 +46,10 @@ void handleInput(){
 void movePlayer(Vector2 inputDir){
     float distance = playerSpeed*GetFrameTime();
     Vector2 playerMovement = Vector2Scale(inputDir, distance);
-    player.pos = Vector2Add(player.pos, playerMovement);
+    Vector2 newPosition = Vector2Add(player.pos, playerMovement);
+    if (onScreen(newPosition, -playerSize)){
+        player.pos = newPosition;
+    }
 }
 
 void updatePlayer(){
