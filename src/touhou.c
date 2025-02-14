@@ -11,8 +11,20 @@ bool gameOver;
 void setupGame(){
     SetRandomSeed(time(NULL));
     gameOver = false;
+    loadSprites();
     setupPlayer();
     setupSpawner();
+}
+
+Sprite enemySprite = {0};
+Sprite enemyBulletSprite = {0};
+Sprite playerBulletSprite = {0};
+Texture2D backgroundTexture = {0};
+void loadSprites(){
+    enemySprite = loadSprite("../assets/textures/enemy22x25.png");
+    backgroundTexture = LoadTexture("../assets/textures/background500x700.png");
+    playerBulletSprite = loadSprite("../assets/textures/spear8.png");
+    enemyBulletSprite = loadSprite("../assets/textures/fire8.png");
 }
 
 void updateGame(){
@@ -46,11 +58,13 @@ void renderEnemies(){
 void renderGame(){
     BeginDrawing();
     ClearBackground(BLACK);
+    DrawTexture(backgroundTexture, 0, 0, WHITE);
     // painter's algorithm
-    renderBulletList(enemyBulletList);
+    
     renderBulletList(playerBulletList);
-    renderEnemies();
     renderPlayer();
+    renderBulletList(enemyBulletList);
+    renderEnemies();
     EndDrawing();
 }
 

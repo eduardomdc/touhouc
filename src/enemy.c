@@ -1,7 +1,8 @@
 #include "enemy.h"
 
 void renderEnemy(Enemy enemy){
-    DrawCircleV(enemy.pos, enemy.radius, enemy.color);
+    renderSpriteCentered(enemy.sprite, enemy.pos);
+    //DrawCircleV(enemy.pos, enemy.radius, enemy.color);
 }
 
 void updateEnemy(Enemy* enemy){

@@ -8,14 +8,15 @@
 
 Bullet enemyBullets[MAX_ENEMY_BULLETS] = {0};
 Bullet playerBullets[MAX_PLAYER_BULLETS] = {0};
-BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, ORANGE, ENEMY};
-BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, BLUE, PLAYER};
+BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, GREEN, &enemyBulletSprite};
+BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, RED, &playerBulletSprite};
 
 void renderBulletList(BulletList bulletList){
     for (int i=0; i < bulletList.len; i++){
         Bullet bullet = bulletList.bullets[i];
         if (bullet.active){
-            DrawCircleV(bullet.pos, bullet.radius, bulletList.bulletColor);
+            renderSpriteCentered(bulletList.sprite, bullet.pos);
+            //DrawCircleV(bullet.pos, bullet.radius, bulletList.bulletColor);
         }
     }
 }

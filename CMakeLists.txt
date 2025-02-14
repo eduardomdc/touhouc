@@ -16,6 +16,7 @@ set(MY_SOURCES
     src/enemy_factory.c
     src/firing_patterns.c
     src/spawner.c
+    src/sprite.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

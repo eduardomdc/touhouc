@@ -3,10 +3,11 @@
 
 #include <raylib.h>
 #include "timer.h"
+#include "sprite.h"
 
 static const int playerSize = 5;
-static const float playerSpeed = 100;
-static const Color playerColor = WHITE;
+static const float playerSpeed = 200;
+static const Color playerColor = BLUE;
 
 void setupPlayer();
 void renderPlayer();
@@ -20,7 +21,9 @@ typedef struct Player {
     Vector2 pos;
     int lifes;
     float bulletSpeed;
+    float bulletRadius;
     float fireRate;
+    Sprite sprite;
     Timer fireTimer;
 } Player;
 

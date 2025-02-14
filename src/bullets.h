@@ -2,6 +2,7 @@
 #define BULLETS_H
 
 #include <raylib.h>
+#include "sprite.h"
 
 #define MAX_ENEMY_BULLETS 500
 #define MAX_PLAYER_BULLETS 100
@@ -23,7 +24,7 @@ typedef struct BulletList {
     Bullet* bullets;
     int len;
     Color bulletColor; // texture in the future
-    enum Team team;
+    Sprite* sprite;
 } BulletList;
 
 
