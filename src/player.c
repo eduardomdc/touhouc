@@ -2,7 +2,6 @@
 #include "touhou.h"
 #include "bullets.h"
 #include <raymath.h>
-#include <stdio.h>
 
 Player player = {0};
 
@@ -67,5 +66,13 @@ void playerFire(){
         bullet.speed = player.bulletSpeed;
         addBulletToList(bullet, &playerBulletList);
         resetTimer(&player.fireTimer);
+    }
+}
+
+#include <stdio.h>
+void playerGetHit(){
+    player.lifes -= 1;
+    if (player.lifes < 0){
+        gameOver = true;
     }
 }

@@ -27,6 +27,10 @@ Bullet moveBullet(Bullet bullet, float deltaTime){
 }
 
 bool checkCollisionWithPlayer(Bullet bullet){
+    float distance = Vector2Distance(bullet.pos, player.pos);
+    if (distance < (bullet.radius + playerSize)){
+        return true;
+    }
     return false;
 }
 
@@ -72,6 +76,12 @@ void updateEnemyBulletList(){
         Bullet bullet = bulletList->bullets[i];
         if (bullet.active){
             bullet = moveBullet(bullet, deltaTime);
+            if (checkCollisionWithPlayer(bullet)){
+                playerGetHit();
+                bullet.active = false;
+                bulletList->bullets[i] = bullet;
+                continue;
+            }
         }
         if (!onScreen(bullet.pos, bullet.radius)){
             bullet.active = false;

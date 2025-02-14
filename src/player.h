@@ -14,10 +14,11 @@ void updatePlayer();
 void playerFire();
 void handleInput();
 void movePlayer(Vector2 inputDir);
+void playerGetHit();
 
 typedef struct Player {
     Vector2 pos;
-    unsigned int lifes;
+    int lifes;
     float bulletSpeed;
     float fireRate;
     Timer fireTimer;
