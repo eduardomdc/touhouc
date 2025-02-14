@@ -1,5 +1,8 @@
 #include "bullets.h"
 #include "touhou.h"
+#include "enemy.h"
+#include "spawner.h"
+#include "player.h"
 #include <raymath.h>
 #include <stdio.h>
 
@@ -23,7 +26,47 @@ Bullet moveBullet(Bullet bullet, float deltaTime){
     return bullet;
 }
 
-void updateBulletList(BulletList* bulletList){
+bool checkCollisionWithPlayer(Bullet bullet){
+    return false;
+}
+
+Enemy* checkCollisionWithEnemy(Bullet bullet){
+    for (int i=0; i < MAX_ENEMIES; i++){
+        Enemy* enemy = &enemyList[i];
+        if (enemy->alive){
+            float distance = Vector2Distance(bullet.pos, enemy->pos); // rewrite to use squared distance for perfomance
+            if (distance < (bullet.radius + enemy->radius)){
+                return enemy;
+            }
+        }
+    }
+    return NULL;
+}
+
+void updatePlayerBulletList(){
+    BulletList* bulletList = &playerBulletList;
+    float deltaTime = GetFrameTime();
+    for (int i=0; i < bulletList->len; i++){
+        Bullet bullet = bulletList->bullets[i];
+        if (bullet.active){
+            bullet = moveBullet(bullet, deltaTime);
+            Enemy* enemyHit = checkCollisionWithEnemy(bullet);
+            if (enemyHit != NULL){
+                enemyHit->alive = false;
+                bullet.active = false;
+                bulletList->bullets[i] = bullet;
+                continue;
+            }
+        }
+        if (!onScreen(bullet.pos, bullet.radius)){
+            bullet.active = false;
+        }
+        bulletList->bullets[i] = bullet;
+    }
+}
+
+void updateEnemyBulletList(){
+    BulletList* bulletList = &enemyBulletList;
     float deltaTime = GetFrameTime();
     for (int i=0; i < bulletList->len; i++){
         Bullet bullet = bulletList->bullets[i];

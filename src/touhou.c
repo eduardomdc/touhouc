@@ -19,8 +19,8 @@ void updateGame(){
     if (!gameOver){
         updatePlayer();
     }
-    updateBulletList(&enemyBulletList);
-    updateBulletList(&playerBulletList);
+    updatePlayerBulletList();
+    updateEnemyBulletList();
     updateSpawner();
 }
 

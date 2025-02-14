@@ -28,7 +28,8 @@ typedef struct BulletList {
 
 
 void renderBulletList(BulletList bulletList);
-void updateBulletList(BulletList* bulletList);
+void updatePlayerBulletList();
+void updateEnemyBulletList();
 int addBulletToList(Bullet bullet, BulletList* bulletList);
 
 extern Bullet enemyBullets[MAX_ENEMY_BULLETS];
