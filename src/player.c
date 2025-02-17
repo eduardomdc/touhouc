@@ -3,6 +3,7 @@
 #include "bullets.h"
 #include "sprite.h"
 #include "assets.h"
+#include <stdlib.h>
 #include <raymath.h>
 
 Player player = {0};
@@ -10,10 +11,11 @@ Player player = {0};
 void setupPlayer(){
     player.pos.x = hRes/2;
     player.pos.y = vRes/2;
-    player.bulletSpeed = 500;
+    player.bulletSpeed = 1000;
     player.bulletRadius = 5;
     player.fireRate = 15;
     player.lifes = 3;
+    player.bulletSpreadAngle = 0.05;
     player.fireTimer = createTimer(1/player.fireRate);
     player.sprite = MARISA;
 }
@@ -70,18 +72,30 @@ void playerFire(){
         bullet.pos = player.pos;
         bullet.radius = player.bulletRadius;
         Vector2 dir = {0, -1};
+        float random = 2*((float)rand()/(float)(RAND_MAX))-1;
+        float exitAngle = random*player.bulletSpreadAngle;
+        dir = Vector2Rotate(dir, exitAngle);
         bullet.direction = dir;
         bullet.speed = player.bulletSpeed;
         bullet.sprite = BLUE_ARROW_8;
         compactAddItem(&compactPlayerBulletArray, &bullet);
+        PlaySound(assets.soundEffects[PLAYER_FIRE]);
         resetTimer(&player.fireTimer);
     }
 }
 
+void playerSetFireRate(float fireRate){
+    player.fireRate = fireRate;
+    player.fireTimer.duration = 1/fireRate;
+}
+
 #include <stdio.h>
 void playerGetHit(){
-    player.lifes -= 1;
-    if (player.lifes < 0){
+    if (player.lifes > 0){
+        player.lifes -= 1;
+        PlaySound(assets.soundEffects[PLAYER_HIT]);
+    } else if (player.lifes == 0 && !gameOver){
         gameOver = true;
+        PlaySound(assets.soundEffects[PLAYER_DEATH]);
     }
 }

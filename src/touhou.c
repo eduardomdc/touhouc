@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "assets.h"
 #include <time.h>
+#include <stdio.h>
 
 bool gameOver;
 
@@ -16,9 +17,16 @@ void setupGame(){
     loadAssets();
     setupPlayer();
     setupSpawner();
+    if (!IsMusicValid(assets.bgm[DESERTED_HELL])){
+        fprintf(stderr, "music is not valid");
+    } else {
+        fprintf(stderr, "music is valid");
+    }
+    PlayMusicStream(assets.bgm[DESERTED_HELL]);
 }
 
 void updateGame(){
+    UpdateMusicStream(assets.bgm[DESERTED_HELL]);
     if (!gameOver){
         updatePlayer();
     }

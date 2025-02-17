@@ -4,7 +4,11 @@
 #include "bullets.h"
 #include "enemy.h"
 
-void fireShower(void* enemyPtr){
+void (*firingPatterns[FIRING_PATTERNS_LEN])(void*) = {
+    fireSpiral
+};
+
+void fireSpiral(void* enemyPtr){
     Enemy* enemy = (Enemy*) enemyPtr;
     Bullet bullet;
     bullet.pos = enemy->pos;

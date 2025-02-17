@@ -58,6 +58,7 @@ void updatePlayerBullets(){
         if (enemyHit != NULL){
             enemyHit->alive = false;
             compactRemoveItem(bulletCArray, i);
+            PlaySound(assets.soundEffects[ENEMY_HIT]);
             continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){

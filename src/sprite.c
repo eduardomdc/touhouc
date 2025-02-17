@@ -13,3 +13,10 @@ Sprite loadSprite(const char* fileName){
 void renderSpriteCentered(Sprite* sprite, Vector2 pos){
     DrawTexture(sprite->tex, pos.x-sprite->center.x, pos.y-sprite->center.y, WHITE);
 }
+
+void renderSpriteCenteredOriented(Sprite* sprite, Vector2 pos, float angle){
+    Vector2 corner;
+    corner.x = pos.x-sprite->center.x;
+    corner.y = pos.y-sprite->center.y;
+    DrawTextureEx(sprite->tex, corner, angle, 1.0, WHITE);
+}

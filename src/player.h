@@ -16,6 +16,7 @@ void updatePlayer();
 void playerFire();
 void handleInput();
 void movePlayer(Vector2 inputDir);
+void playerSetFireRate(float fireRate);
 void playerGetHit();
 
 typedef struct Player {
@@ -23,6 +24,7 @@ typedef struct Player {
     int lifes;
     float bulletSpeed;
     float bulletRadius;
+    float bulletSpreadAngle;
     float fireRate;
     PlayerSprites sprite;
     Timer fireTimer;
