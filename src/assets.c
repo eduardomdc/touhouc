@@ -20,9 +20,26 @@ void loadBackgroundSprites(){
     assets.backgroundSprites[CHAPEL] = loadSprite("../assets/textures/background500x700.png");
 }
 
+void loadSoundEffects(){
+    assets.soundEffects[PLAYER_FIRE] = LoadSound("../assets/sounds/player_fire.wav");
+    assets.soundEffects[PLAYER_HIT] = LoadSound("../assets/sounds/player_hit.wav");
+    assets.soundEffects[PLAYER_DEATH] = LoadSound("../assets/sounds/player_death.wav");
+    assets.soundEffects[ENEMY_HIT] = LoadSound("../assets/sounds/enemy_hit.wav");
+    assets.soundEffects[POINT_PICKUP] = LoadSound("../assets/sounds/point_pickup.wav");
+    assets.soundEffects[POWERUP_PICKUP] = LoadSound("../assets/sounds/powerup.wav");
+}
+
+void loadBGM(){
+    assets.bgm[DESERTED_HELL] = LoadMusicStream("../assets/sounds/bgm_deserted_hell.wav");
+}
+
 void loadAssets(){
+    //Sprites
     loadBulletSprites();
     loadPlayerSprites();
     loadEnemySprites();
     loadBackgroundSprites();
+    //Sounds
+    loadSoundEffects();
+    loadBGM();
 }

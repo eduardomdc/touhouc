@@ -11,6 +11,7 @@ bool gameOver;
 
 void setupGame(){
     SetRandomSeed(time(NULL));
+    InitAudioDevice();
     gameOver = false;
     loadAssets();
     setupPlayer();

@@ -9,6 +9,7 @@ int main(){
         renderGame();
         updateGame();
     }
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
