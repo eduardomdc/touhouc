@@ -33,6 +33,11 @@ typedef enum {
 } BackgroundSprites;
 
 typedef enum {
+    LIFE_ICON,
+    INTERFACE_SPRITES_LEN
+} InterfaceSprites;
+
+typedef enum {
     PLAYER_FIRE,
     PLAYER_HIT,
     PLAYER_DEATH,
@@ -52,6 +57,7 @@ typedef struct {
     Sprite playerSprites[PLAYER_SPRITES_LEN];
     Sprite enemySprites[ENEMY_SPRITES_LEN];
     Sprite backgroundSprites[BACKGROUND_SPRITES_LEN];
+    Sprite interfaceSprites[INTERFACE_SPRITES_LEN];
     Sprite itemSprites[ITEM_SPRITES_LEN];
     Sound soundEffects[SOUND_EFFECTS_LEN];
     Music bgm[BGM_LEN];

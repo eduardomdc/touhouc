@@ -51,6 +51,18 @@ void renderEnemies(){
     }
 }
 
+void renderUI(){
+    Sprite* lifeIcon = &assets.interfaceSprites[LIFE_ICON];
+    Vector2 lifeIconPos = {0,vRes-lifeIcon->tex.height};
+    for (int i=0; i < player.lifes; i++){
+        renderSprite(lifeIcon, lifeIconPos);
+        lifeIconPos.x += lifeIcon->tex.width;
+    }
+    char score_text[28];
+    sprintf(score_text, "Score: %d", player.points);
+    DrawText(score_text, 0, 0, 18, WHITE);
+}
+
 void renderGame(){
     BeginDrawing();
     ClearBackground(BLACK);
@@ -60,6 +72,7 @@ void renderGame(){
     renderPlayer();
     renderBulletCArray(compactEnemyBulletArray);
     renderEnemies();
+    renderUI();
     EndDrawing();
 }
 

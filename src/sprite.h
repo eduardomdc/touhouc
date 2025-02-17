@@ -9,6 +9,7 @@ typedef struct Sprite {
 } Sprite;
 
 Sprite loadSprite(const char* fileName);
+void renderSprite(Sprite* sprite, Vector2 pos);
 void renderSpriteCentered(Sprite* sprite, Vector2 pos);
 void renderSpriteCenteredOriented(Sprite* sprite, Vector2 pos, float angle);
 

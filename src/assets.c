@@ -16,6 +16,10 @@ void loadEnemySprites(){
     assets.enemySprites[ANGEL] = loadSprite("../assets/textures/enemy22x25.png");
 }
 
+void loadInterfaceSprites(){
+    assets.interfaceSprites[LIFE_ICON] = loadSprite("../assets/textures/life_icon.png");
+}
+
 void loadBackgroundSprites(){
     assets.backgroundSprites[CHAPEL] = loadSprite("../assets/textures/background500x700.png");
 }
@@ -45,6 +49,7 @@ void loadAssets(){
     loadPlayerSprites();
     loadEnemySprites();
     loadBackgroundSprites();
+    loadInterfaceSprites();
     loadItemSprites();
     //Sounds
     loadSoundEffects();

@@ -10,6 +10,10 @@ Sprite loadSprite(const char* fileName){
     return sprite;
 }
 
+void renderSprite(Sprite* sprite, Vector2 pos){
+    DrawTexture(sprite->tex, pos.x, pos.y, WHITE);
+}
+
 void renderSpriteCentered(Sprite* sprite, Vector2 pos){
     DrawTexture(sprite->tex, pos.x-sprite->center.x, pos.y-sprite->center.y, WHITE);
 }

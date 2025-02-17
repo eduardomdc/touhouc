@@ -5,11 +5,9 @@
 Item items[MAX_ITEMS] = {0};
 CompactArray itemsCArray = {items, sizeof(Item), MAX_ITEMS, 0};
 
-#include <stdio.h>
 void renderItems(){
     for (int i=0; i < itemsCArray.freeIndex; i++){
         Item item = items[i];
-        fprintf(stderr, "render item %d\n", i);
         renderSpriteCentered(&assets.itemSprites[item.sprite], item.pos);
     }
 }
@@ -55,13 +53,13 @@ void (*itemEffects[ITEM_EFFECTS_LEN])(Player*) = {
     itemEffectIncreaseFireRate,
 };
 void itemEffectGainPoint(Player* player) {
-    player->points++;
+    player->points+= 100;
 }
 void itemEffectGainLife(Player* player) {
     player->lifes++;
 }
 void itemEffectIncreaseFireRate(Player* player) {
-    playerSetFireRate(player->fireRate*2);
+    playerSetFireRate(player->fireRate*1.2);
 }
 
 void makePointItem(Vector2 pos){

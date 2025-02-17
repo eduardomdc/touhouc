@@ -8,6 +8,8 @@
 
 typedef struct Spawner {
     Timer enemySpawnTimer;
+    Timer oneUpSpawnTimer;
+    Timer powerUpSpawnTimer;
 } Spawner;
 
 void setupSpawner();
