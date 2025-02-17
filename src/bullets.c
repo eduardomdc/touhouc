@@ -8,16 +8,14 @@
 
 Bullet enemyBullets[MAX_ENEMY_BULLETS] = {0};
 Bullet playerBullets[MAX_PLAYER_BULLETS] = {0};
-BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, GREEN, &enemyBulletSprite};
-BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, RED, &playerBulletSprite};
+BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, 0, GREEN, &enemyBulletSprite};
+BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, 0, RED, &playerBulletSprite};
 
 void renderBulletList(BulletList bulletList){
-    for (int i=0; i < bulletList.len; i++){
+    for (int i=0; i < bulletList.freeSlot; i++){
         Bullet bullet = bulletList.bullets[i];
-        if (bullet.active){
-            renderSpriteCentered(bulletList.sprite, bullet.pos);
-            //DrawCircleV(bullet.pos, bullet.radius, bulletList.bulletColor);
-        }
+        renderSpriteCentered(bulletList.sprite, bullet.pos);
+        //DrawCircleV(bullet.pos, bullet.radius, bulletList.debugColor);
     }
 }
 
@@ -51,20 +49,18 @@ Enemy* checkCollisionWithEnemy(Bullet bullet){
 void updatePlayerBulletList(){
     BulletList* bulletList = &playerBulletList;
     float deltaTime = GetFrameTime();
-    for (int i=0; i < bulletList->len; i++){
+    for (int i=0; i < bulletList->freeSlot; i++){
         Bullet bullet = bulletList->bullets[i];
-        if (bullet.active){
-            bullet = moveBullet(bullet, deltaTime);
-            Enemy* enemyHit = checkCollisionWithEnemy(bullet);
-            if (enemyHit != NULL){
-                enemyHit->alive = false;
-                bullet.active = false;
-                bulletList->bullets[i] = bullet;
-                continue;
-            }
+        bullet = moveBullet(bullet, deltaTime);
+        Enemy* enemyHit = checkCollisionWithEnemy(bullet);
+        if (enemyHit != NULL){
+            enemyHit->alive = false;
+            removeBulletFromList(i, bulletList);
+            continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){
-            bullet.active = false;
+            removeBulletFromList(i, bulletList);
+            continue;
         }
         bulletList->bullets[i] = bullet;
     }
@@ -73,32 +69,39 @@ void updatePlayerBulletList(){
 void updateEnemyBulletList(){
     BulletList* bulletList = &enemyBulletList;
     float deltaTime = GetFrameTime();
-    for (int i=0; i < bulletList->len; i++){
+    for (int i=0; i < bulletList->freeSlot; i++){
         Bullet bullet = bulletList->bullets[i];
-        if (bullet.active){
-            bullet = moveBullet(bullet, deltaTime);
-            if (checkCollisionWithPlayer(bullet)){
-                playerGetHit();
-                bullet.active = false;
-                bulletList->bullets[i] = bullet;
-                continue;
-            }
+        bullet = moveBullet(bullet, deltaTime);
+        if (checkCollisionWithPlayer(bullet)){
+            playerGetHit();
+            removeBulletFromList(i, bulletList);
+            continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){
-            bullet.active = false;
+            removeBulletFromList(i, bulletList);
+            continue;
         }
         bulletList->bullets[i] = bullet;
     }
 }
 
 int addBulletToList(Bullet bullet, BulletList* bulletList){
-    // looks for first slot avaible, returns 0 on success, 1 on failure
-    for (int i=0; i < bulletList->len; i++){
-        Bullet thisBullet = bulletList->bullets[i];
-        if (!thisBullet.active){
-            bulletList->bullets[i] = bullet;
-            return 0;
+    if (bulletList->freeSlot >= bulletList->len) return 1; // full list
+    bulletList->bullets[bulletList->freeSlot] = bullet;
+    bulletList->freeSlot++;
+    return 0;
+}
+
+void removeBulletFromList(unsigned int index, BulletList* bulletList){
+    Bullet* bullets = bulletList->bullets;
+    if (index == bulletList->freeSlot-1){ // if index is last item
+        if (bulletList->freeSlot > 0){
+            bulletList->freeSlot--;
         }
+        return;
     }
-    return 1;
+    bullets[index] = bullets[bulletList->freeSlot-1];
+    if (bulletList->freeSlot > 0){
+        bulletList->freeSlot--;
+    }
 }

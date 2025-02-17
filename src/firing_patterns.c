@@ -8,7 +8,6 @@ void fireShower(void* enemyPtr){
     Enemy* enemy = (Enemy*) enemyPtr;
     Bullet bullet;
     bullet.pos = enemy->pos;
-    bullet.active = true;
     bullet.radius = enemy->bulletRadius;
     enemy->fireDirection = Vector2Rotate(enemy->fireDirection, 0.4);
     bullet.direction = enemy->fireDirection;

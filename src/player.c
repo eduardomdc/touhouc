@@ -67,7 +67,6 @@ void playerFire(){
     if (player.fireTimer.ready){
         Bullet bullet;
         bullet.pos = player.pos;
-        bullet.active = true;
         bullet.radius = player.bulletRadius;
         Vector2 dir = {0, -1};
         bullet.direction = dir;

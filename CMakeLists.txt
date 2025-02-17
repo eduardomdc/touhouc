@@ -17,6 +17,8 @@ set(MY_SOURCES
     src/firing_patterns.c
     src/spawner.c
     src/sprite.c
+    src/assets.c
+    src/compact_array.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

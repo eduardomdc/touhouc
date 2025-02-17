@@ -17,13 +17,13 @@ typedef struct Bullet {
     Vector2 direction;
     float speed;
     float radius;
-    bool active;
 } Bullet;
 
 typedef struct BulletList {
     Bullet* bullets;
     int len;
-    Color bulletColor; // texture in the future
+    int freeSlot;
+    Color debugColor;
     Sprite* sprite;
 } BulletList;
 
@@ -32,6 +32,7 @@ void renderBulletList(BulletList bulletList);
 void updatePlayerBulletList();
 void updateEnemyBulletList();
 int addBulletToList(Bullet bullet, BulletList* bulletList);
+void removeBulletFromList(unsigned int index, BulletList* BulletList);
 
 extern Bullet enemyBullets[MAX_ENEMY_BULLETS];
 extern Bullet playerBullets[MAX_PLAYER_BULLETS];
