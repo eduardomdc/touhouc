@@ -10,6 +10,7 @@ typedef struct CompactArray {
 } CompactArray;
 
 CompactArray makeCompactArray(void* array, unsigned int itemBytes, unsigned int length);
-void compactAddItem(CompactArray* compactArray, void* item);
+int compactAddItem(CompactArray* compactArray, void* item);
+void compactRemoveItem(CompactArray* compactArray, unsigned int index);
 
 #endif

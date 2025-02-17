@@ -2,6 +2,7 @@
 #include "touhou.h"
 #include "bullets.h"
 #include "sprite.h"
+#include "assets.h"
 #include <raymath.h>
 
 Player player = {0};
@@ -14,7 +15,7 @@ void setupPlayer(){
     player.fireRate = 15;
     player.lifes = 3;
     player.fireTimer = createTimer(1/player.fireRate);
-    player.sprite = loadSprite("../assets/textures/marisa23x35.png");
+    player.sprite = MARISA;
 }
 
 void handleInput(){
@@ -58,7 +59,7 @@ void updatePlayer(){
 }
 
 void renderPlayer(){
-    renderSpriteCentered(&player.sprite, player.pos);
+    renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
     DrawCircleV(player.pos, playerSize, playerColor);
     DrawCircleV(player.pos, playerSize-2, WHITE);
 }
@@ -71,7 +72,8 @@ void playerFire(){
         Vector2 dir = {0, -1};
         bullet.direction = dir;
         bullet.speed = player.bulletSpeed;
-        addBulletToList(bullet, &playerBulletList);
+        bullet.sprite = BLUE_ARROW_8;
+        compactAddItem(&compactPlayerBulletArray, &bullet);
         resetTimer(&player.fireTimer);
     }
 }

@@ -12,5 +12,6 @@ void fireShower(void* enemyPtr){
     enemy->fireDirection = Vector2Rotate(enemy->fireDirection, 0.4);
     bullet.direction = enemy->fireDirection;
     bullet.speed = enemy->bulletSpeed;
-    addBulletToList(bullet, &enemyBulletList);
+    bullet.sprite = FIRE_BALL_8;
+    compactAddItem(&compactEnemyBulletArray, &bullet);
 }

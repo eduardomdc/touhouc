@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "timer.h"
 #include "sprite.h"
+#include "assets.h"
 
 static const int playerSize = 5;
 static const float playerSpeed = 200;
@@ -23,7 +24,7 @@ typedef struct Player {
     float bulletSpeed;
     float bulletRadius;
     float fireRate;
-    Sprite sprite;
+    PlayerSprites sprite;
     Timer fireTimer;
 } Player;
 

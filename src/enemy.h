@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include "timer.h"
 #include "sprite.h"
+#include "assets.h"
 
 typedef struct Enemy {
     Vector2 pos;
@@ -13,8 +14,7 @@ typedef struct Enemy {
     float bulletRadius;
     Timer fireTimer;
     void (*firePattern)(void* enemy);
-    Color color; // future: texture pointer
-    Sprite* sprite;
+    EnemySprites sprite;
     bool alive;
 } Enemy;
 

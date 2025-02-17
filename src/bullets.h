@@ -3,8 +3,10 @@
 
 #include <raylib.h>
 #include "sprite.h"
+#include "compact_array.h"
+#include "assets.h"
 
-#define MAX_ENEMY_BULLETS 500
+#define MAX_ENEMY_BULLETS 1000
 #define MAX_PLAYER_BULLETS 100
 
 enum Team {
@@ -17,26 +19,16 @@ typedef struct Bullet {
     Vector2 direction;
     float speed;
     float radius;
+    BulletSprites sprite;
 } Bullet;
 
-typedef struct BulletList {
-    Bullet* bullets;
-    int len;
-    int freeSlot;
-    Color debugColor;
-    Sprite* sprite;
-} BulletList;
-
-
-void renderBulletList(BulletList bulletList);
-void updatePlayerBulletList();
-void updateEnemyBulletList();
-int addBulletToList(Bullet bullet, BulletList* bulletList);
-void removeBulletFromList(unsigned int index, BulletList* BulletList);
+void renderBulletCArray(CompactArray compactBulletArray);
+void updatePlayerBullets();
+void updateEnemyBullets();
 
 extern Bullet enemyBullets[MAX_ENEMY_BULLETS];
 extern Bullet playerBullets[MAX_PLAYER_BULLETS];
-extern BulletList enemyBulletList;
-extern BulletList playerBulletList;
+extern CompactArray compactEnemyBulletArray;
+extern CompactArray compactPlayerBulletArray;
 
 #endif

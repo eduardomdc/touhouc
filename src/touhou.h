@@ -15,8 +15,5 @@ void updateEnemies();
 bool onScreen(Vector2 pos, float radius);
 
 extern bool gameOver;
-extern Texture2D backgroundTexture;
-extern Sprite enemyBulletSprite;
-extern Sprite playerBulletSprite;
 
 #endif

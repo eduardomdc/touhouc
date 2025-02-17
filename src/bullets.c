@@ -8,14 +8,15 @@
 
 Bullet enemyBullets[MAX_ENEMY_BULLETS] = {0};
 Bullet playerBullets[MAX_PLAYER_BULLETS] = {0};
-BulletList enemyBulletList = {enemyBullets, MAX_ENEMY_BULLETS, 0, GREEN, &enemyBulletSprite};
-BulletList playerBulletList = {playerBullets, MAX_PLAYER_BULLETS, 0, RED, &playerBulletSprite};
+CompactArray compactEnemyBulletArray = {enemyBullets, sizeof(Bullet), MAX_ENEMY_BULLETS, 0};
+CompactArray compactPlayerBulletArray = {playerBullets, sizeof(Bullet), MAX_PLAYER_BULLETS, 0};
 
-void renderBulletList(BulletList bulletList){
-    for (int i=0; i < bulletList.freeSlot; i++){
-        Bullet bullet = bulletList.bullets[i];
-        renderSpriteCentered(bulletList.sprite, bullet.pos);
-        //DrawCircleV(bullet.pos, bullet.radius, bulletList.debugColor);
+void renderBulletCArray(CompactArray compactBulletArray){
+    Bullet* bullets = (Bullet*) compactBulletArray.array;
+    for (int i=0; i < compactBulletArray.freeIndex; i++){
+        Bullet bullet = bullets[i];
+        renderSpriteCentered(&assets.bulletSprites[bullet.sprite], bullet.pos);
+        //DrawCircleV(bullet.pos, bullet.radius, RED);
     }
 }
 
@@ -46,62 +47,43 @@ Enemy* checkCollisionWithEnemy(Bullet bullet){
     return NULL;
 }
 
-void updatePlayerBulletList(){
-    BulletList* bulletList = &playerBulletList;
+void updatePlayerBullets(){
+    CompactArray* bulletCArray = &compactPlayerBulletArray;
+    Bullet* bullets = (Bullet*) bulletCArray->array;
     float deltaTime = GetFrameTime();
-    for (int i=0; i < bulletList->freeSlot; i++){
-        Bullet bullet = bulletList->bullets[i];
+    for (int i=0; i < bulletCArray->freeIndex; i++){
+        Bullet bullet = bullets[i];
         bullet = moveBullet(bullet, deltaTime);
         Enemy* enemyHit = checkCollisionWithEnemy(bullet);
         if (enemyHit != NULL){
             enemyHit->alive = false;
-            removeBulletFromList(i, bulletList);
+            compactRemoveItem(bulletCArray, i);
             continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){
-            removeBulletFromList(i, bulletList);
+            compactRemoveItem(bulletCArray, i);
             continue;
         }
-        bulletList->bullets[i] = bullet;
+        bullets[i] = bullet;
     }
 }
 
-void updateEnemyBulletList(){
-    BulletList* bulletList = &enemyBulletList;
+void updateEnemyBullets(){
+    CompactArray* bulletCArray = &compactEnemyBulletArray;
+    Bullet* bullets = (Bullet*) bulletCArray->array;
     float deltaTime = GetFrameTime();
-    for (int i=0; i < bulletList->freeSlot; i++){
-        Bullet bullet = bulletList->bullets[i];
+    for (int i=0; i < bulletCArray->freeIndex; i++){
+        Bullet bullet = bullets[i];
         bullet = moveBullet(bullet, deltaTime);
         if (checkCollisionWithPlayer(bullet)){
             playerGetHit();
-            removeBulletFromList(i, bulletList);
+            compactRemoveItem(bulletCArray, i);
             continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){
-            removeBulletFromList(i, bulletList);
+            compactRemoveItem(bulletCArray, i);
             continue;
         }
-        bulletList->bullets[i] = bullet;
-    }
-}
-
-int addBulletToList(Bullet bullet, BulletList* bulletList){
-    if (bulletList->freeSlot >= bulletList->len) return 1; // full list
-    bulletList->bullets[bulletList->freeSlot] = bullet;
-    bulletList->freeSlot++;
-    return 0;
-}
-
-void removeBulletFromList(unsigned int index, BulletList* bulletList){
-    Bullet* bullets = bulletList->bullets;
-    if (index == bulletList->freeSlot-1){ // if index is last item
-        if (bulletList->freeSlot > 0){
-            bulletList->freeSlot--;
-        }
-        return;
-    }
-    bullets[index] = bullets[bulletList->freeSlot-1];
-    if (bulletList->freeSlot > 0){
-        bulletList->freeSlot--;
+        bullets[i] = bullet;
     }
 }

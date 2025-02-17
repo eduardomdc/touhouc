@@ -4,6 +4,7 @@
 #include "bullets.h"
 #include "spawner.h"
 #include "enemy.h"
+#include "assets.h"
 #include <time.h>
 
 bool gameOver;
@@ -11,20 +12,9 @@ bool gameOver;
 void setupGame(){
     SetRandomSeed(time(NULL));
     gameOver = false;
-    loadSprites();
+    loadAssets();
     setupPlayer();
     setupSpawner();
-}
-
-Sprite enemySprite = {0};
-Sprite enemyBulletSprite = {0};
-Sprite playerBulletSprite = {0};
-Texture2D backgroundTexture = {0};
-void loadSprites(){
-    enemySprite = loadSprite("../assets/textures/enemy22x25.png");
-    backgroundTexture = LoadTexture("../assets/textures/background500x700.png");
-    playerBulletSprite = loadSprite("../assets/textures/spear8.png");
-    enemyBulletSprite = loadSprite("../assets/textures/fire8.png");
 }
 
 void updateGame(){
@@ -32,8 +22,8 @@ void updateGame(){
         updatePlayer();
     }
     updateEnemies();
-    updatePlayerBulletList();
-    updateEnemyBulletList();
+    updatePlayerBullets();
+    updateEnemyBullets();
     updateSpawner();
 }
 
@@ -58,12 +48,10 @@ void renderEnemies(){
 void renderGame(){
     BeginDrawing();
     ClearBackground(BLACK);
-    DrawTexture(backgroundTexture, 0, 0, WHITE);
-    // painter's algorithm
-    
-    renderBulletList(playerBulletList);
+    DrawTexture(assets.backgroundSprites[CHAPEL].tex, 0, 0, WHITE);
+    renderBulletCArray(compactPlayerBulletArray);
     renderPlayer();
-    renderBulletList(enemyBulletList);
+    renderBulletCArray(compactEnemyBulletArray);
     renderEnemies();
     EndDrawing();
 }
