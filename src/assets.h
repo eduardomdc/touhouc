@@ -11,6 +11,13 @@ typedef enum {
 } BulletSprites;
 
 typedef enum {
+    POINT_SPRITE,
+    POWER_UP_SPRITE,
+    ONE_UP_SPRITE,
+    ITEM_SPRITES_LEN,
+} ItemSprites;
+
+typedef enum {
     MARISA,
     PLAYER_SPRITES_LEN
 } PlayerSprites;
@@ -45,6 +52,7 @@ typedef struct {
     Sprite playerSprites[PLAYER_SPRITES_LEN];
     Sprite enemySprites[ENEMY_SPRITES_LEN];
     Sprite backgroundSprites[BACKGROUND_SPRITES_LEN];
+    Sprite itemSprites[ITEM_SPRITES_LEN];
     Sound soundEffects[SOUND_EFFECTS_LEN];
     Music bgm[BGM_LEN];
 } Assets;

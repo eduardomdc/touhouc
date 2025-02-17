@@ -22,5 +22,6 @@ extern Sprite enemySprite;
 
 void renderEnemy(Enemy enemy);
 void updateEnemy(Enemy* enemy);
+void enemyDie(Enemy* enemy);
 
 #endif

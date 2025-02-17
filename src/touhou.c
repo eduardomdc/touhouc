@@ -5,6 +5,7 @@
 #include "spawner.h"
 #include "enemy.h"
 #include "assets.h"
+#include "items.h"
 #include <time.h>
 #include <stdio.h>
 
@@ -17,11 +18,6 @@ void setupGame(){
     loadAssets();
     setupPlayer();
     setupSpawner();
-    if (!IsMusicValid(assets.bgm[DESERTED_HELL])){
-        fprintf(stderr, "music is not valid");
-    } else {
-        fprintf(stderr, "music is valid");
-    }
     PlayMusicStream(assets.bgm[DESERTED_HELL]);
 }
 
@@ -31,6 +27,7 @@ void updateGame(){
         updatePlayer();
     }
     updateEnemies();
+    updateItems();
     updatePlayerBullets();
     updateEnemyBullets();
     updateSpawner();
@@ -59,6 +56,7 @@ void renderGame(){
     ClearBackground(BLACK);
     DrawTexture(assets.backgroundSprites[CHAPEL].tex, 0, 0, WHITE);
     renderBulletCArray(compactPlayerBulletArray);
+    renderItems();
     renderPlayer();
     renderBulletCArray(compactEnemyBulletArray);
     renderEnemies();

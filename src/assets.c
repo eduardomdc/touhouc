@@ -29,6 +29,12 @@ void loadSoundEffects(){
     assets.soundEffects[POWERUP_PICKUP] = LoadSound("../assets/sounds/powerup.wav");
 }
 
+void loadItemSprites(){
+    assets.itemSprites[POINT_SPRITE] = loadSprite("../assets/textures/point12x12.png");
+    assets.itemSprites[POWER_UP_SPRITE] = loadSprite("../assets/textures/powerup16x16.png");
+    assets.itemSprites[ONE_UP_SPRITE] = loadSprite("../assets/textures/oneup16x16.png");
+}
+
 void loadBGM(){
     assets.bgm[DESERTED_HELL] = LoadMusicStream("../assets/sounds/bgm_deserted_hell.wav");
 }
@@ -39,6 +45,7 @@ void loadAssets(){
     loadPlayerSprites();
     loadEnemySprites();
     loadBackgroundSprites();
+    loadItemSprites();
     //Sounds
     loadSoundEffects();
     loadBGM();

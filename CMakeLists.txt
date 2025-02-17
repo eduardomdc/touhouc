@@ -19,6 +19,7 @@ set(MY_SOURCES
     src/sprite.c
     src/assets.c
     src/compact_array.c
+    src/items.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

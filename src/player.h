@@ -22,13 +22,17 @@ void playerGetHit();
 typedef struct Player {
     Vector2 pos;
     int lifes;
+    unsigned int points;
     float bulletSpeed;
     float bulletRadius;
     float bulletSpreadAngle;
     float fireRate;
     PlayerSprites sprite;
     Timer fireTimer;
+    bool alive;
 } Player;
+
+void playerSetFireRate(float fireRate);
 
 extern Player player;
 

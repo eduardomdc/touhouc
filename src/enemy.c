@@ -1,4 +1,5 @@
 #include "enemy.h"
+#include "items.h"
 
 void renderEnemy(Enemy enemy){
     renderSpriteCentered(&assets.enemySprites[enemy.sprite], enemy.pos);
@@ -10,4 +11,8 @@ void updateEnemy(Enemy* enemy){
         enemy->firePattern(enemy);
         resetTimer(&enemy->fireTimer);
     }
+}
+
+void enemyDie(Enemy* enemy){
+    makePointItem(enemy->pos);
 }

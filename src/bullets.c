@@ -56,6 +56,7 @@ void updatePlayerBullets(){
         bullet = moveBullet(bullet, deltaTime);
         Enemy* enemyHit = checkCollisionWithEnemy(bullet);
         if (enemyHit != NULL){
+            enemyDie(enemyHit);
             enemyHit->alive = false;
             compactRemoveItem(bulletCArray, i);
             PlaySound(assets.soundEffects[ENEMY_HIT]);

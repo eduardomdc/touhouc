@@ -18,6 +18,8 @@ void setupPlayer(){
     player.bulletSpreadAngle = 0.05;
     player.fireTimer = createTimer(1/player.fireRate);
     player.sprite = MARISA;
+    player.points = 0;
+    player.alive = true;
 }
 
 void handleInput(){
