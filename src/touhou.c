@@ -7,6 +7,7 @@
 #include "assets.h"
 #include "items.h"
 #include "networking/server.h"
+#include "networking/client.h"
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
@@ -27,7 +28,14 @@ void setupGame(char* hostType){
         PlayMusicStream(assets.bgm[DESERTED_HELL]);
     }
     else if (strcmp(hostType, "client") == 0){
-        return;
+        SetRandomSeed(time(NULL));
+        InitAudioDevice();
+        gameOver = false;
+        loadAssets();
+        setupPlayer();
+        setupSpawner();
+        PlayMusicStream(assets.bgm[DESERTED_HELL]);
+        initClient();
     }
 }
 

@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include "networking/client.h"
 #include "touhou.h"
 
 int main(int argc, char *argv[]){
@@ -8,6 +9,9 @@ int main(int argc, char *argv[]){
     while(!WindowShouldClose()){
         renderGame();
         updateGame();
+    }
+    if (!isServer){
+        closeClient();
     }
     CloseAudioDevice();
     CloseWindow();
