@@ -1,10 +1,10 @@
 #include <raylib.h>
 #include "touhou.h"
 
-int main(){
+int main(int argc, char *argv[]){
     InitWindow(hRes, vRes, "TouhouC");
     SetTargetFPS(fps);
-    setupGame();
+    setupGame(argv[1]);
     while(!WindowShouldClose()){
         renderGame();
         updateGame();

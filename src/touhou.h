@@ -7,7 +7,7 @@ static const int vRes = 650;
 static const int hRes = 500;
 static const int fps = 120;
 
-void setupGame();
+void setupGame(char* hostType);
 void loadSprites();
 void renderGame();
 void updateGame();

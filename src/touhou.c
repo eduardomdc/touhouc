@@ -6,22 +6,33 @@
 #include "enemy.h"
 #include "assets.h"
 #include "items.h"
+#include "networking/server.h"
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 
 bool gameOver;
 
-void setupGame(){
-    SetRandomSeed(time(NULL));
-    InitAudioDevice();
-    gameOver = false;
-    loadAssets();
-    setupPlayer();
-    setupSpawner();
-    PlayMusicStream(assets.bgm[DESERTED_HELL]);
+void setupGame(char* hostType){
+    if (strcmp(hostType, "server") == 0){
+        SetRandomSeed(time(NULL));
+        initServer(); // server side
+        InitAudioDevice();
+        gameOver = false;
+        loadAssets();
+        setupPlayer();
+        setupSpawner();
+        PlayMusicStream(assets.bgm[DESERTED_HELL]);
+    }
+    else if (strcmp(hostType, "client") == 0){
+        return;
+    }
 }
 
 void updateGame(){
+    if (gameServer.active && !gameServer.clientIsConnected){
+        serverCheckForClientConnection();
+    }
     UpdateMusicStream(assets.bgm[DESERTED_HELL]);
     if (!gameOver){
         updatePlayer();

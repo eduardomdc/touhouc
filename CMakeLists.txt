@@ -20,6 +20,8 @@ set(MY_SOURCES
     src/assets.c
     src/compact_array.c
     src/items.c
+    src/networking/server.c
+    src/networking/client.c
 )
 
 add_executable(touhouc ${MY_SOURCES})
