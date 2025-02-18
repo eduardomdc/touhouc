@@ -23,6 +23,7 @@ typedef struct Bullet {
 } Bullet;
 
 void renderBulletCArray(CompactArray compactBulletArray);
+void physicsUpdateBullets(CompactArray* bulletCArray, float dt);
 void updatePlayerBullets();
 void updateEnemyBullets();
 

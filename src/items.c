@@ -27,12 +27,18 @@ Item moveItem(Item item, float deltaTime){
     return item;
 }
 
-void updateItems(Item* item){
-    float deltaTime = GetFrameTime();
+void physicsUpdateItems(float dt){
     for (int i=0; i < itemsCArray.freeIndex; i++){
         Item item = items[i];
-        item.speed += ITEM_FALL_ACC*deltaTime;
-        item = moveItem(item, deltaTime);
+        item.speed += ITEM_FALL_ACC*dt;
+        item = moveItem(item, dt);
+        items[i] = item;
+    }
+}
+
+void updateItems(Item* item){
+    for (int i=0; i < itemsCArray.freeIndex; i++){
+        Item item = items[i];
         if (collidingWithPlayer(item) && player.alive){
             PlaySound(assets.soundEffects[item.pickupSound]);
             itemEffects[item.effect](&player);
@@ -43,7 +49,6 @@ void updateItems(Item* item){
             compactRemoveItem(&itemsCArray, i);
             continue;
         }
-        items[i] = item;
     }
 }
 

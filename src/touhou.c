@@ -12,9 +12,11 @@
 #include <string.h>
 
 bool gameOver;
+bool isServer = false;
 
 void setupGame(char* hostType){
     if (strcmp(hostType, "server") == 0){
+        isServer = true;
         SetRandomSeed(time(NULL));
         initServer(); // server side
         InitAudioDevice();
@@ -34,14 +36,23 @@ void updateGame(){
         serverCheckForClientConnection();
     }
     UpdateMusicStream(assets.bgm[DESERTED_HELL]);
-    if (!gameOver){
-        updatePlayer();
+    // physics
+    float delta = GetFrameTime();
+    physicsUpdateItems(delta);
+    physicsUpdateBullets(&compactPlayerBulletArray, delta);
+    physicsUpdateBullets(&compactEnemyBulletArray, delta);
+    // update collision detection and timers
+    if (isServer){
+        if (!gameOver){
+            updatePlayer();
+        }
+        updateEnemies();
+        updateItems();
+        updatePlayerBullets();
+        updateEnemyBullets();
+        updateSpawner();
     }
-    updateEnemies();
-    updateItems();
-    updatePlayerBullets();
-    updateEnemyBullets();
-    updateSpawner();
+    
 }
 
 void updateEnemies(){

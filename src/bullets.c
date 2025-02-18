@@ -47,13 +47,20 @@ Enemy* checkCollisionWithEnemy(Bullet bullet){
     return NULL;
 }
 
+void physicsUpdateBullets(CompactArray* bulletCArray, float dt){
+    Bullet* bullets = (Bullet*) bulletCArray->array;
+    for (int i=0; i < bulletCArray->freeIndex; i++){
+        Bullet bullet = bullets[i];
+        bullet = moveBullet(bullet, dt);
+        bullets[i] = bullet;
+    }
+}
+
 void updatePlayerBullets(){
     CompactArray* bulletCArray = &compactPlayerBulletArray;
     Bullet* bullets = (Bullet*) bulletCArray->array;
-    float deltaTime = GetFrameTime();
     for (int i=0; i < bulletCArray->freeIndex; i++){
         Bullet bullet = bullets[i];
-        bullet = moveBullet(bullet, deltaTime);
         Enemy* enemyHit = checkCollisionWithEnemy(bullet);
         if (enemyHit != NULL){
             enemyDie(enemyHit);
@@ -73,10 +80,8 @@ void updatePlayerBullets(){
 void updateEnemyBullets(){
     CompactArray* bulletCArray = &compactEnemyBulletArray;
     Bullet* bullets = (Bullet*) bulletCArray->array;
-    float deltaTime = GetFrameTime();
     for (int i=0; i < bulletCArray->freeIndex; i++){
         Bullet bullet = bullets[i];
-        bullet = moveBullet(bullet, deltaTime);
         if (checkCollisionWithPlayer(bullet)){
             playerGetHit();
             compactRemoveItem(bulletCArray, i);

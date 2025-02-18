@@ -34,6 +34,7 @@ typedef struct Item {
 
 void renderItems();
 void updateItems();
+void physicsUpdateItems(float dt);
 
 void makePointItem(Vector2 pos);
 void makePowerUpItem(Vector2 pos);
