@@ -4,17 +4,18 @@
 
 Item items[MAX_ITEMS] = {0};
 
-ItemData itemTypes[ITEM_TYPE_LEN] = {0};
-itemTypes[SCORE_ITEM] = {GAIN_POINT, POINT_PICKUP, POINT_SPRITE, 6};
-itemTypes[ONE_UP_ITEM] = {GAIN_LIFE, POWERUP_PICKUP, ONE_UP_SPRITE, 8};
-itemTypes[POWER_UP_ITEM] = {INCREASE_FIRE_RATE, POWERUP_PICKUP, POWER_UP_SPRITE, 8};
+ItemData itemData[ITEM_TYPE_LEN] = {
+    {GAIN_POINT, POINT_PICKUP, POINT_SPRITE, 6},
+    {GAIN_LIFE, POWERUP_PICKUP, ONE_UP_SPRITE, 8},
+    {INCREASE_FIRE_RATE, POWERUP_PICKUP, POWER_UP_SPRITE, 8},
+};
 
 CompactArray itemsCArray = {items, sizeof(Item), MAX_ITEMS, 0};
 
 void renderItems(){
     for (int i=0; i < itemsCArray.freeIndex; i++){
         Item item = items[i];
-        renderSpriteCentered(&assets.itemSprites[itemTypes[item.type].sprite], item.pos);
+        renderSpriteCentered(&assets.itemSprites[itemData[item.type].sprite], item.pos);
     }
 }
 

@@ -22,6 +22,7 @@ set(MY_SOURCES
     src/items.c
     src/networking/server.c
     src/networking/client.c
+    src/networking/packets.c
 )
 
 add_executable(touhouc ${MY_SOURCES})

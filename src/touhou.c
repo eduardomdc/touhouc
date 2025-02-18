@@ -40,8 +40,14 @@ void setupGame(char* hostType){
 }
 
 void updateGame(){
-    if (gameServer.active && !gameServer.clientIsConnected){
-        serverCheckForClientConnection();
+    if (isServer){
+        if (gameServer.active && !gameServer.clientIsConnected){
+            serverCheckForClientConnection();
+        }
+    } else {
+        if (gameClient.connected){
+            clientReceiveTcp();
+        }
     }
     UpdateMusicStream(assets.bgm[DESERTED_HELL]);
     // physics

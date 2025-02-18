@@ -15,6 +15,8 @@ extern Client gameClient;
 
 void initClient();
 
+void clientReceiveTcp();
+
 void closeClient();
 
 #endif

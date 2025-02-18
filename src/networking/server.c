@@ -1,4 +1,6 @@
 #include "server.h"
+#include "../player.h"
+#include "packets.h"
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -57,6 +59,7 @@ void serverCheckForClientConnection(){
         ) >= 0) {
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
+        sendTcpPlayerData(0, player);
    }
    
 }
