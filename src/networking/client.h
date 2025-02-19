@@ -5,8 +5,9 @@
 
 typedef struct Client {
     int tcpSock;
-    struct sockaddr_in clientAddress;
+    int udpSock;
     struct sockaddr_in serverAddress;
+    struct sockaddr_in clientAddress;
     bool connected; // is connected to a server
 } Client;
 
@@ -15,6 +16,7 @@ extern Client gameClient;
 void initClient();
 
 void clientReceiveTcp();
+void clientReceiveUdp();
 
 void closeClient();
 

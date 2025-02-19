@@ -65,8 +65,12 @@ void updateGame(){
         updatePlayerBullets();
         updateEnemyBullets();
         updateSpawner();
+        // udp
+        if (gameServer.clientIsConnected)
+            sendGameUpdate();
+    } else {
+        clientReceiveUdp();
     }
-    
 }
 
 void updateEnemies(){

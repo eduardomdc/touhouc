@@ -43,23 +43,37 @@ void initServer(){
     }
 
     // UDP Server
-
+    if ((gameServer.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        fprintf(stderr, "Failed to create client udp socket\n");
+        return;
+    }
+    //set non-blocking mode
+    flags = fcntl(gameServer.udpSock, F_GETFL, 0);
+    fcntl(gameServer.udpSock, F_SETFL, flags | O_NONBLOCK);
 
     gameServer.active = true;
 }
 
 void serverCheckForClientConnection(){
     socklen_t addrlen = sizeof(gameServer.serverAddress);
+    struct sockaddr_in tempAddr;
     if ((
-            gameServer.clientTCPSock = accept(
-                gameServer.serverTCPSock, 
-                (struct sockaddr*)&gameServer.clientAddress, 
-                &addrlen
-            )
-        ) >= 0) {
+        gameServer.clientTCPSock = accept(
+            gameServer.serverTCPSock, 
+            (struct sockaddr*)&tempAddr,
+            &addrlen
+        )) 
+    >= 0) {
+        gameServer.clientAddress.sin_family = AF_INET;
+        gameServer.clientAddress.sin_port = htons(PORT);
+        gameServer.clientAddress.sin_addr = tempAddr.sin_addr;
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
         sendTcpPlayerData(0, player);
-   }
+    }
    
+}
+
+void sendGameUpdate(){
+    sendUDPBulletArray();
 }

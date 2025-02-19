@@ -8,6 +8,7 @@
 typedef struct Server {
     int serverTCPSock;
     int clientTCPSock;
+    int udpSock;
     struct sockaddr_in serverAddress;
     struct sockaddr_in clientAddress;
     bool active; // server has been setup and is looking for connections
@@ -18,5 +19,6 @@ extern Server gameServer;
 
 void initServer();
 void serverCheckForClientConnection();
+void sendGameUpdate();
 
 #endif

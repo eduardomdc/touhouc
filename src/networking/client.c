@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include "server.h"
+#include "../bullets.h"
 #include "packets.h"
 
 #define SERVER_IP "127.0.0.1"
@@ -34,6 +35,24 @@ void initClient(){
     int flags = fcntl(gameClient.tcpSock, F_GETFL, 0);
     fcntl(gameClient.tcpSock, F_SETFL, flags | O_NONBLOCK);
 
+    //set up UDP sock
+    if ((gameClient.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+        fprintf(stderr, "Failed to create client udp socket\n");
+        return;
+    }
+    //set non-blocking mode
+    flags = fcntl(gameClient.udpSock, F_GETFL, 0);
+    fcntl(gameClient.udpSock, F_SETFL, flags | O_NONBLOCK);
+
+    gameClient.clientAddress.sin_family = AF_INET;
+    gameClient.clientAddress.sin_port = htons(PORT);
+    gameClient.clientAddress.sin_addr.s_addr = INADDR_ANY;
+    socklen_t addrlen = sizeof(gameClient.clientAddress);
+    if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
+        fprintf(stderr, "Failed to bind client udpsocket to address\n");
+        return;
+    }
+
     fprintf(stderr, "Connected to server!\n");
 
     gameClient.connected = true;
@@ -53,9 +72,28 @@ void clientReceiveTcp(){
                 return;
         }
     }
+}
 
+void clientReceiveUdp(){
+    UdpHeader header;
+    socklen_t addrlen = sizeof(gameClient.serverAddress);
+    if(
+        (recvfrom(gameClient.udpSock, &header, sizeof(header), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
+    ){
+        fprintf(stderr, "Received data from server :)\n");
+        switch (header.packetType) {
+            case UDP_BULLET_ARRAY:
+                fprintf(stderr, "Received bullet array :)\n");
+                compactEnemyBulletArray.freeIndex = header.len;
+                recvfrom(gameClient.udpSock, &compactEnemyBulletArray.array, sizeof(Bullet)*header.len, 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen);
+                break;
+            default:
+                return;
+        }
+    }
 }
 
 void closeClient(){
     close(gameClient.tcpSock); // close socket
+    close(gameClient.udpSock);
 }
