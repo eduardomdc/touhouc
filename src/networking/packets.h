@@ -48,10 +48,10 @@ typedef struct UdpHeader {
     Team team;
 } __attribute__((packed)) UdpHeader;
 
-typedef struct UdpBulletArray {
-    Team team;
-    int len;
-} __attribute__((packed)) UdpBulletArray;
+// typedef struct UdpBulletArray {
+//     Team team;
+//     int len;
+// } __attribute__((packed)) UdpBulletArray;
 
 void sendUDPBulletArray(Team team);
 void sendUDPPlayerData(Team teamPlayer);

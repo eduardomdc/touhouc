@@ -8,6 +8,9 @@
 Server gameServer = {0};
 
 void initServer(){
+    gameServer.bulletPacketTimer = createTimer(0.1);
+    gameServer.playerPacketTimer = createTimer(0.02);
+
     // TCP SERVER
     if ((gameServer.serverTCPSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         fprintf(stderr, "Failed to create server tcp socket\n");
@@ -76,7 +79,16 @@ void serverCheckForClientConnection(){
 }
 
 void sendGameUpdate(){
-    sendUDPBulletArray(ENEMY);
-    sendUDPBulletArray(PLAYER_1);
-    sendUDPPlayerData(PLAYER_1);
+    updateTimer(&gameServer.bulletPacketTimer);
+    updateTimer(&gameServer.playerPacketTimer);
+    if (gameServer.bulletPacketTimer.ready){
+        sendUDPBulletArray(ENEMY);
+        sendUDPBulletArray(PLAYER_1);
+        resetTimer(&gameServer.bulletPacketTimer);
+    }
+    if (gameServer.playerPacketTimer.ready){
+        sendUDPPlayerData(PLAYER_1);
+        resetTimer(&gameServer.playerPacketTimer);
+    }
+    
 }
