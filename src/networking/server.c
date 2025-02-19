@@ -78,4 +78,5 @@ void serverCheckForClientConnection(){
 void sendGameUpdate(){
     sendUDPBulletArray(ENEMY);
     sendUDPBulletArray(PLAYER_1);
+    sendUDPPlayerData(PLAYER_1);
 }

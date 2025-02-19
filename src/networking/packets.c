@@ -83,8 +83,22 @@ void receiveUDPBulletArray(UdpHeader header) {
     recvfrom(gameClient.udpSock, bullets, sizeof(Bullet)*header.len, 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen);
 }
 
-void sendUDPPlayerData(Team player){
+void sendUDPPlayerData(Team teamPlayer){
     UdpHeader udpHeader;
     udpHeader.packetType = UDP_PLAYER_DATA;
     udpHeader.seq = 0;
+    udpHeader.len = 0;
+    udpHeader.team = teamPlayer; // player 1 or player 2
+    socklen_t addrlen = sizeof(gameServer.clientAddress);
+    if (sendto(gameServer.udpSock, &udpHeader, sizeof(udpHeader), 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
+        fprintf(stderr, "Failed to send UDP header\n");
+    }
+    if (sendto(gameServer.udpSock, &player, sizeof(Player), 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
+        fprintf(stderr, "Failed to send UDP player data\n");
+    };
+}
+
+void receiveUDPPlayerData(UdpHeader header){
+    socklen_t addrlen = sizeof(gameClient.serverAddress);
+    recvfrom(gameClient.udpSock, &player, sizeof(Player), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen);
 }

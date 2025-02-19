@@ -84,6 +84,9 @@ void clientReceiveUdp(){
             case UDP_BULLET_ARRAY:
                 receiveUDPBulletArray(header);
                 break;
+            case UDP_PLAYER_DATA:
+                receiveUDPPlayerData(header);
+                break;
             default:
                 return;
         }

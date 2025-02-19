@@ -54,8 +54,9 @@ typedef struct UdpBulletArray {
 } __attribute__((packed)) UdpBulletArray;
 
 void sendUDPBulletArray(Team team);
-void sendUDPPlayerData(Team player);
-void receiveUDPBulletArray();
+void sendUDPPlayerData(Team teamPlayer);
+void receiveUDPPlayerData(UdpHeader header);
+void receiveUDPBulletArray(UdpHeader header);
 
 extern char packageBuffer[MAX_PACKAGE_BUFFER_SIZE];
 
