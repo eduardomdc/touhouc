@@ -4,8 +4,7 @@
 #include <raylib.h>
 
 typedef struct Client {
-    int clientTCPSock;
-    int serverTCPSock;
+    int tcpSock;
     struct sockaddr_in clientAddress;
     struct sockaddr_in serverAddress;
     bool connected; // is connected to a server
