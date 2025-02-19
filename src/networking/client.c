@@ -49,7 +49,7 @@ void initClient(){
     gameClient.clientAddress.sin_addr.s_addr = INADDR_ANY;
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
-        fprintf(stderr, "Failed to bind client udpsocket to address\n");
+        fprintf(stderr, "Failed to bind client udp socket to address\n");
         return;
     }
 
@@ -80,12 +80,9 @@ void clientReceiveUdp(){
     if(
         (recvfrom(gameClient.udpSock, &header, sizeof(header), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
     ){
-        fprintf(stderr, "Received data from server :)\n");
         switch (header.packetType) {
             case UDP_BULLET_ARRAY:
-                fprintf(stderr, "Received bullet array :)\n");
-                compactEnemyBulletArray.freeIndex = header.len;
-                recvfrom(gameClient.udpSock, &compactEnemyBulletArray.array, sizeof(Bullet)*header.len, 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen);
+                receiveUDPBulletArray(header);
                 break;
             default:
                 return;

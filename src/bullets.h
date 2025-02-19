@@ -9,10 +9,11 @@
 #define MAX_ENEMY_BULLETS 1000
 #define MAX_PLAYER_BULLETS 100
 
-enum Team {
-    PLAYER,
+typedef enum {
+    PLAYER_1,
+    PLAYER_2,
     ENEMY,
-};
+} Team;
 
 typedef struct Bullet {
     Vector2 pos;

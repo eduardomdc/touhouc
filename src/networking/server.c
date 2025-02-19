@@ -1,5 +1,6 @@
 #include "server.h"
 #include "../player.h"
+#include "../bullets.h"
 #include "packets.h"
 #include <stdio.h>
 #include <fcntl.h>
@@ -75,5 +76,6 @@ void serverCheckForClientConnection(){
 }
 
 void sendGameUpdate(){
-    sendUDPBulletArray();
+    sendUDPBulletArray(ENEMY);
+    sendUDPBulletArray(PLAYER_1);
 }

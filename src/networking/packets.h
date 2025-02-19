@@ -1,7 +1,9 @@
 #ifndef PACKETS_H
 #define PACKETS_H
+#define MAX_PACKAGE_BUFFER_SIZE 32000
 #include "../items.h"
 #include "../player.h"
+#include "../bullets.h"
 
 typedef enum {
     TCP_PLAYER_HIT,
@@ -35,6 +37,7 @@ void sendTcpPlayerItemPickup(short playerID, ItemType itemType);
 
 typedef enum {
     UDP_BULLET_ARRAY,
+    UDP_PLAYER_DATA,
     UDP_PACKET_TYPE_LEN
 } UdpPacketType;
 
@@ -42,9 +45,18 @@ typedef struct UdpHeader {
     UdpPacketType packetType;
     unsigned int seq;
     unsigned int len;
+    Team team;
 } __attribute__((packed)) UdpHeader;
 
-void sendUDPBulletArray();
+typedef struct UdpBulletArray {
+    Team team;
+    int len;
+} __attribute__((packed)) UdpBulletArray;
+
+void sendUDPBulletArray(Team team);
+void sendUDPPlayerData(Team player);
 void receiveUDPBulletArray();
+
+extern char packageBuffer[MAX_PACKAGE_BUFFER_SIZE];
 
 #endif
