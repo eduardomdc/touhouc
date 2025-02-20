@@ -4,7 +4,6 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include "server.h"
-#include "../bullets.h"
 #include "packets.h"
 
 #define SERVER_IP "127.0.0.1"
@@ -77,7 +76,7 @@ void clientReceiveTcp(){
 void clientReceiveUdp(){
     UdpHeader header;
     socklen_t addrlen = sizeof(gameClient.serverAddress);
-    if(
+    while(
         (recvfrom(gameClient.udpSock, &header, sizeof(header), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
     ){
         switch (header.packetType) {
