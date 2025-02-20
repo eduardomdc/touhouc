@@ -60,7 +60,7 @@ void initClient(){
 
 void clientReceiveTcp(){
     TcpHeader header;
-    if (recv(gameClient.tcpSock, &header, sizeof(header), 0) > 0){
+    while (recv(gameClient.tcpSock, &header, sizeof(header), 0) > 0){
         switch (header.packetType) {
             case TCP_PLAYER_DATA:
                 fprintf(stderr, "Received player data :)\n");
@@ -68,6 +68,10 @@ void clientReceiveTcp(){
                 recv(gameClient.tcpSock, &tcpPlayerData, sizeof(tcpPlayerData), 0);
                 receiveTcpPlayerData(tcpPlayerData);
                 break;
+            case TCP_PLAYER_HIT:
+                TcpPlayerHit tcpPlayerHit;
+                recv(gameClient.tcpSock, &tcpPlayerHit, sizeof(tcpPlayerHit), 0);
+                receiveTcpPlayerHit(tcpPlayerHit);
             default:
                 return;
         }

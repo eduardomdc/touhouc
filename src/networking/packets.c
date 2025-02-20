@@ -5,16 +5,24 @@
 #include "../player.h"
 #include "../compact_array.h"
 #include "../bullets.h"
-#include "client.h"
 #include <string.h>
 
 PacketBuffer packetBuffer = {0};
 
-void sendTcpPlayerHit(short playerID);
+void sendTcpPlayerHit(Team tplayer){
+    TcpHeader tcpHeader = {TCP_PLAYER_HIT};
+    TcpPlayerHit tcpPlayerHit = {tplayer};
+    send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
+    send(gameServer.clientTCPSock, &tcpPlayerHit, sizeof(tcpPlayerHit), 0);
+}
 
-void sendTcpPlayerData(short playerID, Player player){
+void receiveTcpPlayerHit(TcpPlayerHit tcpPlayerHit){
+    PlaySound(assets.soundEffects[PLAYER_HIT]);
+}
+
+void sendTcpPlayerData(Team tplayer, Player player){
     TcpHeader tcpHeader = {TCP_PLAYER_DATA};
-    TcpPlayerData data = {0, player};
+    TcpPlayerData data = {tplayer, player};
     send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
     send(gameServer.clientTCPSock, &data, sizeof(data), 0);
 }
@@ -23,7 +31,9 @@ void receiveTcpPlayerData(TcpPlayerData tcpPlayerData){
     player = tcpPlayerData.player;
 }
 
-void sendTcpPlayerItemPickup(short playerID, ItemType itemType);
+void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
+
+}
 
 void sendUDPBulletArray(Team team) {
     resetPacketBuffer();
@@ -79,6 +89,7 @@ void sendUDPPlayerData(Team tplayer){
     UdpPlayerData udpPlayerData;
     udpPlayerData.player = tplayer;
     writePacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
+    
     writePacketBuffer(&player, sizeof(Player));
 
     socklen_t addrlen = sizeof(gameServer.clientAddress);

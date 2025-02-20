@@ -17,23 +17,24 @@ typedef struct TcpHeader {
 } __attribute__((packed)) TcpHeader;
 
 typedef struct TcpPlayerHit {
-    short playerID;
+    Team tplayer;
 } __attribute__((packed)) TcpPlayerHit;
 
 typedef struct TcpPlayerData {
-    short playerID;
+    Team tplayer;
     Player player;
 } __attribute__((packed)) TcpPlayerData;
 
 typedef struct TcpPlayerItemPickUp {
-    short playerID;
+    Team tplayer;
     ItemType itemType;
 } __attribute__((packed)) TcpPlayerItemPickUp;
 
-void sendTcpPlayerHit(short playerID);
-void sendTcpPlayerData(short playerID, Player player);
+void sendTcpPlayerHit(Team tplayer);
+void receiveTcpPlayerHit(TcpPlayerHit tcpPlayerHit);
+void sendTcpPlayerData(Team tplayer, Player player);
 void receiveTcpPlayerData(TcpPlayerData tcpPlayerData);
-void sendTcpPlayerItemPickup(short playerID, ItemType itemType);
+void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType);
 
 typedef enum {
     UDP_BULLET_ARRAY,

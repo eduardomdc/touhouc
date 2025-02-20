@@ -73,7 +73,7 @@ void serverCheckForClientConnection(){
         gameServer.clientAddress.sin_addr = tempAddr.sin_addr;
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
-        sendTcpPlayerData(0, player);
+        sendTcpPlayerData(PLAYER_1, player);
     }
    
 }

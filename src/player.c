@@ -98,6 +98,7 @@ void playerGetHit(){
     if (player.lifes > 0){
         player.lifes -= 1;
         PlaySound(assets.soundEffects[PLAYER_HIT]);
+        sendTcpPlayerHit(PLAYER_1);
     } else if (player.lifes == 0 && !gameOver){
         //gameOver = true;
         //PlaySound(assets.soundEffects[PLAYER_DEATH]);
