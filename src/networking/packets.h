@@ -38,24 +38,29 @@ void sendTcpPlayerItemPickup(short playerID, ItemType itemType);
 typedef enum {
     UDP_BULLET_ARRAY,
     UDP_PLAYER_DATA,
+    UDP_PLAYER_FIRE,
     UDP_PACKET_TYPE_LEN
 } UdpPacketType;
 
 typedef struct UdpHeader {
     UdpPacketType packetType;
-    unsigned int seq;
-    //unsigned int len;
-    Team team;
 } __attribute__((packed)) UdpHeader;
 
 typedef struct UdpBulletArray {
     int len;
+    Team team;
 } __attribute__((packed)) UdpBulletArray;
 
+typedef struct UdpPlayerData {
+    Team player;
+} __attribute__((packed)) UdpPlayerData;
+
 void sendUDPBulletArray(Team team);
-void sendUDPPlayerData(Team teamPlayer);
-void receiveUDPPlayerData(UdpHeader header);
-void receiveUDPBulletArray(UdpHeader header);
+void sendUDPPlayerData(Team tplayer);
+void receiveUDPPlayerData();
+void receiveUDPBulletArray();
+void sendUDPPlayerFire();
+void receiveUDPPlayerFire();
 
 typedef struct PacketBuffer {
     char bytes[MAX_PACKAGE_BUFFER_SIZE];

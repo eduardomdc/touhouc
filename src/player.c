@@ -5,6 +5,7 @@
 #include "assets.h"
 #include <stdlib.h>
 #include <raymath.h>
+#include "networking/packets.h"
 
 Player player = {0};
 
@@ -83,6 +84,7 @@ void playerFire(){
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[PLAYER_FIRE]);
         resetTimer(&player.fireTimer);
+        sendUDPPlayerFire();
     }
 }
 

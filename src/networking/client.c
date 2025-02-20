@@ -7,7 +7,7 @@
 #include "server.h"
 #include "packets.h"
 
-#define SERVER_IP "127.0.0.1"
+#define SERVER_IP "127.0.0.0"
 
 Client gameClient = {0};
 
@@ -84,10 +84,13 @@ void clientReceiveUdp(){
         readPacketBuffer(&header, sizeof(UdpHeader));
         switch (header.packetType) {
             case UDP_BULLET_ARRAY:
-                receiveUDPBulletArray(header);
+                receiveUDPBulletArray();
                 break;
             case UDP_PLAYER_DATA:
-                receiveUDPPlayerData(header);
+                receiveUDPPlayerData();
+                break;
+            case UDP_PLAYER_FIRE:
+                receiveUDPPlayerFire();
                 break;
             default:
                 return;
