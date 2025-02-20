@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+#include <string.h>
 #include "server.h"
 #include "packets.h"
 
@@ -77,8 +78,10 @@ void clientReceiveUdp(){
     UdpHeader header;
     socklen_t addrlen = sizeof(gameClient.serverAddress);
     while(
-        (recvfrom(gameClient.udpSock, &header, sizeof(header), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
+        (recvfrom(gameClient.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
     ){
+        resetPacketBuffer();
+        readPacketBuffer(&header, sizeof(UdpHeader));
         switch (header.packetType) {
             case UDP_BULLET_ARRAY:
                 receiveUDPBulletArray(header);

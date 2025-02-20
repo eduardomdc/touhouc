@@ -44,20 +44,28 @@ typedef enum {
 typedef struct UdpHeader {
     UdpPacketType packetType;
     unsigned int seq;
-    unsigned int len;
+    //unsigned int len;
     Team team;
 } __attribute__((packed)) UdpHeader;
 
-// typedef struct UdpBulletArray {
-//     Team team;
-//     int len;
-// } __attribute__((packed)) UdpBulletArray;
+typedef struct UdpBulletArray {
+    int len;
+} __attribute__((packed)) UdpBulletArray;
 
 void sendUDPBulletArray(Team team);
 void sendUDPPlayerData(Team teamPlayer);
 void receiveUDPPlayerData(UdpHeader header);
 void receiveUDPBulletArray(UdpHeader header);
 
-extern char packageBuffer[MAX_PACKAGE_BUFFER_SIZE];
+typedef struct PacketBuffer {
+    char bytes[MAX_PACKAGE_BUFFER_SIZE];
+    unsigned int len;
+} PacketBuffer;
+
+extern PacketBuffer packetBuffer;
+
+void resetPacketBuffer();
+void readPacketBuffer(void* dest, unsigned long size);
+void writePacketBuffer(void* src, unsigned long size);
 
 #endif
