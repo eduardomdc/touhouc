@@ -1,5 +1,6 @@
 #include "packets.h"
 #include <arpa/inet.h>
+#include <raylib.h>
 #include <stdio.h>
 #include "server.h"
 #include "../player.h"
@@ -32,7 +33,15 @@ void receiveTcpPlayerData(TcpPlayerData tcpPlayerData){
 }
 
 void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
+    TcpHeader tcpHeader = {TCP_PLAYER_ITEM_PICK_UP};
+    TcpPlayerItemPickUp tcpPlayerItemPickup = {tplayer, itemType};
+    send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
+    send(gameServer.clientTCPSock, &tcpPlayerItemPickup, sizeof(TcpPlayerItemPickUp), 0);
+}
 
+void receiveTcpPlayerItemPickup(TcpPlayerItemPickUp tcpPlayerItemPickup){
+    ItemType type = tcpPlayerItemPickup.itemType;
+    PlaySound(assets.soundEffects[itemData[type].pickupSound]);
 }
 
 void sendUDPBulletArray(Team team) {

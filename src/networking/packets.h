@@ -35,6 +35,7 @@ void receiveTcpPlayerHit(TcpPlayerHit tcpPlayerHit);
 void sendTcpPlayerData(Team tplayer, Player player);
 void receiveTcpPlayerData(TcpPlayerData tcpPlayerData);
 void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType);
+void receiveTcpPlayerItemPickup(TcpPlayerItemPickUp tcpPlayerItemPickup);
 
 typedef enum {
     UDP_BULLET_ARRAY,
