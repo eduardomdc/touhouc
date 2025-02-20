@@ -85,4 +85,5 @@ void sendGameUpdate(){
     sendUDPBulletArray(PLAYER_1);
     sendUDPPlayerData(PLAYER_1);
     sendUDPEnemyData();
+    sendUDPItemData();
 }

@@ -42,6 +42,7 @@ typedef enum {
     UDP_PLAYER_DATA,
     UDP_PLAYER_FIRE,
     UDP_ENEMY_DATA,
+    UDP_ITEM_DATA,
     UDP_PACKET_TYPE_LEN
 } UdpPacketType;
 
@@ -58,6 +59,10 @@ typedef struct UdpPlayerData {
     Team player;
 } __attribute__((packed)) UdpPlayerData;
 
+typedef struct UdpItemData {
+    int len;
+} __attribute__((packed)) UdpItemData;
+
 void sendUDPBulletArray(Team team);
 void sendUDPPlayerData(Team tplayer);
 void receiveUDPPlayerData();
@@ -66,6 +71,8 @@ void sendUDPPlayerFire();
 void receiveUDPPlayerFire();
 void sendUDPEnemyData();
 void receiveUDPEnemyData();
+void sendUDPItemData();
+void receiveUDPItemData();
 
 typedef struct PacketBuffer {
     char bytes[MAX_PACKAGE_BUFFER_SIZE];

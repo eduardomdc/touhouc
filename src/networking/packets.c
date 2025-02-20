@@ -143,6 +143,26 @@ void writePacketBuffer(void* src, unsigned long size){
     packetBuffer.len += size;
 }
 
+void sendUDPItemData(){
+    UdpHeader udpHeader = {UDP_ITEM_DATA};
+    UdpItemData udpItemData = {itemsCArray.freeIndex};
+    resetPacketBuffer();
+    writePacketBuffer(&udpHeader, sizeof(udpHeader));
+    writePacketBuffer(&udpItemData, sizeof(UdpItemData));
+    writePacketBuffer(items, sizeof(Item)*udpItemData.len);
+    socklen_t addrlen = sizeof(gameServer.clientAddress);
+    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
+        fprintf(stderr, "Failed to send UDP player data\n");
+    };
+}
+
+void receiveUDPItemData(){
+    UdpItemData udpItemData;
+    readPacketBuffer(&udpItemData, sizeof(UdpItemData));
+    readPacketBuffer(items, udpItemData.len*sizeof(Item));
+    itemsCArray.freeIndex = udpItemData.len;
+}
+
 void sendUDPEnemyData(){
     UdpHeader udpHeader = {UDP_ENEMY_DATA};
     resetPacketBuffer();

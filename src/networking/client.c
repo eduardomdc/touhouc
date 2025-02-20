@@ -99,6 +99,9 @@ void clientReceiveUdp(){
             case UDP_ENEMY_DATA:
                 receiveUDPEnemyData();
                 break;
+            case UDP_ITEM_DATA:
+                receiveUDPItemData();
+                break;
             default:
                 return;
         }
