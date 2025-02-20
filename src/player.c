@@ -1,4 +1,5 @@
 #include "player.h"
+#include "items.h"
 #include "touhou.h"
 #include "bullets.h"
 #include "sprite.h"
@@ -93,7 +94,12 @@ void playerSetFireRate(float fireRate){
     player.fireTimer.duration = 1/fireRate;
 }
 
-#include <stdio.h>
+void playerPickUp(short item, Player* player){
+    PlaySound(assets.soundEffects[itemData[item].pickupSound]);
+    itemEffects[itemData[item].effect](player);
+    sendTcpPlayerItemPickup(PLAYER_1, item);
+}
+
 void playerGetHit(){
     if (player.lifes > 0){
         player.lifes -= 1;

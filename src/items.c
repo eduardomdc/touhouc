@@ -1,4 +1,5 @@
 #include "items.h"
+#include "player.h"
 #include "touhou.h"
 #include <raymath.h>
 
@@ -43,13 +44,12 @@ void physicsUpdateItems(float dt){
     }
 }
 
-void updateItems(Item* item){
+void updateItems(){
     for (int i=0; i < itemsCArray.freeIndex; i++){
         Item item = items[i];
         ItemData data = itemData[item.type];
         if (collidingWithPlayer(item) && player.alive){
-            PlaySound(assets.soundEffects[data.pickupSound]);
-            itemEffects[data.effect](&player);
+            playerPickUp(item.type, &player);
             compactRemoveItem(&itemsCArray, i);
             continue;
         }

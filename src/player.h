@@ -32,6 +32,7 @@ typedef struct Player {
     bool alive;
 } Player;
 
+void playerPickUp(short itemType, Player* player);
 void playerSetFireRate(float fireRate);
 
 extern Player player;
