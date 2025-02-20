@@ -6,6 +6,7 @@
 #include "../player.h"
 #include "../compact_array.h"
 #include "../bullets.h"
+#include "../spawner.h"
 #include <string.h>
 
 PacketBuffer packetBuffer = {0};
@@ -140,4 +141,19 @@ void readPacketBuffer(void* dest, unsigned long size){
 void writePacketBuffer(void* src, unsigned long size){
     memcpy(packetBuffer.bytes+packetBuffer.len, src, size);
     packetBuffer.len += size;
+}
+
+void sendUDPEnemyData(){
+    UdpHeader udpHeader = {UDP_ENEMY_DATA};
+    resetPacketBuffer();
+    writePacketBuffer(&udpHeader, sizeof(udpHeader));
+    writePacketBuffer(enemyList, MAX_ENEMIES*sizeof(Enemy));
+    socklen_t addrlen = sizeof(gameServer.clientAddress);
+    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
+        fprintf(stderr, "Failed to send UDP player data\n");
+    };
+}
+
+void receiveUDPEnemyData(){
+    readPacketBuffer(enemyList, MAX_ENEMIES*sizeof(Enemy));
 }

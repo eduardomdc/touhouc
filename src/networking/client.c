@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
-#include <string.h>
 #include "server.h"
 #include "packets.h"
 
@@ -72,6 +71,7 @@ void clientReceiveTcp(){
                 TcpPlayerHit tcpPlayerHit;
                 recv(gameClient.tcpSock, &tcpPlayerHit, sizeof(tcpPlayerHit), 0);
                 receiveTcpPlayerHit(tcpPlayerHit);
+                break;
             default:
                 return;
         }
@@ -95,6 +95,9 @@ void clientReceiveUdp(){
                 break;
             case UDP_PLAYER_FIRE:
                 receiveUDPPlayerFire();
+                break;
+            case UDP_ENEMY_DATA:
+                receiveUDPEnemyData();
                 break;
             default:
                 return;

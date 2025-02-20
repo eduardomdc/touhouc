@@ -41,6 +41,7 @@ typedef enum {
     UDP_BULLET_ARRAY,
     UDP_PLAYER_DATA,
     UDP_PLAYER_FIRE,
+    UDP_ENEMY_DATA,
     UDP_PACKET_TYPE_LEN
 } UdpPacketType;
 
@@ -63,6 +64,8 @@ void receiveUDPPlayerData();
 void receiveUDPBulletArray();
 void sendUDPPlayerFire();
 void receiveUDPPlayerFire();
+void sendUDPEnemyData();
+void receiveUDPEnemyData();
 
 typedef struct PacketBuffer {
     char bytes[MAX_PACKAGE_BUFFER_SIZE];
