@@ -23,6 +23,7 @@ extern Server gameServer;
 
 void initServer();
 void serverCheckForClientConnection();
+void serverReceiveUdp();
 void sendGameUpdate();
 
 #endif

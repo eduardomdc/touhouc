@@ -48,7 +48,7 @@ void initServer(){
 
     // UDP Server
     if ((gameServer.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-        fprintf(stderr, "Failed to create client udp socket\n");
+        fprintf(stderr, "Failed to create server udp socket\n");
         return;
     }
     //set non-blocking mode
@@ -91,5 +91,23 @@ void sendGameUpdate(){
     if (gameServer.playerPacketTimer.ready){
         sendUDPPlayerData(MARISA);
         resetTimer(&gameServer.playerPacketTimer);
+    }
+}
+
+void serverReceiveUdp(){
+    if (!gameServer.clientIsConnected) return;
+    UdpHeader header;
+    socklen_t addrlen = sizeof(gameServer.clientAddress);
+    while(
+        (recvfrom(gameServer.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameServer.clientAddress, &addrlen)) > 0
+    ){
+        resetPacketBuffer();
+        readPacketBuffer(&header, sizeof(UdpHeader));
+        switch (header.packetType) {
+            case UDP_INPUT_DATA:
+                
+            default:
+                return;
+        }
     }
 }

@@ -8,6 +8,7 @@
 #include "items.h"
 #include "networking/server.h"
 #include "networking/client.h"
+#include "networking/packets.h"
 #include <time.h>
 #include <stdio.h>
 #include <raymath.h>
@@ -75,6 +76,7 @@ void updateGame(Input input){
     } else {
         if (gameClient.connected){
             clientReceiveTcp();
+            sendUDPInputData(input, REIMU);
         }
     }
     UpdateMusicStream(assets.bgm[DESERTED_HELL]);
@@ -94,8 +96,11 @@ void updateGame(Input input){
         updateEnemyBullets();
         updateSpawner();
         // udp
-        if (gameServer.clientIsConnected)
+        if (gameServer.clientIsConnected){
             sendGameUpdate();
+            serverReceiveUdp();
+        }
+
     } else {
         clientReceiveUdp();
     }

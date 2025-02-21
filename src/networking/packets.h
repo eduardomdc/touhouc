@@ -4,6 +4,7 @@
 #include "../items.h"
 #include "../player.h"
 #include "../bullets.h"
+#include "../input.h"
 
 typedef enum {
     TCP_PLAYER_HIT,
@@ -46,6 +47,7 @@ typedef enum {
     UDP_PLAYER_FIRE,
     UDP_ENEMY_DATA,
     UDP_ITEM_DATA,
+    UDP_INPUT_DATA,
     UDP_PACKET_TYPE_LEN
 } UdpPacketType;
 
@@ -66,6 +68,11 @@ typedef struct UdpItemData {
     int len;
 } __attribute__((packed)) UdpItemData;
 
+typedef struct UdpInputData {
+    PlayerCharacter character;
+    Input input;
+} __attribute__((packed)) UdpInputData;
+
 void sendUDPBulletArray(Team team);
 void sendUDPPlayerData(PlayerCharacter character);
 void receiveUDPPlayerData();
@@ -76,6 +83,8 @@ void sendUDPEnemyData();
 void receiveUDPEnemyData();
 void sendUDPItemData();
 void receiveUDPItemData();
+void sendUDPInputData(Input input, PlayerCharacter character);
+void receiveUDPInputData();
 
 typedef struct PacketBuffer {
     char bytes[MAX_PACKAGE_BUFFER_SIZE];

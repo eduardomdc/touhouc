@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <stdio.h>
 #include "server.h"
+#include "client.h"
 #include "../player.h"
 #include "../compact_array.h"
 #include "../bullets.h"
@@ -204,4 +205,20 @@ void sendTcpEnemyDeath(){
 
 void receiveTcpEnemyDeath(){
     PlaySound(assets.soundEffects[ENEMY_HIT]);
+}
+
+void sendUDPInputData(Input input, PlayerCharacter character){
+    UdpHeader udpHeader = {UDP_INPUT_DATA};
+    UdpInputData udpInputData = {character, input};
+    resetPacketBuffer();
+    writePacketBuffer(&udpHeader, sizeof(UdpHeader));
+    writePacketBuffer(&udpInputData, sizeof(UdpInputData));
+    if (send(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0)<0){
+        fprintf(stderr, "Failed to send input data to server\n");
+    }
+}
+void receiveUDPInputData(){
+    UdpInputData udpInputData;
+    readPacketBuffer(&udpInputData, sizeof(UdpInputData));
+    updatePlayer(&players[udpInputData.character], udpInputData.input);
 }
