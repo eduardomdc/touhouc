@@ -195,6 +195,7 @@ void receiveUDPEnemyData(){
 }
 
 void sendTcpEnemyDeath(){
+    if (!gameServer.clientIsConnected) return;
     TcpHeader header = {TCP_ENEMY_DEATH};
     resetPacketBuffer();
     writePacketBuffer(&header, sizeof(TcpHeader));
@@ -202,6 +203,5 @@ void sendTcpEnemyDeath(){
 }
 
 void receiveTcpEnemyDeath(){
-    if (!gameServer.clientIsConnected) return;
     PlaySound(assets.soundEffects[ENEMY_HIT]);
 }
