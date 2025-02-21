@@ -58,8 +58,8 @@ void updateGame(){
     // update collision detection and timers
     if (isServer){
         if (!gameOver){
-            updatePlayer(&players[MARISA]);
-            updatePlayer(&players[REIMU]);
+            Input input = handleInput();
+            updatePlayer(&players[MARISA], input);
         }
         updateEnemies();
         updateItems();

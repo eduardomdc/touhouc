@@ -45,7 +45,8 @@ void setupPlayers(){
     players[REIMU] = reimu;
 }
 
-void handleInput(){
+Input handleInput(){
+    Input input = {0};
     Vector2 inputDirection = {0,0};
     if (IsKeyDown(KEY_UP)){
         inputDirection.y -= 1;
@@ -63,12 +64,12 @@ void handleInput(){
         inputDirection.x += 1;
     }
     if (IsKeyDown(KEY_SPACE)){
-        playerFire(&players[MARISA]);
+        input.firing = true;
     }
 
     Vector2 inputDir = Vector2Normalize(inputDirection);
-
-    movePlayer(&players[MARISA], inputDir);
+    input.dir = inputDir;
+    return input;
 }
 
 void movePlayer(Player* player, Vector2 inputDir){
@@ -80,9 +81,12 @@ void movePlayer(Player* player, Vector2 inputDir){
     }
 }
 
-void updatePlayer(Player* player){
+void updatePlayer(Player* player, Input input){
     updateTimer(&player->fireTimer);
-    handleInput();
+    movePlayer(player, input.dir);
+    if (input.firing){
+        playerFire(player);
+    }
 }
 
 void renderPlayers(){
