@@ -214,7 +214,7 @@ void sendUDPInputData(Input input, PlayerCharacter character){
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     writePacketBuffer(&udpInputData, sizeof(UdpInputData));
     socklen_t addrlen = sizeof(gameClient.serverAddress);
-    if (sendto(gameClient.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameClient.serverAddress, addrlen)<0){
+    if (sendto(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameClient.serverAddress, addrlen)<0){
         fprintf(stderr, "Failed to send input data to server\n");
     }
 }
