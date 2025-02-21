@@ -31,11 +31,11 @@ typedef struct TcpPlayerItemPickUp {
 } __attribute__((packed)) TcpPlayerItemPickUp;
 
 void sendTcpPlayerHit(Team tplayer);
-void receiveTcpPlayerHit(TcpPlayerHit tcpPlayerHit);
+void receiveTcpPlayerHit();
 void sendTcpPlayerData(Team tplayer, Player player);
-void receiveTcpPlayerData(TcpPlayerData tcpPlayerData);
+void receiveTcpPlayerData();
 void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType);
-void receiveTcpPlayerItemPickup(TcpPlayerItemPickUp tcpPlayerItemPickup);
+void receiveTcpPlayerItemPickup();
 
 typedef enum {
     UDP_BULLET_ARRAY,

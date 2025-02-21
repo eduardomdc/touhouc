@@ -59,24 +59,19 @@ void initClient(){
 
 void clientReceiveTcp(){
     TcpHeader header;
-    while (recv(gameClient.tcpSock, &header, sizeof(header), 0) > 0){
+    while (recv(gameClient.tcpSock, packetBuffer.bytes, MAX_PACKAGE_BUFFER_SIZE, 0) > 0){
+        resetPacketBuffer();
+        readPacketBuffer(&header, sizeof(TcpHeader));
         switch (header.packetType) {
             case TCP_PLAYER_DATA:
                 fprintf(stderr, "Received player data :)\n");
-                TcpPlayerData tcpPlayerData;
-                recv(gameClient.tcpSock, &tcpPlayerData, sizeof(tcpPlayerData), 0);
-                receiveTcpPlayerData(tcpPlayerData);
+                receiveTcpPlayerData();
                 break;
             case TCP_PLAYER_HIT:
-                TcpPlayerHit tcpPlayerHit;
-                recv(gameClient.tcpSock, &tcpPlayerHit, sizeof(tcpPlayerHit), 0);
-                receiveTcpPlayerHit(tcpPlayerHit);
+                receiveTcpPlayerHit();
                 break;
             case TCP_PLAYER_ITEM_PICK_UP:
-                TcpPlayerItemPickUp tcpPlayerItemPickUp;
-                recv(gameClient.tcpSock, &tcpPlayerItemPickUp, sizeof(tcpPlayerItemPickUp), 0);
-                fprintf(stderr, ">>rec item pickup %d  %d\n", tcpPlayerItemPickUp.itemType, tcpPlayerItemPickUp.tplayer);
-                receiveTcpPlayerItemPickup(tcpPlayerItemPickUp);
+                receiveTcpPlayerItemPickup();
             default:
                 return;
         }

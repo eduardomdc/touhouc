@@ -14,37 +14,48 @@ PacketBuffer packetBuffer = {0};
 void sendTcpPlayerHit(Team tplayer){
     TcpHeader tcpHeader = {TCP_PLAYER_HIT};
     TcpPlayerHit tcpPlayerHit = {tplayer};
-    send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
-    send(gameServer.clientTCPSock, &tcpPlayerHit, sizeof(tcpPlayerHit), 0);
+    resetPacketBuffer();
+    writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
+    writePacketBuffer(&tcpPlayerHit, sizeof(TcpPlayerHit));
+    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
 }
 
-void receiveTcpPlayerHit(TcpPlayerHit tcpPlayerHit){
+void receiveTcpPlayerHit(){
+    // future get which player for hit effects
     PlaySound(assets.soundEffects[PLAYER_HIT]);
 }
 
 void sendTcpPlayerData(Team tplayer, Player player){
     TcpHeader tcpHeader = {TCP_PLAYER_DATA};
     TcpPlayerData data = {tplayer, player};
-    send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
-    send(gameServer.clientTCPSock, &data, sizeof(data), 0);
+    resetPacketBuffer();
+    writePacketBuffer(&tcpHeader, sizeof(tcpHeader));
+    writePacketBuffer(&data, sizeof(data));
+    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
 }
 
-void receiveTcpPlayerData(TcpPlayerData tcpPlayerData){
+void receiveTcpPlayerData(){
+    TcpPlayerData tcpPlayerData;
+    readPacketBuffer(&tcpPlayerData, sizeof(tcpPlayerData));
+    // future differentiate players tplayer
     player = tcpPlayerData.player;
 }
 
 void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
-    
     TcpHeader tcpHeader = {TCP_PLAYER_ITEM_PICK_UP};
     TcpPlayerItemPickUp tcpPlayerItemPickup;
     tcpPlayerItemPickup.tplayer = tplayer;
     tcpPlayerItemPickup.itemType = itemType;
     fprintf(stderr, "send item pickup %d %d\n", tcpPlayerItemPickup.itemType, tcpPlayerItemPickup.tplayer);
-    send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);
-    send(gameServer.clientTCPSock, &tcpPlayerItemPickup, sizeof(tcpPlayerItemPickup), 0);
+    resetPacketBuffer();
+    writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
+    writePacketBuffer(&tcpPlayerItemPickup, sizeof(TcpPlayerItemPickUp));
+    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
 }
 
-void receiveTcpPlayerItemPickup(TcpPlayerItemPickUp tcpPlayerItemPickup){
+void receiveTcpPlayerItemPickup(){
+    TcpPlayerItemPickUp tcpPlayerItemPickup;
+    readPacketBuffer(&tcpPlayerItemPickup, sizeof(tcpPlayerItemPickup));
     ItemType type = tcpPlayerItemPickup.itemType;
     fprintf(stderr, "receive %d pickup\n", type);
     PlaySound(assets.soundEffects[itemData[type].pickupSound]);
