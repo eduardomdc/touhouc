@@ -42,6 +42,7 @@ void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
 
 void receiveTcpPlayerItemPickup(TcpPlayerItemPickUp tcpPlayerItemPickup){
     ItemType type = tcpPlayerItemPickup.itemType;
+    fprintf(stderr, "receive %d pickup\n", type);
     PlaySound(assets.soundEffects[itemData[type].pickupSound]);
 }
 
