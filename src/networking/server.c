@@ -99,7 +99,7 @@ void serverReceiveUdp(){
     UdpHeader header;
     socklen_t addrlen = sizeof(gameServer.clientAddress);
     while(
-        (recvfrom(gameServer.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameServer.clientAddress, &addrlen)) > 0
+        (recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, &addrlen)) > 0
     ){
         resetPacketBuffer();
         readPacketBuffer(&header, sizeof(UdpHeader));
