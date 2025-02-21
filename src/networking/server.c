@@ -90,6 +90,7 @@ void sendGameUpdate(){
     }
     if (gameServer.playerPacketTimer.ready){
         sendUDPPlayerData(MARISA);
+        sendUDPPlayerData(REIMU);
         resetTimer(&gameServer.playerPacketTimer);
     }
 }
