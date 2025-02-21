@@ -202,5 +202,6 @@ void sendTcpEnemyDeath(){
 }
 
 void receiveTcpEnemyDeath(){
+    if (!gameServer.clientIsConnected) return;
     PlaySound(assets.soundEffects[ENEMY_HIT]);
 }
