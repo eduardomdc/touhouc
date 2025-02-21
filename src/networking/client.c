@@ -73,9 +73,10 @@ void clientReceiveTcp(){
                 receiveTcpPlayerHit(tcpPlayerHit);
                 break;
             case TCP_PLAYER_ITEM_PICK_UP:
-                TcpPlayerItemPickUp header2;
-                recv(gameClient.tcpSock, &header2, sizeof(TcpPlayerItemPickUp), 0);
-                receiveTcpPlayerItemPickup(header2);
+                TcpPlayerItemPickUp tcpPlayerItemPickUp;
+                recv(gameClient.tcpSock, &tcpPlayerItemPickUp, sizeof(tcpPlayerItemPickUp), 0);
+                fprintf(stderr, ">>rec item pickup %d  %d\n", tcpPlayerItemPickUp.itemType, tcpPlayerItemPickUp.tplayer);
+                receiveTcpPlayerItemPickup(tcpPlayerItemPickUp);
             default:
                 return;
         }
