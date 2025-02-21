@@ -20,12 +20,15 @@ void renderItems(){
     }
 }
 
-bool collidingWithPlayer(Item item){
-    float distance = Vector2Distance(item.pos, player.pos);
-    if (distance < (itemData[item.type].radius + playerSize)){
-        return true;
+int collidingWithPlayer(Item item){
+    for (int i = 0; i < PLAYER_CHARACTER_LEN; i++){
+        Player player = players[i];
+        float distance = Vector2Distance(item.pos, player.pos);
+        if (distance < (itemData[item.type].radius + playerSize) && player.alive && player.connected){
+            return i;
+        }
     }
-    return false;
+    return -1;
 }
 
 Item moveItem(Item item, float deltaTime){
@@ -48,8 +51,9 @@ void updateItems(){
     for (int i=0; i < itemsCArray.freeIndex; i++){
         Item item = items[i];
         ItemData data = itemData[item.type];
-        if (collidingWithPlayer(item) && player.alive){
-            playerPickUp(item.type, &player);
+        int player = collidingWithPlayer(item);
+        if (player >= 0){
+            playerPickUp(item.type, &players[player]);
             compactRemoveItem(&itemsCArray, i);
             continue;
         }
@@ -72,7 +76,7 @@ void itemEffectGainLife(Player* player) {
     player->lifes++;
 }
 void itemEffectIncreaseFireRate(Player* player) {
-    playerSetFireRate(player->fireRate*1.2);
+    playerSetFireRate(player, player->fireRate*1.2);
 }
 
 void makePointItem(Vector2 pos){

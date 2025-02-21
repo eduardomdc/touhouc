@@ -9,7 +9,8 @@ void loadBulletSprites(){
 }
 
 void loadPlayerSprites(){
-    assets.playerSprites[MARISA] = loadSprite("../assets/textures/marisa23x35.png");
+    assets.playerSprites[SPRITE_MARISA] = loadSprite("../assets/textures/marisa23x35.png");
+    assets.playerSprites[SPRITE_REIMU] = loadSprite("../assets/textures/reimu28x42.png");
 }
 
 void loadEnemySprites(){

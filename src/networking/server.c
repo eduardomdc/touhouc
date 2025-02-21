@@ -73,7 +73,7 @@ void serverCheckForClientConnection(){
         gameServer.clientAddress.sin_addr = tempAddr.sin_addr;
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
-        sendTcpPlayerData(PLAYER_1, player);
+        sendTcpPlayerData(MARISA, players[MARISA]);
     }
    
 }
@@ -82,14 +82,14 @@ void sendGameUpdate(){
     updateTimer(&gameServer.bulletPacketTimer);
     updateTimer(&gameServer.playerPacketTimer);
     if (gameServer.bulletPacketTimer.ready){
-        sendUDPBulletArray(ENEMY);
-        sendUDPBulletArray(PLAYER_1);
+        sendUDPBulletArray(TEAM_ENEMY);
+        sendUDPBulletArray(TEAM_PLAYERS);
         sendUDPEnemyData();
         sendUDPItemData();
         resetTimer(&gameServer.bulletPacketTimer);
     }
     if (gameServer.playerPacketTimer.ready){
-        sendUDPPlayerData(PLAYER_1);
+        sendUDPPlayerData(MARISA);
         resetTimer(&gameServer.playerPacketTimer);
     }
 }

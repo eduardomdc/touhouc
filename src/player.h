@@ -7,17 +7,14 @@
 #include "assets.h"
 
 static const int playerSize = 5;
-static const float playerSpeed = 200;
+static const float playerSpeed = 100;
 static const Color playerColor = BLUE;
 
-void setupPlayer();
-void renderPlayer();
-void updatePlayer();
-void playerFire();
-void handleInput();
-void movePlayer(Vector2 inputDir);
-void playerSetFireRate(float fireRate);
-void playerGetHit();
+typedef enum {
+    MARISA,
+    REIMU,
+    PLAYER_CHARACTER_LEN
+} PlayerCharacter;
 
 typedef struct Player {
     Vector2 pos;
@@ -28,13 +25,24 @@ typedef struct Player {
     float bulletSpreadAngle;
     float fireRate;
     PlayerSprites sprite;
+    PlayerCharacter character;
     Timer fireTimer;
+    Timer invulnerableTimer;
     bool alive;
+    bool invulnerable;
+    bool connected;
 } Player;
 
+void setupPlayers();
+void renderPlayers();
+void updatePlayer(Player* player);
+void playerFire(Player* player);
+void handleInput();
+void movePlayer(Player* player, Vector2 inputDir);
+void playerSetFireRate(Player* player, float fireRate);
+void playerGetHit(Player* player);
 void playerPickUp(short itemType, Player* player);
-void playerSetFireRate(float fireRate);
 
-extern Player player;
+extern Player players[PLAYER_CHARACTER_LEN];
 
 #endif

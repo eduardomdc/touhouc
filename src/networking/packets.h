@@ -17,24 +17,24 @@ typedef struct TcpHeader {
 } __attribute__((packed)) TcpHeader;
 
 typedef struct TcpPlayerHit {
-    Team tplayer;
+    PlayerCharacter character;
 } __attribute__((packed)) TcpPlayerHit;
 
 typedef struct TcpPlayerData {
-    Team tplayer;
+    PlayerCharacter character;
     Player player;
 } __attribute__((packed)) TcpPlayerData;
 
 typedef struct TcpPlayerItemPickUp {
-    Team tplayer;
+    PlayerCharacter character;
     ItemType itemType;
 } __attribute__((packed)) TcpPlayerItemPickUp;
 
-void sendTcpPlayerHit(Team tplayer);
+void sendTcpPlayerHit(PlayerCharacter character);
 void receiveTcpPlayerHit();
-void sendTcpPlayerData(Team tplayer, Player player);
+void sendTcpPlayerData(PlayerCharacter character, Player player);
 void receiveTcpPlayerData();
-void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType);
+void sendTcpPlayerItemPickup(PlayerCharacter character, ItemType itemType);
 void receiveTcpPlayerItemPickup();
 
 typedef enum {
@@ -56,7 +56,7 @@ typedef struct UdpBulletArray {
 } __attribute__((packed)) UdpBulletArray;
 
 typedef struct UdpPlayerData {
-    Team player;
+    PlayerCharacter character;
 } __attribute__((packed)) UdpPlayerData;
 
 typedef struct UdpItemData {
@@ -64,7 +64,7 @@ typedef struct UdpItemData {
 } __attribute__((packed)) UdpItemData;
 
 void sendUDPBulletArray(Team team);
-void sendUDPPlayerData(Team tplayer);
+void sendUDPPlayerData(PlayerCharacter character);
 void receiveUDPPlayerData();
 void receiveUDPBulletArray();
 void sendUDPPlayerFire();

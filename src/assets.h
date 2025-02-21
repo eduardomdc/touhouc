@@ -18,7 +18,8 @@ typedef enum {
 } ItemSprites;
 
 typedef enum {
-    MARISA,
+    SPRITE_MARISA,
+    SPRITE_REIMU,
     PLAYER_SPRITES_LEN
 } PlayerSprites;
 

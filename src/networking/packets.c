@@ -11,9 +11,9 @@
 
 PacketBuffer packetBuffer = {0};
 
-void sendTcpPlayerHit(Team tplayer){
+void sendTcpPlayerHit(PlayerCharacter character){
     TcpHeader tcpHeader = {TCP_PLAYER_HIT};
-    TcpPlayerHit tcpPlayerHit = {tplayer};
+    TcpPlayerHit tcpPlayerHit = {character};
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
     writePacketBuffer(&tcpPlayerHit, sizeof(TcpPlayerHit));
@@ -25,9 +25,9 @@ void receiveTcpPlayerHit(){
     PlaySound(assets.soundEffects[PLAYER_HIT]);
 }
 
-void sendTcpPlayerData(Team tplayer, Player player){
+void sendTcpPlayerData(PlayerCharacter character, Player player){
     TcpHeader tcpHeader = {TCP_PLAYER_DATA};
-    TcpPlayerData data = {tplayer, player};
+    TcpPlayerData data = {character, player};
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(tcpHeader));
     writePacketBuffer(&data, sizeof(data));
@@ -37,16 +37,15 @@ void sendTcpPlayerData(Team tplayer, Player player){
 void receiveTcpPlayerData(){
     TcpPlayerData tcpPlayerData;
     readPacketBuffer(&tcpPlayerData, sizeof(tcpPlayerData));
-    // future differentiate players tplayer
-    player = tcpPlayerData.player;
+    players[tcpPlayerData.character] = tcpPlayerData.player;
 }
 
-void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
+void sendTcpPlayerItemPickup(PlayerCharacter character, ItemType itemType){
+    if (!gameServer.clientIsConnected) return;
     TcpHeader tcpHeader = {TCP_PLAYER_ITEM_PICK_UP};
     TcpPlayerItemPickUp tcpPlayerItemPickup;
-    tcpPlayerItemPickup.tplayer = tplayer;
+    tcpPlayerItemPickup.character = character;
     tcpPlayerItemPickup.itemType = itemType;
-    fprintf(stderr, "send item pickup %d %d\n", tcpPlayerItemPickup.itemType, tcpPlayerItemPickup.tplayer);
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
     writePacketBuffer(&tcpPlayerItemPickup, sizeof(TcpPlayerItemPickUp));
@@ -70,12 +69,12 @@ void sendUDPBulletArray(Team team) {
     UdpBulletArray udpBulletArray;
     udpBulletArray.team = team;
     switch (team) {
-        case ENEMY:
+        case TEAM_ENEMY:
             udpBulletArray.len = compactEnemyBulletArray.freeIndex;
             writePacketBuffer(&udpBulletArray, sizeof(UdpBulletArray));
             writePacketBuffer(enemyBullets, sizeof(Bullet)*udpBulletArray.len);
             break;
-        case PLAYER_1:
+        case TEAM_PLAYERS:
             udpBulletArray.len = compactPlayerBulletArray.freeIndex;
             writePacketBuffer(&udpBulletArray, sizeof(UdpBulletArray));
             writePacketBuffer(playerBullets, sizeof(Bullet)*udpBulletArray.len);
@@ -94,11 +93,11 @@ void receiveUDPBulletArray() {
     UdpBulletArray udpBulletArray;
     readPacketBuffer(&udpBulletArray, sizeof(udpBulletArray));
     switch (udpBulletArray.team){
-    case ENEMY:
+    case TEAM_ENEMY:
         readPacketBuffer(enemyBullets, sizeof(Bullet)*udpBulletArray.len);
         compactEnemyBulletArray.freeIndex = udpBulletArray.len;
         break;
-    case PLAYER_1:
+    case TEAM_PLAYERS:
         readPacketBuffer(playerBullets, sizeof(Bullet)*udpBulletArray.len);
         compactPlayerBulletArray.freeIndex = udpBulletArray.len;
     default:
@@ -106,17 +105,17 @@ void receiveUDPBulletArray() {
     }
 }
 
-void sendUDPPlayerData(Team tplayer){
+void sendUDPPlayerData(PlayerCharacter character){
     UdpHeader udpHeader;
     udpHeader.packetType = UDP_PLAYER_DATA;
     resetPacketBuffer();
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     
     UdpPlayerData udpPlayerData;
-    udpPlayerData.player = tplayer;
+    udpPlayerData.character = character;
     writePacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
     
-    writePacketBuffer(&player, sizeof(Player));
+    writePacketBuffer(&players[character], sizeof(Player));
 
     socklen_t addrlen = sizeof(gameServer.clientAddress);
     if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
@@ -125,6 +124,7 @@ void sendUDPPlayerData(Team tplayer){
 }
 
 void sendUDPPlayerFire(){
+    if (!gameServer.clientIsConnected) return;
     UdpHeader udpHeader;
     udpHeader.packetType = UDP_PLAYER_FIRE;
     resetPacketBuffer();
@@ -142,7 +142,7 @@ void receiveUDPPlayerFire(){
 void receiveUDPPlayerData(){
     UdpPlayerData udpPlayerData;
     readPacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
-    readPacketBuffer(&player, sizeof(Player));
+    readPacketBuffer(&players[udpPlayerData.character], sizeof(Player));
 }
 
 void resetPacketBuffer(){

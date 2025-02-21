@@ -26,12 +26,15 @@ Bullet moveBullet(Bullet bullet, float deltaTime){
     return bullet;
 }
 
-bool checkCollisionWithPlayer(Bullet bullet){
-    float distance = Vector2Distance(bullet.pos, player.pos);
-    if (distance < (bullet.radius + playerSize)){
-        return true;
+int checkCollisionWithPlayer(Bullet bullet){
+    for (int i = 0; i < PLAYER_CHARACTER_LEN; i++){
+        Player player = players[i];
+        float distance = Vector2Distance(bullet.pos, player.pos);
+        if (distance < (bullet.radius + playerSize) && player.connected && player.alive){
+            return i;
+        }
     }
-    return false;
+    return -1;
 }
 
 Enemy* checkCollisionWithEnemy(Bullet bullet){
@@ -82,8 +85,10 @@ void updateEnemyBullets(){
     Bullet* bullets = (Bullet*) bulletCArray->array;
     for (int i=0; i < bulletCArray->freeIndex; i++){
         Bullet bullet = bullets[i];
-        if (checkCollisionWithPlayer(bullet)){
-            playerGetHit();
+        int player;
+        player = checkCollisionWithPlayer(bullet);
+        if (player >= 0){
+            playerGetHit(&players[player]);
             compactRemoveItem(bulletCArray, i);
             continue;
         }

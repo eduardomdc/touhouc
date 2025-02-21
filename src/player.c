@@ -8,20 +8,41 @@
 #include <raymath.h>
 #include "networking/packets.h"
 
-Player player = {0};
+Player players[PLAYER_CHARACTER_LEN] = {0};
 
-void setupPlayer(){
-    player.pos.x = hRes/2;
-    player.pos.y = vRes/2;
-    player.bulletSpeed = 1000;
-    player.bulletRadius = 5;
-    player.fireRate = 15;
-    player.lifes = 3;
-    player.bulletSpreadAngle = 0.05;
-    player.fireTimer = createTimer(1/player.fireRate);
-    player.sprite = MARISA;
-    player.points = 0;
-    player.alive = true;
+void setupPlayers(){
+    // set up Marisa (host character)
+    Player marisa;
+    marisa.character = MARISA;
+    marisa.pos.x = hRes/2;
+    marisa.pos.y = vRes/2;
+    marisa.bulletSpeed = 1000;
+    marisa.bulletRadius = 5;
+    marisa.fireRate = 15;
+    marisa.lifes = 3;
+    marisa.bulletSpreadAngle = 0.05;
+    marisa.fireTimer = createTimer(1/marisa.fireRate);
+    marisa.sprite = SPRITE_MARISA;
+    marisa.points = 0;
+    marisa.alive = true;
+    marisa.connected = true;
+    players[MARISA] = marisa;
+    // set up Reimu (client character)
+    Player reimu;
+    reimu.character = REIMU;
+    reimu.pos.x = hRes/2;
+    reimu.pos.y = vRes/2;
+    reimu.bulletSpeed = 1000;
+    reimu.bulletRadius = 5;
+    reimu.fireRate = 15;
+    reimu.lifes = 3;
+    reimu.bulletSpreadAngle = 0.05;
+    reimu.fireTimer = createTimer(1/reimu.fireRate);
+    reimu.sprite = SPRITE_REIMU;
+    reimu.points = 0;
+    reimu.alive = true;
+    reimu.connected = false;
+    players[REIMU] = reimu;
 }
 
 void handleInput(){
@@ -42,70 +63,74 @@ void handleInput(){
         inputDirection.x += 1;
     }
     if (IsKeyDown(KEY_SPACE)){
-        playerFire();
+        playerFire(&players[MARISA]);
     }
 
     Vector2 inputDir = Vector2Normalize(inputDirection);
 
-    movePlayer(inputDir);
+    movePlayer(&players[MARISA], inputDir);
 }
 
-void movePlayer(Vector2 inputDir){
+void movePlayer(Player* player, Vector2 inputDir){
     float distance = playerSpeed*GetFrameTime();
     Vector2 playerMovement = Vector2Scale(inputDir, distance);
-    Vector2 newPosition = Vector2Add(player.pos, playerMovement);
+    Vector2 newPosition = Vector2Add(player->pos, playerMovement);
     if (onScreen(newPosition, -playerSize)){
-        player.pos = newPosition;
+        player->pos = newPosition;
     }
 }
 
-void updatePlayer(){
-    updateTimer(&player.fireTimer);
+void updatePlayer(Player* player){
+    updateTimer(&player->fireTimer);
     handleInput();
 }
 
-void renderPlayer(){
-    renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
-    DrawCircleV(player.pos, playerSize, playerColor);
-    DrawCircleV(player.pos, playerSize-2, WHITE);
+void renderPlayers(){
+    for (int i=0; i < PLAYER_CHARACTER_LEN; i++){
+        Player player = players[i];
+        // if player connected
+        renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
+        DrawCircleV(player.pos, playerSize, playerColor);
+        DrawCircleV(player.pos, playerSize-2, WHITE);
+    }
 }
 
-void playerFire(){
-    if (player.fireTimer.ready){
+void playerFire(Player* player){
+    if (player->fireTimer.ready){
         Bullet bullet;
-        bullet.pos = player.pos;
-        bullet.radius = player.bulletRadius;
+        bullet.pos = player->pos;
+        bullet.radius = player->bulletRadius;
         Vector2 dir = {0, -1};
         float random = 2*((float)rand()/(float)(RAND_MAX))-1;
-        float exitAngle = random*player.bulletSpreadAngle;
+        float exitAngle = random*player->bulletSpreadAngle;
         dir = Vector2Rotate(dir, exitAngle);
         bullet.direction = dir;
-        bullet.speed = player.bulletSpeed;
+        bullet.speed = player->bulletSpeed;
         bullet.sprite = BLUE_ARROW_8;
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[PLAYER_FIRE]);
-        resetTimer(&player.fireTimer);
+        resetTimer(&player->fireTimer);
         sendUDPPlayerFire();
     }
 }
 
-void playerSetFireRate(float fireRate){
-    player.fireRate = fireRate;
-    player.fireTimer.duration = 1/fireRate;
+void playerSetFireRate(Player* player, float fireRate){
+    player->fireRate = fireRate;
+    player->fireTimer.duration = 1/fireRate;
 }
 
 void playerPickUp(short item, Player* player){
     PlaySound(assets.soundEffects[itemData[item].pickupSound]);
     itemEffects[itemData[item].effect](player);
-    sendTcpPlayerItemPickup(PLAYER_1, item);
+    sendTcpPlayerItemPickup(player->character, item);
 }
 
-void playerGetHit(){
-    if (player.lifes > 0){
-        player.lifes -= 1;
+void playerGetHit(Player* player){
+    if (player->lifes > 0){
+        player->lifes -= 1;
         PlaySound(assets.soundEffects[PLAYER_HIT]);
-        sendTcpPlayerHit(PLAYER_1);
-    } else if (player.lifes == 0 && !gameOver){
+        sendTcpPlayerHit(player->character);
+    } else if (player->lifes == 0 && !gameOver){
         //gameOver = true;
         //PlaySound(assets.soundEffects[PLAYER_DEATH]);
     }

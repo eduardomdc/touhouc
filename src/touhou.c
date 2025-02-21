@@ -23,7 +23,7 @@ void setupGame(char* hostType){
         InitAudioDevice();
         gameOver = false;
         loadAssets();
-        setupPlayer();
+        setupPlayers();
         setupSpawner();
         PlayMusicStream(assets.bgm[DESERTED_HELL]);
     }
@@ -32,7 +32,7 @@ void setupGame(char* hostType){
         InitAudioDevice();
         gameOver = false;
         loadAssets();
-        setupPlayer();
+        setupPlayers();
         setupSpawner();
         PlayMusicStream(assets.bgm[DESERTED_HELL]);
         initClient();
@@ -58,7 +58,8 @@ void updateGame(){
     // update collision detection and timers
     if (isServer){
         if (!gameOver){
-            updatePlayer();
+            updatePlayer(&players[MARISA]);
+            updatePlayer(&players[REIMU]);
         }
         updateEnemies();
         updateItems();
@@ -94,13 +95,21 @@ void renderEnemies(){
 void renderUI(){
     Sprite* lifeIcon = &assets.interfaceSprites[LIFE_ICON];
     Vector2 lifeIconPos = {0,vRes-lifeIcon->tex.height};
-    for (int i=0; i < player.lifes; i++){
+    for (int i=0; i < players[MARISA].lifes; i++){
+        renderSprite(lifeIcon, lifeIconPos);
+        lifeIconPos.x += lifeIcon->tex.width;
+    }
+    lifeIconPos.x = 0;
+    lifeIconPos.y -= lifeIcon->tex.height;
+    for (int i=0; i < players[REIMU].lifes; i++){
         renderSprite(lifeIcon, lifeIconPos);
         lifeIconPos.x += lifeIcon->tex.width;
     }
     char score_text[28];
-    sprintf(score_text, "Score: %d", player.points);
+    sprintf(score_text, "P1 Score: %d", players[MARISA].points);
     DrawText(score_text, 0, 0, 18, WHITE);
+    sprintf(score_text, "P2 Score: %d", players[REIMU].points);
+    DrawText(score_text, 0, 20, 18, WHITE);
 }
 
 void renderGame(){
@@ -109,7 +118,7 @@ void renderGame(){
     DrawTexture(assets.backgroundSprites[CHAPEL].tex, 0, 0, WHITE);
     renderBulletCArray(compactPlayerBulletArray);
     renderItems();
-    renderPlayer();
+    renderPlayers();
     renderBulletCArray(compactEnemyBulletArray);
     renderEnemies();
     renderUI();
