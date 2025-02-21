@@ -9,6 +9,7 @@ typedef enum {
     TCP_PLAYER_HIT,
     TCP_PLAYER_DATA,
     TCP_PLAYER_ITEM_PICK_UP,
+    TCP_ENEMY_DEATH,
     TCP_PACKET_TYPE_LEN,
 } TcpPacketType;
 
@@ -36,6 +37,8 @@ void sendTcpPlayerData(PlayerCharacter character, Player player);
 void receiveTcpPlayerData();
 void sendTcpPlayerItemPickup(PlayerCharacter character, ItemType itemType);
 void receiveTcpPlayerItemPickup();
+void sendTcpEnemyDeath();
+void receiveTcpEnemyDeath();
 
 typedef enum {
     UDP_BULLET_ARRAY,

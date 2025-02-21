@@ -193,3 +193,14 @@ void sendUDPEnemyData(){
 void receiveUDPEnemyData(){
     readPacketBuffer(enemyList, MAX_ENEMIES*sizeof(Enemy));
 }
+
+void sendTcpEnemyDeath(){
+    TcpHeader header = {TCP_ENEMY_DEATH};
+    resetPacketBuffer();
+    writePacketBuffer(&header, sizeof(TcpHeader));
+    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
+}
+
+void receiveTcpEnemyDeath(){
+    PlaySound(assets.soundEffects[ENEMY_HIT]);
+}
