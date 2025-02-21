@@ -34,6 +34,7 @@ void receiveTcpPlayerData(TcpPlayerData tcpPlayerData){
 }
 
 void sendTcpPlayerItemPickup(Team tplayer, ItemType itemType){
+    fprintf(stderr, "send item pickup %d\n", itemType);
     TcpHeader tcpHeader = {TCP_PLAYER_ITEM_PICK_UP};
     TcpPlayerItemPickUp tcpPlayerItemPickup = {tplayer, itemType};
     send(gameServer.clientTCPSock, &tcpHeader, sizeof(tcpHeader), 0);

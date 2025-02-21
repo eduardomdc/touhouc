@@ -81,9 +81,15 @@ void serverCheckForClientConnection(){
 void sendGameUpdate(){
     updateTimer(&gameServer.bulletPacketTimer);
     updateTimer(&gameServer.playerPacketTimer);
-    sendUDPBulletArray(ENEMY);
-    sendUDPBulletArray(PLAYER_1);
-    sendUDPPlayerData(PLAYER_1);
-    sendUDPEnemyData();
-    sendUDPItemData();
+    if (gameServer.bulletPacketTimer.ready){
+        sendUDPBulletArray(ENEMY);
+        sendUDPBulletArray(PLAYER_1);
+        sendUDPEnemyData();
+        sendUDPItemData();
+        resetTimer(&gameServer.bulletPacketTimer);
+    }
+    if (gameServer.playerPacketTimer.ready){
+        sendUDPPlayerData(PLAYER_1);
+        resetTimer(&gameServer.playerPacketTimer);
+    }
 }

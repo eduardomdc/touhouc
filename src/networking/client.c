@@ -6,7 +6,7 @@
 #include "server.h"
 #include "packets.h"
 
-#define SERVER_IP "127.0.0.0"
+#define SERVER_IP "192.168.0.227"
 
 Client gameClient = {0};
 
