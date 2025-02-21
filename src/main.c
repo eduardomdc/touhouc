@@ -8,7 +8,8 @@ int main(int argc, char *argv[]){
     setupGame(argv[1]);
     while(!WindowShouldClose()){
         renderGame();
-        updateGame();
+        Input input = handleInput();
+        updateGame(input);
     }
     if (!isServer){
         closeClient();

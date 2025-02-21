@@ -45,33 +45,6 @@ void setupPlayers(){
     players[REIMU] = reimu;
 }
 
-Input handleInput(){
-    Input input = {0};
-    Vector2 inputDirection = {0,0};
-    if (IsKeyDown(KEY_UP)){
-        inputDirection.y -= 1;
-    }
-    if (IsKeyDown(KEY_DOWN)){
-        inputDirection.y += 1;
-    }
-    if (IsKeyDown(KEY_LEFT)){
-        inputDirection.x -= 1;
-    }
-    if (IsKeyDown(KEY_RIGHT)){
-        inputDirection.x += 1;
-    }
-    if (IsKeyDown(KEY_A)){
-        inputDirection.x += 1;
-    }
-    if (IsKeyDown(KEY_SPACE)){
-        input.firing = true;
-    }
-
-    Vector2 inputDir = Vector2Normalize(inputDirection);
-    input.dir = inputDir;
-    return input;
-}
-
 void movePlayer(Player* player, Vector2 inputDir){
     float distance = playerSpeed*GetFrameTime();
     Vector2 playerMovement = Vector2Scale(inputDir, distance);

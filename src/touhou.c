@@ -10,6 +10,7 @@
 #include "networking/client.h"
 #include <time.h>
 #include <stdio.h>
+#include <raymath.h>
 #include <string.h>
 
 bool gameOver;
@@ -39,7 +40,34 @@ void setupGame(char* hostType){
     }
 }
 
-void updateGame(){
+Input handleInput(){
+    Input input = {0};
+    Vector2 inputDirection = {0,0};
+    if (IsKeyDown(KEY_UP)){
+        inputDirection.y -= 1;
+    }
+    if (IsKeyDown(KEY_DOWN)){
+        inputDirection.y += 1;
+    }
+    if (IsKeyDown(KEY_LEFT)){
+        inputDirection.x -= 1;
+    }
+    if (IsKeyDown(KEY_RIGHT)){
+        inputDirection.x += 1;
+    }
+    if (IsKeyDown(KEY_A)){
+        inputDirection.x += 1;
+    }
+    if (IsKeyDown(KEY_SPACE)){
+        input.firing = true;
+    }
+
+    Vector2 inputDir = Vector2Normalize(inputDirection);
+    input.dir = inputDir;
+    return input;
+}
+
+void updateGame(Input input){
     if (isServer){
         if (gameServer.active && !gameServer.clientIsConnected){
             serverCheckForClientConnection();
@@ -58,7 +86,6 @@ void updateGame(){
     // update collision detection and timers
     if (isServer){
         if (!gameOver){
-            Input input = handleInput();
             updatePlayer(&players[MARISA], input);
         }
         updateEnemies();

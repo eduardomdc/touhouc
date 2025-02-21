@@ -38,7 +38,6 @@ void setupPlayers();
 void renderPlayers();
 void updatePlayer(Player* player, Input input);
 void playerFire(Player* player);
-Input handleInput();
 void movePlayer(Player* player, Vector2 inputDir);
 void playerSetFireRate(Player* player, float fireRate);
 void playerGetHit(Player* player);
