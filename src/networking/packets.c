@@ -169,7 +169,7 @@ void sendUDPItemData(){
     writePacketBuffer(items, sizeof(Item)*udpItemData.len);
     socklen_t addrlen = sizeof(gameServer.clientAddress);
     if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP player data\n");
+        fprintf(stderr, "Failed to send UDP item data\n");
     };
 }
 
@@ -214,9 +214,13 @@ void sendUDPInputData(Input input, PlayerCharacter character){
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     writePacketBuffer(&udpInputData, sizeof(UdpInputData));
     socklen_t addrlen = sizeof(gameClient.serverAddress);
-    if (sendto(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameClient.serverAddress, addrlen)<0){
+    int bytesSent = sendto(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameClient.serverAddress, addrlen);
+    if (bytesSent < 0){
         fprintf(stderr, "Failed to send input data to server\n");
+    } else if (bytesSent != sizeof(UdpHeader) + sizeof(UdpInputData)){
+        fprintf(stderr, "Sent malformed input data to server %d\n", bytesSent);
     }
+    
 }
 void receiveUDPInputData(){
     UdpInputData udpInputData;
