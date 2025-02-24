@@ -144,7 +144,7 @@ void serverReceiveUdp(){
     struct sockaddr_in sender;
     socklen_t addrlen = sizeof(sender);
     while(
-        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&sender, &addrlen)) > 0
+        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, MAX_PACKAGE_BUFFER_SIZE, 0, (struct sockaddr*)&sender, &addrlen)) > 0
     ){
         if (sender.sin_addr.s_addr == gameServer.udpServerAddress.sin_addr.s_addr){
             continue; 
@@ -157,6 +157,10 @@ void serverReceiveUdp(){
                     char ipAddr[INET_ADDRSTRLEN];
                     inet_ntop(AF_INET, &sender.sin_addr, ipAddr, INET_ADDRSTRLEN);
                     fprintf(stderr,"from ip %s:%d Received malformed udp input data packet %d bytes, should be %d header.packetType=%d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, sizeof(UdpHeader)+sizeof(UdpInputData), header.packetType);
+                    // fprintf(stderr, "Packet contents: ");
+                    // for (int i = 0; i < bytesRead; i++) {
+                    //     fprintf(stderr, "%02x ", packetBuffer.bytes[i]);
+                    // }
                     continue;
                 }
                 receiveUDPInputData();
