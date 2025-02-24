@@ -12,7 +12,8 @@ typedef struct Server {
     int serverTCPSock;
     int clientTCPSock;
     int udpSock;
-    struct sockaddr_in serverAddress;
+    struct sockaddr_in tcpServerAddress;
+    struct sockaddr_in udpServerAddress;
     struct sockaddr_in tcpClientAddress;
     struct sockaddr_in udpClientAddress;
     Timer bulletPacketTimer;

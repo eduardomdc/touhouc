@@ -215,13 +215,15 @@ void sendUDPInputData(Input input, PlayerCharacter character){
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     writePacketBuffer(&udpInputData, sizeof(UdpInputData));
     socklen_t addrlen = sizeof(gameClient.udpServerAddress);
+    //char ipAddr[INET_ADDRSTRLEN];
+    //inet_ntop(AF_INET, &gameClient.udpServerAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+    //fprintf(stderr, "Sending upd input data to %s\n", ipAddr, (int) ntohs(gameClient.udpServerAddress.sin_port));
     int bytesSent = sendto(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameClient.udpServerAddress, addrlen);
     if (bytesSent < 0){
         fprintf(stderr, "Failed to send input data to server\n");
     } else if (bytesSent != sizeof(UdpHeader) + sizeof(UdpInputData)){
         fprintf(stderr, "Sent malformed input data to server %d\n", bytesSent);
-    }
-    
+    }    
 }
 void receiveUDPInputData(){
     UdpInputData udpInputData;

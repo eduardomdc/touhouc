@@ -50,16 +50,16 @@ void initClient(){
     flags = fcntl(gameClient.udpSock, F_GETFL, 0);
     fcntl(gameClient.udpSock, F_SETFL, flags | O_NONBLOCK);
     //set re-use address option
-    int opt = 1;
-    if (setsockopt(
-        gameClient.udpSock, 
-        SOL_SOCKET,
-        SO_REUSEADDR, // dont wait for os to free address
-        &opt,
-        sizeof(opt))) {
-        fprintf(stderr, "Failed to set server udp socket options\n");
-        return;
-    }
+    // int opt = 1;
+    // if (setsockopt(
+    //     gameClient.udpSock, 
+    //     SOL_SOCKET,
+    //     SO_REUSEADDR, // dont wait for os to free address
+    //     &opt,
+    //     sizeof(opt))) {
+    //     fprintf(stderr, "Failed to set server udp socket options\n");
+    //     return;
+    // }
 
     gameClient.clientAddress.sin_family = AF_INET;
     gameClient.clientAddress.sin_port = htons(UDP_PORT);

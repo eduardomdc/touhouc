@@ -36,11 +36,11 @@ void initServer(){
     int flags = fcntl(gameServer.serverTCPSock, F_GETFL, 0);
     fcntl(gameServer.serverTCPSock, F_SETFL, flags | O_NONBLOCK);
 
-    gameServer.serverAddress.sin_family = AF_INET;
-    gameServer.serverAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
-    gameServer.serverAddress.sin_port = htons(TCP_PORT);
-    socklen_t addrlen = sizeof(gameServer.serverAddress);
-    if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.serverAddress, addrlen) < 0) {
+    gameServer.tcpServerAddress.sin_family = AF_INET;
+    gameServer.tcpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
+    gameServer.tcpServerAddress.sin_port = htons(TCP_PORT);
+    socklen_t addrlen = sizeof(gameServer.tcpServerAddress);
+    if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.tcpServerAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind server socket to address\n");
         return;
     }
@@ -55,8 +55,11 @@ void initServer(){
         fprintf(stderr, "Failed to create server udp socket\n");
         return;
     }
-    addrlen = sizeof(gameServer.serverAddress);
-    if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.serverAddress, addrlen) < 0) {
+    gameServer.udpServerAddress.sin_family = AF_INET;
+    gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
+    gameServer.udpServerAddress.sin_port = htons(UDP_PORT);
+    addrlen = sizeof(gameServer.udpServerAddress);
+    if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.udpServerAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind server udp socket to address\n");
         return;
     }
@@ -78,9 +81,10 @@ void initServer(){
 
     gameServer.active = true;
     char ipAddr[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &gameServer.serverAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+    inet_ntop(AF_INET, &gameServer.udpServerAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
     printf("IP address is: %s\n", ipAddr);
-    printf("port is: %d\n", (int) ntohs(gameServer.serverAddress.sin_port));
+    printf("udp port is: %d\n", (int) ntohs(gameServer.udpServerAddress.sin_port));
+    printf("tcp port is: %d\n", (int) ntohs(gameServer.tcpServerAddress.sin_port));
 }
 
 void serverCheckForClientConnection(){
@@ -130,6 +134,7 @@ void sendGameUpdate(){
         resetTimer(&gameServer.playerPacketTimer);
     }
 }
+#include <errno.h>
 
 void serverReceiveUdp(){
     if (!gameServer.clientIsConnected) return;
@@ -141,7 +146,7 @@ void serverReceiveUdp(){
     while(
         (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&sender, &addrlen)) > 0
     ){
-        if (sender.sin_addr.s_addr == gameServer.serverAddress.sin_addr.s_addr){
+        if (sender.sin_addr.s_addr == gameServer.udpServerAddress.sin_addr.s_addr){
             continue; 
         }
         resetPacketBuffer();
@@ -151,12 +156,15 @@ void serverReceiveUdp(){
                 if ( bytesRead != (sizeof(UdpHeader)+sizeof(UdpInputData)) ){
                     char ipAddr[INET_ADDRSTRLEN];
                     inet_ntop(AF_INET, &sender.sin_addr, ipAddr, INET_ADDRSTRLEN);
-                    fprintf(stderr,"from ip %s:%d Received malformed udp input data packet %d bytes, should be %d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, sizeof(UdpHeader)+sizeof(UdpInputData));
+                    fprintf(stderr,"from ip %s:%d Received malformed udp input data packet %d bytes, should be %d header.packetType=%d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, sizeof(UdpHeader)+sizeof(UdpInputData), header.packetType);
                     continue;
                 }
                 receiveUDPInputData();
                 break;
             default:
+                char ipAddr[INET_ADDRSTRLEN];
+                inet_ntop(AF_INET, &sender.sin_addr, ipAddr, INET_ADDRSTRLEN);
+                fprintf(stderr,"Not identified from ip %s:%d Received malformed packet %d bytes, header.packetType=%d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, header.packetType);
                 break;
         }
     }
