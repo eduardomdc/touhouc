@@ -76,7 +76,7 @@ void updateGame(Input input){
     } else {
         if (gameClient.connected){
             clientReceiveTcp();
-            //sendUDPInputData(input, REIMU);
+            sendUDPInputData(input, REIMU);
         }
     }
     UpdateMusicStream(assets.bgm[DESERTED_HELL]);

@@ -68,8 +68,9 @@ void initServer(){
     }
 
     gameServer.active = true;
-
-    printf("IP address is: %s\n", inet_ntoa(gameServer.serverAddress.sin_addr));
+    char ipAddr[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &gameServer.serverAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+    printf("IP address is: %s\n", ipAddr);
     printf("port is: %d\n", (int) ntohs(gameServer.serverAddress.sin_port));
 }
 
@@ -82,7 +83,10 @@ void serverCheckForClientConnection(){
             (struct sockaddr*)&tempAddr,
             &addrlen
         )) 
-    >= 0) {
+    < 0) {
+        fprintf(stderr, "Error accepting TCP connection to client\n");
+        return;
+    } else {
         gameServer.clientAddress.sin_family = AF_INET;
         gameServer.clientAddress.sin_port = htons(PORT);
         gameServer.clientAddress.sin_addr = tempAddr.sin_addr;
@@ -138,17 +142,7 @@ void serverReceiveUdp(){
                 break;
         }
     }
-    // if (bytesRead < 0) {
-    //     fprintf(stderr,"server receive udp recvfrom failed\n");
-    //     int tcpBytes = recv(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
-    //     if (tcpBytes == 0){
-    //         fprintf(stderr,"FIN received, client disconnected!\n");
-    //         gameServer.clientIsConnected = false;
-    //         players[REIMU].connected = false;
-    //     } else if (tcpBytes < 0){
-    //         fprintf(stderr,"TCP connection to client\n");
-    //         gameServer.clientIsConnected = false;
-    //         players[REIMU].connected = false;
-    //     }
-    // }
+    if (bytesRead < 0) {
+        fprintf(stderr,"server receive udp recvfrom failed\n");
+    }
 }

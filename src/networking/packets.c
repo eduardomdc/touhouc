@@ -42,6 +42,7 @@ void receiveTcpPlayerData(){
 }
 
 void sendTcpPlayerItemPickup(PlayerCharacter character, ItemType itemType){
+    fprintf(stderr, "Send item pickup\n");
     if (!gameServer.clientIsConnected) return;
     TcpHeader tcpHeader = {TCP_PLAYER_ITEM_PICK_UP};
     TcpPlayerItemPickUp tcpPlayerItemPickup;
