@@ -84,7 +84,6 @@ void serverCheckForClientConnection(){
             &addrlen
         )) 
     < 0) {
-        fprintf(stderr, "Error accepting TCP connection to client\n");
         return;
     } else {
         gameServer.clientAddress.sin_family = AF_INET;
