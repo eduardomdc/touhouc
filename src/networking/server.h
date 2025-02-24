@@ -2,7 +2,8 @@
 #define SERVER_H
 #include <netinet/in.h>
 #include <raylib.h>
-#define PORT 27015
+#define TCP_PORT 27015
+#define UDP_PORT 8080
 #define MAX_CONNECTION_QUEUE 5
 
 #include "../timer.h"
@@ -12,7 +13,8 @@ typedef struct Server {
     int clientTCPSock;
     int udpSock;
     struct sockaddr_in serverAddress;
-    struct sockaddr_in clientAddress;
+    struct sockaddr_in tcpClientAddress;
+    struct sockaddr_in udpClientAddress;
     Timer bulletPacketTimer;
     Timer playerPacketTimer;
     bool active; // server has been setup and is looking for connections

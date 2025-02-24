@@ -6,6 +6,9 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 
+#define SERVER_IP "127.0.0.3"
+#define CLIENT_IP "127.0.0.4"
+
 Server gameServer = {0};
 
 void initServer(){
@@ -34,8 +37,8 @@ void initServer(){
     fcntl(gameServer.serverTCPSock, F_SETFL, flags | O_NONBLOCK);
 
     gameServer.serverAddress.sin_family = AF_INET;
-    gameServer.serverAddress.sin_addr.s_addr = INADDR_ANY; // all interfaces
-    gameServer.serverAddress.sin_port = htons(PORT);
+    gameServer.serverAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
+    gameServer.serverAddress.sin_port = htons(TCP_PORT);
     socklen_t addrlen = sizeof(gameServer.serverAddress);
     if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.serverAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind server socket to address\n");
@@ -52,6 +55,12 @@ void initServer(){
         fprintf(stderr, "Failed to create server udp socket\n");
         return;
     }
+    addrlen = sizeof(gameServer.serverAddress);
+    if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.serverAddress, addrlen) < 0) {
+        fprintf(stderr, "Failed to bind server udp socket to address\n");
+        return;
+    }
+
     //set non-blocking mode
     flags = fcntl(gameServer.udpSock, F_GETFL, 0);
     fcntl(gameServer.udpSock, F_SETFL, flags | O_NONBLOCK);
@@ -75,7 +84,7 @@ void initServer(){
 }
 
 void serverCheckForClientConnection(){
-    socklen_t addrlen = sizeof(gameServer.serverAddress);
+    socklen_t addrlen;
     struct sockaddr_in tempAddr;
     if ((
         gameServer.clientTCPSock = accept(
@@ -86,11 +95,19 @@ void serverCheckForClientConnection(){
     < 0) {
         return;
     } else {
-        gameServer.clientAddress.sin_family = AF_INET;
-        gameServer.clientAddress.sin_port = htons(PORT);
-        gameServer.clientAddress.sin_addr = tempAddr.sin_addr;
+        gameServer.tcpClientAddress.sin_family = AF_INET;
+        gameServer.tcpClientAddress.sin_port = htons(TCP_PORT);
+        gameServer.tcpClientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
+        gameServer.udpClientAddress.sin_family = AF_INET;
+        gameServer.udpClientAddress.sin_port = htons(UDP_PORT);
+        gameServer.udpClientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
+        char ipAddr[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &gameServer.tcpClientAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+        printf("client IP address is: %s\n", ipAddr);
+        printf("tcp client port is: %d\n", (int) ntohs(gameServer.tcpClientAddress.sin_port));
+        printf("udp client port is: %d\n", (int) ntohs(gameServer.udpClientAddress.sin_port));
         players[REIMU].connected = true;
         sendTcpPlayerData(MARISA, players[MARISA]);
     }
@@ -132,7 +149,9 @@ void serverReceiveUdp(){
         switch (header.packetType) {
             case UDP_INPUT_DATA:
                 if ( bytesRead != (sizeof(UdpHeader)+sizeof(UdpInputData)) ){
-                    fprintf(stderr,"Received malformed udp input data packet %d bytes\n", bytesRead);
+                    char ipAddr[INET_ADDRSTRLEN];
+                    inet_ntop(AF_INET, &sender.sin_addr, ipAddr, INET_ADDRSTRLEN);
+                    fprintf(stderr,"from ip %s:%d Received malformed udp input data packet %d bytes, should be %d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, sizeof(UdpHeader)+sizeof(UdpInputData));
                     continue;
                 }
                 receiveUDPInputData();
@@ -142,6 +161,6 @@ void serverReceiveUdp(){
         }
     }
     if (bytesRead < 0) {
-        fprintf(stderr,"server receive udp recvfrom failed\n");
+        //fprintf(stderr,"server receive udp recvfrom failed\n");
     }
 }

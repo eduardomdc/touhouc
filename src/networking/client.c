@@ -7,7 +7,8 @@
 #include "../spawner.h"
 #include "packets.h"
 
-#define SERVER_IP "192.168.0.227"
+#define SERVER_IP "127.0.0.3"
+#define CLIENT_IP "127.0.0.4"
 
 Client gameClient = {0};
 
@@ -16,16 +17,16 @@ void initClient(){
         fprintf(stderr, "Failed to create client tcp socket\n");
         return;
     }
-    gameClient.serverAddress.sin_family = AF_INET;
-    gameClient.serverAddress.sin_port = htons(PORT);
-    inet_pton(AF_INET, SERVER_IP, &gameClient.serverAddress.sin_addr);
+    gameClient.tcpServerAddress.sin_family = AF_INET;
+    gameClient.tcpServerAddress.sin_port = htons(TCP_PORT);
+    inet_pton(AF_INET, SERVER_IP, &gameClient.tcpServerAddress.sin_addr);
     
     int status;
     if ((
         status = connect(
             gameClient.tcpSock, 
-            (struct sockaddr*)&gameClient.serverAddress,
-            sizeof(gameClient.serverAddress)
+            (struct sockaddr*)&gameClient.tcpServerAddress,
+            sizeof(gameClient.tcpServerAddress)
             )
         ) < 0) {
         fprintf(stderr, "Failed to connect to server\n");
@@ -34,6 +35,11 @@ void initClient(){
     //set non-blocking mode
     int flags = fcntl(gameClient.tcpSock, F_GETFL, 0);
     fcntl(gameClient.tcpSock, F_SETFL, flags | O_NONBLOCK);
+
+    // set up udp address
+    gameClient.udpServerAddress.sin_family = AF_INET;
+    gameClient.udpServerAddress.sin_port = htons(UDP_PORT);
+    gameClient.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP);
 
     //set up UDP sock
     if ((gameClient.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
@@ -56,8 +62,8 @@ void initClient(){
     }
 
     gameClient.clientAddress.sin_family = AF_INET;
-    gameClient.clientAddress.sin_port = htons(PORT);
-    gameClient.clientAddress.sin_addr.s_addr = INADDR_ANY;
+    gameClient.clientAddress.sin_port = htons(UDP_PORT);
+    gameClient.clientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);;
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind client udp socket to address\n");
@@ -68,7 +74,7 @@ void initClient(){
 
     gameClient.connected = true;
 
-    printf("IP address is: %s\n", inet_ntoa(gameClient.clientAddress.sin_addr));
+    printf("client IP address is: %s\n", inet_ntoa(gameClient.clientAddress.sin_addr));
     printf("port is: %d\n", (int) ntohs(gameClient.clientAddress.sin_port));
 }
 
@@ -97,10 +103,10 @@ void clientReceiveTcp(){
 
 void clientReceiveUdp(){
     UdpHeader header;
-    socklen_t addrlen = sizeof(gameClient.serverAddress);
+    socklen_t addrlen = sizeof(gameClient.udpServerAddress);
     int bytesRead = 0;
     while(
-        (bytesRead = recvfrom(gameClient.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameClient.serverAddress, &addrlen)) > 0
+        (bytesRead = recvfrom(gameClient.udpSock, packetBuffer.bytes, sizeof(packetBuffer.bytes), 0, (struct sockaddr*)&gameClient.udpServerAddress, &addrlen)) > 0
     ){
         resetPacketBuffer();
         readPacketBuffer(&header, sizeof(UdpHeader));

@@ -73,9 +73,10 @@ void updateGame(Input input){
         if (gameServer.active && !gameServer.clientIsConnected){
             serverCheckForClientConnection();
         }
-    } else {
+    } else if (!isServer) {
         if (gameClient.connected){
             clientReceiveTcp();
+            clientReceiveUdp();
             sendUDPInputData(input, REIMU);
         }
     }
@@ -100,9 +101,6 @@ void updateGame(Input input){
             sendGameUpdate();
             serverReceiveUdp();
         }
-
-    } else {
-        clientReceiveUdp();
     }
 }
 
