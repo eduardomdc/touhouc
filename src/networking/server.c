@@ -34,7 +34,7 @@ void initServer(){
     fcntl(gameServer.serverTCPSock, F_SETFL, flags | O_NONBLOCK);
 
     gameServer.serverAddress.sin_family = AF_INET;
-    gameServer.serverAddress.sin_addr.s_addr = inet_addr("127.0.0.3"); // all interfaces
+    gameServer.serverAddress.sin_addr.s_addr = INADDR_ANY; // all interfaces
     gameServer.serverAddress.sin_port = htons(PORT);
     socklen_t addrlen = sizeof(gameServer.serverAddress);
     if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.serverAddress, addrlen) < 0) {
@@ -119,7 +119,7 @@ void serverReceiveUdp(){
     struct sockaddr_in sender;
     socklen_t addrlen = sizeof(sender);
     while(
-        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, &sender, &addrlen)) > 0
+        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&sender, &addrlen)) > 0
     ){
         if (sender.sin_addr.s_addr == gameServer.serverAddress.sin_addr.s_addr){
             continue; 
