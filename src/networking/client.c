@@ -7,7 +7,7 @@
 #include "../spawner.h"
 #include "packets.h"
 
-#define SERVER_IP "127.0.0.3"
+#define SERVER_IP "192.168.0.227"
 
 Client gameClient = {0};
 
@@ -57,7 +57,7 @@ void initClient(){
 
     gameClient.clientAddress.sin_family = AF_INET;
     gameClient.clientAddress.sin_port = htons(PORT);
-    gameClient.clientAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
+    gameClient.clientAddress.sin_addr.s_addr = INADDR_ANY;
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind client udp socket to address\n");
