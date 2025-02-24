@@ -90,10 +90,6 @@ void serverCheckForClientConnection(){
         fprintf(stderr, "Client connected!\n");
         players[REIMU].connected = true;
         sendTcpPlayerData(MARISA, players[MARISA]);
-        if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.clientAddress, addrlen) < 0) {
-            fprintf(stderr, "Failed to bind client udp socket to address\n");
-            return;
-        }
     }
    
 }
@@ -118,11 +114,16 @@ void sendGameUpdate(){
 void serverReceiveUdp(){
     if (!gameServer.clientIsConnected) return;
     UdpHeader header = {0};
-    socklen_t addrlen = sizeof(gameServer.clientAddress);
+    
     int bytesRead = 0;
+    struct sockaddr_in sender;
+    socklen_t addrlen = sizeof(sender);
     while(
-        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.clientAddress, &addrlen)) > 0
+        (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, &sender, &addrlen)) > 0
     ){
+        if (sender.sin_addr.s_addr == gameServer.serverAddress.sin_addr.s_addr){
+            continue; 
+        }
         resetPacketBuffer();
         readPacketBuffer(&header, sizeof(UdpHeader));
         switch (header.packetType) {
