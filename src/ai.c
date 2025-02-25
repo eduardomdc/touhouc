@@ -47,11 +47,11 @@ void angelStateMove(void *enemy){
     // will move to target, then goes to FIRE
     Enemy* angel = (Enemy*) enemy;
     if (Vector2DistanceSqr(angel->pos, angel->sm.targetPos) < 0.1){
-        angel->sm.firingTimer = createTimer(0.1);
-        angel->sm.stateTimer = createTimer(1.0);
+        angel->sm.firingTimer = createTimer(0.05);
+        angel->sm.stateTimer = createTimer(1.1);
         angel->sm.state = ANGEL_STATE_FIRE;
     } else {
-        angel->pos = Vector2MoveTowards(angel->pos, angel->sm.targetPos, angel->sm.speed);
+        angel->pos = Vector2MoveTowards(angel->pos, angel->sm.targetPos, angel->sm.speed*GetFrameTime());
     }
 }
 

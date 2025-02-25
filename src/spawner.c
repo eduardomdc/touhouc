@@ -7,7 +7,7 @@ Spawner spawner;
 Enemy enemyList[MAX_ENEMIES] = {0};
 
 void setupSpawner(){
-    spawner.enemySpawnTimer = createTimer(2);
+    spawner.enemySpawnTimer = createTimer(4);
     spawner.oneUpSpawnTimer = createTimer(10);
     spawner.powerUpSpawnTimer = createTimer(6);
 }
@@ -24,7 +24,7 @@ void addEnemy(Enemy enemy){
 }
 
 void spawnEnemy(){
-    Vector2 spawnLocation = {GetRandomValue(10, hRes-10), GetRandomValue(10, vRes/4)};
+    Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
     Enemy newEnemy = makeEnemy(spawnLocation);
     addEnemy(newEnemy);
 }
