@@ -7,11 +7,6 @@ void renderEnemy(Enemy enemy){
 }
 
 void updateEnemy(Enemy* enemy){
-    updateTimer(&enemy->fireTimer);
-    if (enemy->fireTimer.ready){
-        enemy->firePattern(enemy);
-        resetTimer(&enemy->fireTimer);
-    }
 }
 
 void enemyDie(Enemy* enemy){

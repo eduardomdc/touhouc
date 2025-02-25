@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include <raylib.h>
+#include "firing_patterns.h"
 #include "timer.h"
 #include "sprite.h"
 #include "assets.h"
@@ -12,8 +13,6 @@ typedef struct Enemy {
     float radius;
     float bulletSpeed;
     float bulletRadius;
-    Timer fireTimer;
-    void (*firePattern)(void* enemy);
     EnemySprites sprite;
     bool alive;
 } Enemy;

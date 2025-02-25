@@ -4,6 +4,11 @@
 #include "timer.h"
 
 typedef enum {
+    AI_TYPE_ANGEL,
+    AI_TYPE_LEN
+} AiType;
+
+typedef enum {
     ANGEL_STATE_INITIAL,
     ANGEL_STATE_MOVE,
     ANGEL_STATE_FIRE,
