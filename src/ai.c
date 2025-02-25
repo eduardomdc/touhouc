@@ -36,6 +36,7 @@ void angelStateInitial(void *enemy){
     // goes to MOVE state
     // choose a random target position to move to
     Enemy* angel = (Enemy*) angel;
+    fprintf(stderr, "angelStateInitial %d\n", angel->sm.state);
     Vector2 target;
     target.x = GetRandomValue(10, hRes-10);
     target.y = GetRandomValue(10, vRes/3);
