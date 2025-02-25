@@ -223,7 +223,7 @@ void sendUDPInputData(Input input, PlayerCharacter character){
         fprintf(stderr, "Failed to send input data to server\n");
     } else if (bytesSent != sizeof(UdpHeader) + sizeof(UdpInputData)){
         fprintf(stderr, "Sent malformed input data to server %d\n", bytesSent);
-    }    
+    }
 }
 void receiveUDPInputData(){
     UdpInputData udpInputData;
