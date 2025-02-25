@@ -20,6 +20,7 @@ set(MY_SOURCES
     src/assets.c
     src/compact_array.c
     src/items.c
+    src/ai.c
     src/networking/server.c
     src/networking/client.c
     src/networking/packets.c
