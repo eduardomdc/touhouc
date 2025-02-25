@@ -6,8 +6,8 @@
 #include <fcntl.h>
 #include <arpa/inet.h>
 
-#define SERVER_IP "192.168.0.185"
-#define CLIENT_IP "192.168.0.227"
+#define SERVER_IP "127.0.0.2"
+#define CLIENT_IP "127.0.0.3"
 
 Server gameServer = {0};
 

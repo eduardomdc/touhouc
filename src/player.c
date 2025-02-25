@@ -65,7 +65,7 @@ void updatePlayer(Player* player, Input input){
 void renderPlayers(){
     for (int i=0; i < PLAYER_CHARACTER_LEN; i++){
         Player player = players[i];
-        // if player connected
+        if (!player.connected) continue;
         renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
         DrawCircleV(player.pos, playerSize, playerColor);
         DrawCircleV(player.pos, playerSize-2, WHITE);
