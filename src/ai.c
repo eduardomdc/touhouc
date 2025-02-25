@@ -28,28 +28,24 @@ StateMachine createStateMachine(SmType machine){
 // ANGEL STATE MACHINE
 void angelStateMachine(void *enemy){
     Enemy* angel = (Enemy*) enemy;
-    fprintf(stderr, "angelStateMachine %d\n", angel->sm.state);
     angelState[angel->sm.state](enemy);
 }
 
 void angelStateInitial(void *enemy){
     // goes to MOVE state
     // choose a random target position to move to
-    Enemy* angel = (Enemy*) angel;
-    fprintf(stderr, "angelStateInitial %d\n", angel->sm.state);
+    Enemy* angel = (Enemy*) enemy;
     Vector2 target;
     target.x = GetRandomValue(10, hRes-10);
     target.y = GetRandomValue(10, vRes/3);
     angel->sm.targetPos = target;
     angel->sm.speed = 100;
     angel->sm.state = ANGEL_STATE_MOVE;
-    fprintf(stderr, "angelStateInitial %d\n", angel->sm.state);
 }
 
 void angelStateMove(void *enemy){
-    fprintf(stderr, "angelStateMove\n");
     // will move to target, then goes to FIRE
-    Enemy* angel = (Enemy*) angel;
+    Enemy* angel = (Enemy*) enemy;
     if (Vector2DistanceSqr(angel->pos, angel->sm.targetPos) < 0.1){
         angel->sm.firingTimer = createTimer(0.1);
         angel->sm.stateTimer = createTimer(1.0);
@@ -61,7 +57,7 @@ void angelStateMove(void *enemy){
 
 void angelStateFire(void *enemy){
     // will fire until state timer expires, then goes back to INITIAL
-    Enemy* angel = (Enemy*) angel;
+    Enemy* angel = (Enemy*) enemy;
     updateTimer(&angel->sm.firingTimer);
     if (angel->sm.firingTimer.ready){
         firingPatterns[SPIRAL](enemy);

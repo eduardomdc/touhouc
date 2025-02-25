@@ -8,7 +8,6 @@ void renderEnemy(Enemy enemy){
 }
 
 void updateEnemy(Enemy* enemy){
-    fprintf(stderr, "sm.machine %d\n", enemy->sm.machine);
     stateMachine[enemy->sm.machine](enemy);
 }
 
