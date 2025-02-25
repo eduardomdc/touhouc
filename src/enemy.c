@@ -7,6 +7,7 @@ void renderEnemy(Enemy enemy){
 }
 
 void updateEnemy(Enemy* enemy){
+    //stateMachine[enemy->sm.machine](enemy);
 }
 
 void enemyDie(Enemy* enemy){

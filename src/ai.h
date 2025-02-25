@@ -4,9 +4,12 @@
 #include "timer.h"
 
 typedef enum {
-    AI_TYPE_ANGEL,
-    AI_TYPE_LEN
-} AiType;
+    SM_TYPE_ANGEL,
+    SM_TYPE_LEN
+} SmType;
+
+void angelStateMachine(void* enemy);
+extern void (*stateMachine[SM_TYPE_LEN])(void*);
 
 typedef enum {
     ANGEL_STATE_INITIAL,
@@ -18,12 +21,18 @@ typedef enum {
 void angelStateInitial(void* enemy);
 void angelStateMove(void* enemy);
 void angelStateFire(void* enemy);
-extern void (*angelStateUpdate[ANGEL_STATE_LEN])(void*);
+extern void (*angelState[ANGEL_STATE_LEN])(void*);
 
 typedef struct {
     char state;
+    char machine;
+    float speed;
+    Vector2 moveDir;
     Vector2 targetPos;
     Timer stateTimer;
+    Timer firingTimer;
 } StateMachine;
+
+StateMachine createStateMachine(SmType machine);
 
 #endif

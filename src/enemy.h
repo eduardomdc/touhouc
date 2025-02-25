@@ -2,12 +2,14 @@
 #define ENEMY_H
 
 #include <raylib.h>
+#include "ai.h"
 #include "firing_patterns.h"
 #include "timer.h"
 #include "sprite.h"
 #include "assets.h"
 
 typedef struct Enemy {
+    StateMachine sm;
     Vector2 pos;
     Vector2 fireDirection;
     float radius;

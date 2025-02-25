@@ -1,6 +1,5 @@
 #include "enemy_factory.h"
-#include "firing_patterns.h"
-#include "timer.h"
+#include "ai.h"
 
 Enemy makeEnemy(Vector2 pos){
     Enemy enemy;
@@ -10,9 +9,8 @@ Enemy makeEnemy(Vector2 pos){
     enemy.sprite = ANGEL;
     Vector2 dir = {0, 1};
     enemy.fireDirection = dir;
-    enemy.firePattern = firingPatterns[SPIRAL];
-    enemy.fireTimer = createTimer(0.03);
     enemy.bulletSpeed = 100;
     enemy.bulletRadius = 8;
+    enemy.sm = createStateMachine(SM_TYPE_ANGEL);
     return enemy;
 }
