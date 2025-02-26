@@ -125,20 +125,20 @@ void renderEnemies(){
 void renderUI(){
     Sprite* lifeIcon = &assets.interfaceSprites[LIFE_ICON];
     Vector2 lifeIconPos = {0,vRes-lifeIcon->tex.height};
-    for (int i=0; i < players[MARISA].lifes; i++){
+    for (int i=0; i < players[MARISA].lives; i++){
         renderSprite(lifeIcon, lifeIconPos);
         lifeIconPos.x += lifeIcon->tex.width;
     }
     lifeIconPos.x = 0;
     lifeIconPos.y -= lifeIcon->tex.height;
-    for (int i=0; i < players[REIMU].lifes; i++){
+    for (int i=0; i < players[REIMU].lives; i++){
         renderSprite(lifeIcon, lifeIconPos);
         lifeIconPos.x += lifeIcon->tex.width;
     }
     char score_text[28];
-    sprintf(score_text, "P1 Score: %d", players[MARISA].points);
+    sprintf(score_text, "P1 Score: %d", players[MARISA].score);
     DrawText(score_text, 0, 0, 18, WHITE);
-    sprintf(score_text, "P2 Score: %d", players[REIMU].points);
+    sprintf(score_text, "P2 Score: %d", players[REIMU].score);
     DrawText(score_text, 0, 20, 18, WHITE);
 }
 

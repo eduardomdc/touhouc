@@ -66,6 +66,10 @@ typedef struct UdpEnemyArray {
 
 typedef struct UdpPlayerData {
     PlayerCharacter character;
+    Vector2 pos;
+    int lives;
+    int score;
+    bool alive;
 } __attribute__((packed)) UdpPlayerData;
 
 typedef struct UdpItemData {

@@ -19,8 +19,8 @@ typedef enum {
 
 typedef struct Player {
     Vector2 pos;
-    int lifes;
-    unsigned int points;
+    int lives;
+    unsigned int score;
     float bulletSpeed;
     float bulletRadius;
     float bulletSpreadAngle;
