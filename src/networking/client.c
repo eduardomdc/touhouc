@@ -4,11 +4,8 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include "server.h"
-#include "../spawner.h"
 #include "packets.h"
 
-#define SERVER_IP "127.0.0.2"
-#define CLIENT_IP "127.0.0.3"
 
 Client gameClient = {0};
 

@@ -6,6 +6,9 @@
 #include "../bullets.h"
 #include "../input.h"
 
+#define SERVER_IP "127.0.0.2"
+#define CLIENT_IP "127.0.0.3"
+
 typedef enum {
     TCP_PLAYER_HIT,
     TCP_PLAYER_DATA,
