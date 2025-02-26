@@ -133,7 +133,7 @@ void clientReceiveUdp(){
                 receiveUDPPlayerFire();
                 break;
             case UDP_ENEMY_DATA:
-                if ( bytesRead != (sizeof(UdpHeader)+MAX_ENEMIES*sizeof(Enemy)) ){
+                if ( bytesRead < (sizeof(UdpHeader)+sizeof(UdpEnemyArray)) ){
                     fprintf(stderr,"Received malformed udp enemy data packet %d bytes\n", bytesRead);
                     continue;
                 }

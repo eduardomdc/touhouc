@@ -124,13 +124,13 @@ void sendGameUpdate(){
     if (gameServer.bulletPacketTimer.ready){
         sendUDPBulletArray(TEAM_ENEMY);
         sendUDPBulletArray(TEAM_PLAYERS);
-        //sendUDPEnemyData();
         sendUDPItemData();
         resetTimer(&gameServer.bulletPacketTimer);
     }
     if (gameServer.playerPacketTimer.ready){
         sendUDPPlayerData(MARISA);
         sendUDPPlayerData(REIMU);
+        sendUDPEnemyData();
         resetTimer(&gameServer.playerPacketTimer);
     }
 }

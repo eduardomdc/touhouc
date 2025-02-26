@@ -183,17 +183,22 @@ void receiveUDPItemData(){
 
 void sendUDPEnemyData(){
     UdpHeader udpHeader = {UDP_ENEMY_DATA};
+    UdpEnemyArray udpEnemyArray = {compactEnemyArray.freeIndex};
     resetPacketBuffer();
     writePacketBuffer(&udpHeader, sizeof(udpHeader));
-    writePacketBuffer(enemyList, MAX_ENEMIES*sizeof(Enemy));
+    writePacketBuffer(&udpEnemyArray, sizeof(udpEnemyArray));
+    writePacketBuffer(enemyList, compactEnemyArray.freeIndex*sizeof(Enemy));
     socklen_t addrlen = sizeof(gameServer.udpClientAddress);
     if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP player data\n");
-    };
+        fprintf(stderr, "Failed to send UDP enemy data\n");
+    }
 }
 
 void receiveUDPEnemyData(){
-    readPacketBuffer(enemyList, MAX_ENEMIES*sizeof(Enemy));
+    UdpEnemyArray udpEnemyArray;
+    readPacketBuffer(&udpEnemyArray, sizeof(UdpEnemyArray));
+    readPacketBuffer(enemyList, udpEnemyArray.len*sizeof(Enemy));
+    compactEnemyArray.freeIndex = udpEnemyArray.len;
 }
 
 void sendTcpEnemyDeath(){

@@ -60,6 +60,10 @@ typedef struct UdpBulletArray {
     Team team;
 } __attribute__((packed)) UdpBulletArray;
 
+typedef struct UdpEnemyArray {
+    int len;
+} __attribute__((packed)) UdpEnemyArray;
+
 typedef struct UdpPlayerData {
     PlayerCharacter character;
 } __attribute__((packed)) UdpPlayerData;
