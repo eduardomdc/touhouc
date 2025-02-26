@@ -20,6 +20,7 @@ void loadEnemySprites(){
 
 void loadInterfaceSprites(){
     assets.interfaceSprites[LIFE_ICON] = loadSprite("../assets/textures/life_icon.png");
+    assets.interfaceSprites[INTERFACE_PLAYER_HITBOX] = loadSprite("../assets/textures/soulball14x15.png");
 }
 
 void loadBackgroundSprites(){

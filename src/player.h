@@ -30,6 +30,7 @@ typedef struct Player {
     PlayerCharacter character;
     Timer fireTimer;
     Timer invulnerableTimer;
+    Color hitBoxColor;
     bool alive;
     bool invulnerable;
     bool connected;

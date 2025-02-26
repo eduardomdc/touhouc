@@ -147,8 +147,8 @@ void renderGame(){
     ClearBackground(BLACK);
     DrawTexture(assets.backgroundSprites[CHAPEL].tex, 0, 0, WHITE);
     renderBulletCArray(compactPlayerBulletArray);
-    renderItems();
     renderPlayers();
+    renderItems();
     renderBulletCArray(compactEnemyBulletArray);
     renderEnemies();
     renderUI();

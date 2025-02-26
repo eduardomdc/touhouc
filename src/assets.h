@@ -36,6 +36,7 @@ typedef enum {
 
 typedef enum {
     LIFE_ICON,
+    INTERFACE_PLAYER_HITBOX,
     INTERFACE_SPRITES_LEN
 } InterfaceSprites;
 

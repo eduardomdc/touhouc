@@ -24,6 +24,7 @@ void setupPlayers(){
     marisa.fireTimer = createTimer(1/marisa.fireRate);
     marisa.sprite = SPRITE_MARISA;
     marisa.bulletSprite = BLUE_ARROW_8;
+    marisa.hitBoxColor = BLUE;
     marisa.points = 0;
     marisa.alive = true;
     marisa.connected = true;
@@ -41,6 +42,7 @@ void setupPlayers(){
     reimu.fireTimer = createTimer(1/reimu.fireRate);
     reimu.sprite = SPRITE_REIMU;
     reimu.bulletSprite = RED_CARD_12;
+    reimu.hitBoxColor = ORANGE;
     reimu.points = 0;
     reimu.alive = true;
     reimu.connected = false;
@@ -69,7 +71,7 @@ void renderPlayers(){
         Player player = players[i];
         if (!player.connected) continue;
         renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
-        DrawCircleV(player.pos, playerSize, playerColor);
+        DrawCircleV(player.pos, playerSize, player.hitBoxColor);
         DrawCircleV(player.pos, playerSize-2, WHITE);
     }
 }
