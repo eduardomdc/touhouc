@@ -19,11 +19,13 @@ void setupPlayers(){
     marisa.bulletSpeed = 1000;
     marisa.bulletRadius = 5;
     marisa.fireRate = 15;
-    marisa.lifes = 3;
+    marisa.lives = 3;
     marisa.bulletSpreadAngle = 0.05;
     marisa.fireTimer = createTimer(1/marisa.fireRate);
     marisa.sprite = SPRITE_MARISA;
-    marisa.points = 0;
+    marisa.bulletSprite = BLUE_ARROW_8;
+    marisa.hitBoxColor = BLUE;
+    marisa.score = 0;
     marisa.alive = true;
     marisa.connected = true;
     players[MARISA] = marisa;
@@ -35,11 +37,13 @@ void setupPlayers(){
     reimu.bulletSpeed = 1000;
     reimu.bulletRadius = 5;
     reimu.fireRate = 15;
-    reimu.lifes = 3;
+    reimu.lives = 3;
     reimu.bulletSpreadAngle = 0.05;
     reimu.fireTimer = createTimer(1/reimu.fireRate);
     reimu.sprite = SPRITE_REIMU;
-    reimu.points = 0;
+    reimu.bulletSprite = RED_CARD_12;
+    reimu.hitBoxColor = ORANGE;
+    reimu.score = 0;
     reimu.alive = true;
     reimu.connected = false;
     players[REIMU] = reimu;
@@ -67,7 +71,7 @@ void renderPlayers(){
         Player player = players[i];
         if (!player.connected) continue;
         renderSpriteCentered(&assets.playerSprites[player.sprite], player.pos);
-        DrawCircleV(player.pos, playerSize, playerColor);
+        DrawCircleV(player.pos, playerSize, player.hitBoxColor);
         DrawCircleV(player.pos, playerSize-2, WHITE);
     }
 }
@@ -83,7 +87,7 @@ void playerFire(Player* player){
         dir = Vector2Rotate(dir, exitAngle);
         bullet.direction = dir;
         bullet.speed = player->bulletSpeed;
-        bullet.sprite = BLUE_ARROW_8;
+        bullet.sprite = player->bulletSprite;
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[PLAYER_FIRE]);
         resetTimer(&player->fireTimer);
@@ -103,11 +107,11 @@ void playerPickUp(short item, Player* player){
 }
 
 void playerGetHit(Player* player){
-    if (player->lifes > 0){
-        player->lifes -= 1;
+    if (player->lives > 0){
+        player->lives -= 1;
         PlaySound(assets.soundEffects[PLAYER_HIT]);
         sendTcpPlayerHit(player->character);
-    } else if (player->lifes == 0 && !gameOver){
+    } else if (player->lives == 0 && !gameOver){
         //gameOver = true;
         //PlaySound(assets.soundEffects[PLAYER_DEATH]);
     }

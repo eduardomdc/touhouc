@@ -4,11 +4,8 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include "server.h"
-#include "../spawner.h"
 #include "packets.h"
 
-#define SERVER_IP "127.0.0.2"
-#define CLIENT_IP "127.0.0.3"
 
 Client gameClient = {0};
 
@@ -73,6 +70,7 @@ void initClient(){
     fprintf(stderr, "Connected to server!\n");
 
     gameClient.connected = true;
+    players[REIMU].connected = true;
 
     printf("client IP address is: %s\n", inet_ntoa(gameClient.clientAddress.sin_addr));
     printf("port is: %d\n", (int) ntohs(gameClient.clientAddress.sin_port));
@@ -119,7 +117,7 @@ void clientReceiveUdp(){
                 receiveUDPBulletArray();
                 break;
             case UDP_PLAYER_DATA:
-                if ( bytesRead != (sizeof(UdpHeader)+sizeof(UdpPlayerData)+sizeof(Player)) ){
+                if ( bytesRead != (sizeof(UdpHeader)+sizeof(UdpPlayerData)) ){
                     fprintf(stderr,"Received malformed udp player data packet %d bytes\n", bytesRead);
                     continue;
                 }
@@ -133,7 +131,7 @@ void clientReceiveUdp(){
                 receiveUDPPlayerFire();
                 break;
             case UDP_ENEMY_DATA:
-                if ( bytesRead != (sizeof(UdpHeader)+MAX_ENEMIES*sizeof(Enemy)) ){
+                if ( bytesRead < (sizeof(UdpHeader)+sizeof(UdpEnemyArray)) ){
                     fprintf(stderr,"Received malformed udp enemy data packet %d bytes\n", bytesRead);
                     continue;
                 }

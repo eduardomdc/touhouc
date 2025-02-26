@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 #include "ai.h"
-#include "firing_patterns.h"
 #include "timer.h"
 #include "sprite.h"
 #include "assets.h"
@@ -23,6 +22,6 @@ extern Sprite enemySprite;
 
 void renderEnemy(Enemy enemy);
 void updateEnemy(Enemy* enemy);
-void enemyDie(Enemy* enemy);
+void enemyDie(int idx);
 
 #endif

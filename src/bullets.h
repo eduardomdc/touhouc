@@ -5,6 +5,7 @@
 #include "sprite.h"
 #include "compact_array.h"
 #include "assets.h"
+#include "enemy.h"
 
 #define MAX_ENEMY_BULLETS 1000
 #define MAX_PLAYER_BULLETS 100

@@ -8,7 +8,7 @@
 #include "input.h"
 
 static const int playerSize = 5;
-static const float playerSpeed = 100;
+static const float playerSpeed = 200;
 static const Color playerColor = BLUE;
 
 typedef enum {
@@ -19,16 +19,18 @@ typedef enum {
 
 typedef struct Player {
     Vector2 pos;
-    int lifes;
-    unsigned int points;
+    int lives;
+    unsigned int score;
     float bulletSpeed;
     float bulletRadius;
     float bulletSpreadAngle;
     float fireRate;
     PlayerSprites sprite;
+    BulletSprites bulletSprite;
     PlayerCharacter character;
     Timer fireTimer;
     Timer invulnerableTimer;
+    Color hitBoxColor;
     bool alive;
     bool invulnerable;
     bool connected;

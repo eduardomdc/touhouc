@@ -6,6 +6,9 @@
 #include "../bullets.h"
 #include "../input.h"
 
+#define SERVER_IP "127.0.0.2"
+#define CLIENT_IP "127.0.0.3"
+
 typedef enum {
     TCP_PLAYER_HIT,
     TCP_PLAYER_DATA,
@@ -60,8 +63,16 @@ typedef struct UdpBulletArray {
     Team team;
 } __attribute__((packed)) UdpBulletArray;
 
+typedef struct UdpEnemyArray {
+    int len;
+} __attribute__((packed)) UdpEnemyArray;
+
 typedef struct UdpPlayerData {
     PlayerCharacter character;
+    Vector2 pos;
+    int lives;
+    int score;
+    bool alive;
 } __attribute__((packed)) UdpPlayerData;
 
 typedef struct UdpItemData {

@@ -70,10 +70,10 @@ void (*itemEffects[ITEM_EFFECTS_LEN])(Player*) = {
     itemEffectIncreaseFireRate,
 };
 void itemEffectGainPoint(Player* player) {
-    player->points+= 100;
+    player->score+= 100;
 }
 void itemEffectGainLife(Player* player) {
-    player->lifes++;
+    player->lives++;
 }
 void itemEffectIncreaseFireRate(Player* player) {
     playerSetFireRate(player, player->fireRate*1.2);

@@ -37,17 +37,19 @@ int checkCollisionWithPlayer(Bullet bullet){
     return -1;
 }
 
-Enemy* checkCollisionWithEnemy(Bullet bullet){
-    for (int i=0; i < MAX_ENEMIES; i++){
+int checkCollisionWithEnemy(Bullet bullet){
+    // returns index of collided enemy, if no collision returns -1
+    for (int i=0; i < compactEnemyArray.freeIndex; i++){
         Enemy* enemy = &enemyList[i];
         if (enemy->alive){
             float distance = Vector2Distance(bullet.pos, enemy->pos); // rewrite to use squared distance for perfomance
             if (distance < (bullet.radius + enemy->radius)){
-                return enemy;
+                fprintf(stderr, "%d hit\n", i);
+                return i;
             }
         }
     }
-    return NULL;
+    return -1;
 }
 
 void physicsUpdateBullets(CompactArray* bulletCArray, float dt){
@@ -64,10 +66,10 @@ void updatePlayerBullets(){
     Bullet* bullets = (Bullet*) bulletCArray->array;
     for (int i=0; i < bulletCArray->freeIndex; i++){
         Bullet bullet = bullets[i];
-        Enemy* enemyHit = checkCollisionWithEnemy(bullet);
-        if (enemyHit != NULL){
+        int enemyHit = checkCollisionWithEnemy(bullet);
+        if (enemyHit != -1){
+            fprintf(stderr, "%d enemy died\n", enemyHit);
             enemyDie(enemyHit);
-            enemyHit->alive = false;
             compactRemoveItem(bulletCArray, i);
             PlaySound(assets.soundEffects[ENEMY_HIT]);
             continue;

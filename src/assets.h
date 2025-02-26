@@ -7,6 +7,7 @@ typedef enum {
     FIRE_BALL_8,
     FIRE_BALL_12,
     BLUE_ARROW_8,
+    RED_CARD_12,
     BULLET_SPRITES_LEN
 } BulletSprites;
 
@@ -35,6 +36,7 @@ typedef enum {
 
 typedef enum {
     LIFE_ICON,
+    INTERFACE_PLAYER_HITBOX,
     INTERFACE_SPRITES_LEN
 } InterfaceSprites;
 
