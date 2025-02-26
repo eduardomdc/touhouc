@@ -134,6 +134,7 @@ void sendUDPPlayerData(PlayerCharacter character){
     udpPlayerData.pos = players[character].pos;
     udpPlayerData.alive = players[character].alive;
     udpPlayerData.score = players[character].score;
+    udpPlayerData.lives = players[character].lives;
     writePacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
     
     socklen_t addrlen = sizeof(gameServer.udpClientAddress);
@@ -148,6 +149,8 @@ void receiveUDPPlayerData(){
     players[udpPlayerData.character].pos = udpPlayerData.pos;
     players[udpPlayerData.character].score = udpPlayerData.score;
     players[udpPlayerData.character].alive = udpPlayerData.alive;
+    players[udpPlayerData.character].lives = udpPlayerData.lives;
+    fprintf(stderr, "Received player data %d %d %d\n", udpPlayerData.character, udpPlayerData.alive, udpPlayerData.score);
 }
 
 void resetPacketBuffer(){
