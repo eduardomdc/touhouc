@@ -7,6 +7,7 @@ void loadBulletSprites(){
     assets.bulletSprites[FIRE_BALL_12] = loadSprite("../assets/textures/fire12.png");
     assets.bulletSprites[BLUE_ARROW_8] = loadSprite("../assets/textures/spear8.png");
     assets.bulletSprites[RED_CARD_12] = loadSprite("../assets/textures/card12.png");
+    assets.bulletSprites[BLUE_FIRE_15] = loadSprite("../assets/textures/blue_fire15.png");
 }
 
 void loadPlayerSprites(){
@@ -15,7 +16,8 @@ void loadPlayerSprites(){
 }
 
 void loadEnemySprites(){
-    assets.enemySprites[ANGEL] = loadSprite("../assets/textures/enemy22x25.png");
+    assets.enemySprites[SPRITE_ANGEL] = loadSprite("../assets/textures/enemy22x25.png");
+    assets.enemySprites[SPRITE_JIANGSHI] = loadSprite("../assets/textures/jiangshi18x68.png");
 }
 
 void loadInterfaceSprites(){

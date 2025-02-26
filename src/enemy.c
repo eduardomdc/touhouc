@@ -19,3 +19,13 @@ void enemyDie(int idx){
     compactRemoveItem(&compactEnemyArray, idx);
     sendTcpEnemyDeath();
 }
+
+void enemyFire(Enemy* enemy){
+    Bullet bullet;
+    bullet.pos = enemy->pos;
+    bullet.radius = enemy->bulletRadius;
+    bullet.direction = enemy->fireDirection;
+    bullet.speed = enemy->bulletSpeed;
+    bullet.sprite = enemy->bulletSprite;
+    compactAddItem(&compactEnemyBulletArray, &bullet);
+}

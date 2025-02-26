@@ -5,6 +5,7 @@
 
 typedef enum {
     SM_TYPE_ANGEL,
+    SM_TYPE_JIANGSHI,
     SM_TYPE_LEN
 } SmType;
 

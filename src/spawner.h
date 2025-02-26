@@ -8,7 +8,8 @@
 #define MAX_ENEMIES 6
 
 typedef struct Spawner {
-    Timer enemySpawnTimer;
+    Timer angelSpawnTimer;
+    Timer jiangshiSpawnTimer;
     Timer oneUpSpawnTimer;
     Timer powerUpSpawnTimer;
 } Spawner;

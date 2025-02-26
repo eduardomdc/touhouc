@@ -44,7 +44,6 @@ int checkCollisionWithEnemy(Bullet bullet){
         if (enemy->alive){
             float distance = Vector2Distance(bullet.pos, enemy->pos); // rewrite to use squared distance for perfomance
             if (distance < (bullet.radius + enemy->radius)){
-                fprintf(stderr, "%d hit\n", i);
                 return i;
             }
         }
@@ -68,7 +67,6 @@ void updatePlayerBullets(){
         Bullet bullet = bullets[i];
         int enemyHit = checkCollisionWithEnemy(bullet);
         if (enemyHit != -1){
-            fprintf(stderr, "%d enemy died\n", enemyHit);
             enemyDie(enemyHit);
             compactRemoveItem(bulletCArray, i);
             PlaySound(assets.soundEffects[ENEMY_HIT]);

@@ -9,24 +9,32 @@ Enemy enemyList[MAX_ENEMIES] = {0};
 CompactArray compactEnemyArray = {enemyList, sizeof(Enemy), MAX_ENEMIES, 0};
 
 void setupSpawner(){
-    spawner.enemySpawnTimer = createTimer(4);
+    spawner.angelSpawnTimer = createTimer(4);
+    spawner.jiangshiSpawnTimer = createTimer(10);
     spawner.oneUpSpawnTimer = createTimer(10);
     spawner.powerUpSpawnTimer = createTimer(6);
 }
 
-void spawnEnemy(){
+void spawnAngel(){
     Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
-    Enemy newEnemy = makeEnemy(spawnLocation);
+    Enemy newEnemy = makeAngel(spawnLocation);
+    compactAddItem(&compactEnemyArray, &newEnemy);
+}
+
+void spawnJiangshi(){
+    Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
+    Enemy newEnemy = makeJiangshi(spawnLocation);
     compactAddItem(&compactEnemyArray, &newEnemy);
 }
 
 void updateSpawner(){
-    updateTimer(&spawner.enemySpawnTimer);
+    updateTimer(&spawner.angelSpawnTimer);
+    updateTimer(&spawner.jiangshiSpawnTimer);
     updateTimer(&spawner.oneUpSpawnTimer);
     updateTimer(&spawner.powerUpSpawnTimer);
-    if (spawner.enemySpawnTimer.ready){
-        spawnEnemy();
-        resetTimer(&spawner.enemySpawnTimer);
+    if (spawner.angelSpawnTimer.ready){
+        spawnAngel();
+        resetTimer(&spawner.angelSpawnTimer);
     }
     if (spawner.oneUpSpawnTimer.ready){
         Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
