@@ -3,8 +3,9 @@
 
 #include "timer.h"
 #include "enemy.h"
+#include "compact_array.h"
 
-#define MAX_ENEMIES 10
+#define MAX_ENEMIES 6
 
 typedef struct Spawner {
     Timer enemySpawnTimer;
@@ -18,5 +19,6 @@ void spawnEnemy();
 
 extern Spawner spawner;
 extern Enemy enemyList[MAX_ENEMIES];
+extern CompactArray compactEnemyArray;
 
 #endif

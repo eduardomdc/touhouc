@@ -8,7 +8,7 @@
 #include "input.h"
 
 static const int playerSize = 5;
-static const float playerSpeed = 100;
+static const float playerSpeed = 200;
 static const Color playerColor = BLUE;
 
 typedef enum {

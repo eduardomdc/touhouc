@@ -105,7 +105,7 @@ void updateGame(Input input){
 }
 
 void updateEnemies(){
-    for(int i=0; i < MAX_ENEMIES; i++){
+    for(int i=0; i < compactEnemyArray.freeIndex; i++){
         Enemy* enemy = &enemyList[i];
         if (enemy->alive){
             updateEnemy(enemy);
@@ -115,7 +115,7 @@ void updateEnemies(){
 
 #include <stdio.h>
 void renderEnemies(){
-    for (int i=0; i < MAX_ENEMIES; i++){
+    for (int i=0; i < compactEnemyArray.freeIndex; i++){
         if (enemyList[i].alive){
             renderEnemy(enemyList[i]);
         }

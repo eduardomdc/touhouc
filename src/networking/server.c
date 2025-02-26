@@ -124,7 +124,7 @@ void sendGameUpdate(){
     if (gameServer.bulletPacketTimer.ready){
         sendUDPBulletArray(TEAM_ENEMY);
         sendUDPBulletArray(TEAM_PLAYERS);
-        sendUDPEnemyData();
+        //sendUDPEnemyData();
         sendUDPItemData();
         resetTimer(&gameServer.bulletPacketTimer);
     }
