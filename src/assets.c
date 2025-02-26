@@ -6,6 +6,7 @@ void loadBulletSprites(){
     assets.bulletSprites[FIRE_BALL_8] = loadSprite("../assets/textures/fire8.png");
     assets.bulletSprites[FIRE_BALL_12] = loadSprite("../assets/textures/fire12.png");
     assets.bulletSprites[BLUE_ARROW_8] = loadSprite("../assets/textures/spear8.png");
+    assets.bulletSprites[RED_CARD_12] = loadSprite("../assets/textures/card12.png");
 }
 
 void loadPlayerSprites(){

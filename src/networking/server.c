@@ -134,7 +134,6 @@ void sendGameUpdate(){
         resetTimer(&gameServer.playerPacketTimer);
     }
 }
-#include <errno.h>
 
 void serverReceiveUdp(){
     if (!gameServer.clientIsConnected) return;

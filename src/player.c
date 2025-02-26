@@ -23,6 +23,7 @@ void setupPlayers(){
     marisa.bulletSpreadAngle = 0.05;
     marisa.fireTimer = createTimer(1/marisa.fireRate);
     marisa.sprite = SPRITE_MARISA;
+    marisa.bulletSprite = BLUE_ARROW_8;
     marisa.points = 0;
     marisa.alive = true;
     marisa.connected = true;
@@ -39,6 +40,7 @@ void setupPlayers(){
     reimu.bulletSpreadAngle = 0.05;
     reimu.fireTimer = createTimer(1/reimu.fireRate);
     reimu.sprite = SPRITE_REIMU;
+    reimu.bulletSprite = RED_CARD_12;
     reimu.points = 0;
     reimu.alive = true;
     reimu.connected = false;
@@ -83,7 +85,7 @@ void playerFire(Player* player){
         dir = Vector2Rotate(dir, exitAngle);
         bullet.direction = dir;
         bullet.speed = player->bulletSpeed;
-        bullet.sprite = BLUE_ARROW_8;
+        bullet.sprite = player->bulletSprite;
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[PLAYER_FIRE]);
         resetTimer(&player->fireTimer);
