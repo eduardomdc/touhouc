@@ -150,7 +150,6 @@ void receiveUDPPlayerData(){
     players[udpPlayerData.character].score = udpPlayerData.score;
     players[udpPlayerData.character].alive = udpPlayerData.alive;
     players[udpPlayerData.character].lives = udpPlayerData.lives;
-    fprintf(stderr, "Received player data %d %d %d\n", udpPlayerData.character, udpPlayerData.alive, udpPlayerData.score);
 }
 
 void resetPacketBuffer(){
