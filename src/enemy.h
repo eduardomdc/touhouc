@@ -14,6 +14,7 @@ typedef struct Enemy {
     float radius;
     float bulletSpeed;
     float bulletRadius;
+    float moveSpeed;
     EnemySprites sprite;
     BulletSprites bulletSprite;
     bool alive;

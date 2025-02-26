@@ -5,7 +5,7 @@
 #include "enemy.h"
 #include "compact_array.h"
 
-#define MAX_ENEMIES 6
+#define MAX_ENEMIES 30
 
 typedef struct Spawner {
     Timer angelSpawnTimer;

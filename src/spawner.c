@@ -36,6 +36,10 @@ void updateSpawner(){
         spawnAngel();
         resetTimer(&spawner.angelSpawnTimer);
     }
+    if (spawner.jiangshiSpawnTimer.ready){
+        spawnJiangshi();
+        resetTimer(&spawner.jiangshiSpawnTimer);
+    }
     if (spawner.oneUpSpawnTimer.ready){
         Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
         makeOneUpItem(spawnLocation);

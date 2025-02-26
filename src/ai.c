@@ -8,13 +8,21 @@
 #include <stdio.h>
 
 void (*stateMachine[SM_TYPE_LEN])(void*) = {
-    angelStateMachine
+    angelStateMachine,
+    jiangshiStateMachine,
 };
 
 void (*angelState[ANGEL_STATE_LEN])(void*) = {
     angelStateInitial,
     angelStateMove,
     angelStateFire,
+};
+
+void (*jiangshiState[JIANGSHI_STATE_LEN])(void*) = {
+    jiangshiStateInitial,
+    jiangshiStateMove,
+    jiangshiStateSideStep,
+    jiangshiStateFire,
 };
 
 StateMachine createStateMachine(SmType machine){
@@ -51,7 +59,7 @@ void angelStateMove(void *enemy){
         angel->sm.stateTimer = createTimer(1.1);
         angel->sm.state = ANGEL_STATE_FIRE;
     } else {
-        angel->pos = Vector2MoveTowards(angel->pos, angel->sm.targetPos, angel->sm.speed*GetFrameTime());
+        angel->pos = Vector2MoveTowards(angel->pos, angel->sm.targetPos, angel->moveSpeed*GetFrameTime());
     }
 }
 
@@ -68,4 +76,50 @@ void angelStateFire(void *enemy){
     if (angel->sm.stateTimer.ready){
         angel->sm.state = ANGEL_STATE_INITIAL;
     }
+}
+
+
+// JIANGSHI STATE MACHINE
+void jiangshiStateMachine(void *enemy){
+    Enemy* jiangshi = (Enemy*) enemy;
+    jiangshiState[jiangshi->sm.state](enemy);
+}
+
+void jiangshiStateInitial(void *enemy){
+    Enemy* jiangshi = (Enemy*) enemy;
+    Vector2 target;
+    target.x = GetRandomValue(10, hRes-10);
+    target.y = GetRandomValue(10, vRes/3);
+    jiangshi->sm.targetPos = target;
+    jiangshi->sm.state = JIANGSHI_STATE_MOVE;
+}
+
+void jiangshiStateMove(void *enemy){
+    Enemy* jiangshi = (Enemy*) enemy;
+    if (Vector2DistanceSqr(jiangshi->pos, jiangshi->sm.targetPos) < 0.1){
+        jiangshi->sm.firingTimer = createTimer(0.2);
+        jiangshi->sm.stateTimer = createTimer(1);
+        jiangshi->sm.state = JIANGSHI_STATE_FIRE;
+    } else {
+        jiangshi->pos = Vector2MoveTowards(jiangshi->pos, jiangshi->sm.targetPos, jiangshi->moveSpeed*GetFrameTime());
+    }
+}
+
+void jiangshiStateFire(void* enemy){
+    Enemy* jiangshi = (Enemy*) enemy;
+    updateTimer(&jiangshi->sm.firingTimer);
+    if (jiangshi->sm.firingTimer.ready){
+        firingPatterns[SPIRAL](enemy);
+        resetTimer(&jiangshi->sm.firingTimer);
+    }
+    
+    updateTimer(&jiangshi->sm.stateTimer);
+    if (jiangshi->sm.stateTimer.ready){
+        jiangshi->sm.state = JIANGSHI_STATE_SIDE_STEP; // sidestep in future
+    }
+}
+
+void jiangshiStateSideStep(void* enemy){
+    // sidestep
+    return;
 }
