@@ -69,8 +69,13 @@ void renderJoinWindow(Menu menu){
     DrawText("Server Address", hRes/6, vRes/3, 16, WHITE);
     DrawRectangle(hRes/6, vRes/3+32, 20*16, 16, WHITE);
     DrawText(menu.ipBox.text, hRes/6, vRes/3+32, 16, BLACK);
-    int caretPosition = MeasureText(menu.ipBox.text, 16);
-    DrawRectangle(hRes/6+caretPosition+2, vRes/3+34, 8, 12, BLACK);
+    if (menu.selectedOption == JOIN_MENU_OPTION_IP){
+        int caretPosition = MeasureText(menu.ipBox.text, 16);
+        DrawRectangle(hRes/6+caretPosition+2, vRes/3+34, 8, 12, BLACK);
+        DrawText(">", hRes/6-16, vRes/3+32, 16, WHITE);
+    } else {
+        DrawText(">", hRes/6-16, vRes/3+64, 16, WHITE);
+    }
     DrawText("Join Server", hRes/6, vRes/3+64, 16, WHITE);
     EndDrawing();
 }
