@@ -18,10 +18,15 @@ typedef enum {
     MENU_OPTION_LEN
 } MainMenuOption;
 
+typedef struct IpBox {
+    char text[MAX_SIZE_IP+1];
+    int caret;
+} IpBox;
+
 typedef struct Menu {
     MenuWindow window;
     char selectedOption;
-    char ip[39];
+    IpBox ipBox;
     bool ended;
 } Menu;
 
