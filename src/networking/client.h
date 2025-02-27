@@ -14,7 +14,7 @@ typedef struct Client {
 
 extern Client gameClient;
 
-void initClient();
+void initClient(char* ipStr);
 
 void clientReceiveTcp();
 void clientReceiveUdp();

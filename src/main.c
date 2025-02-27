@@ -11,11 +11,10 @@ void exitGame(){
     CloseWindow();
 }
 
-int main(int argc, char *argv[]){
+int main(){
     InitWindow(hRes, vRes, "TouhouC");
     SetTargetFPS(fps);
     Menu menu = {0};
-    setupGame(argv[1]);
     while(!WindowShouldClose() && !gameClosed){
         if (!menu.ended){
             runMenu(&menu);

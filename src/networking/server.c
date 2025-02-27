@@ -2,6 +2,7 @@
 #include "../player.h"
 #include "../bullets.h"
 #include "packets.h"
+#include "../touhou.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
@@ -34,7 +35,11 @@ void initServer(){
     fcntl(gameServer.serverTCPSock, F_SETFL, flags | O_NONBLOCK);
 
     gameServer.tcpServerAddress.sin_family = AF_INET;
+    #ifdef DEBUG
     gameServer.tcpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
+    #else
+    gameServer.tcpServerAddress.sin_addr.s_addr = inet_addr(INADDR_ANY); // all interfaces
+    #endif
     gameServer.tcpServerAddress.sin_port = htons(TCP_PORT);
     socklen_t addrlen = sizeof(gameServer.tcpServerAddress);
     if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.tcpServerAddress, addrlen) < 0) {
@@ -53,7 +58,11 @@ void initServer(){
         return;
     }
     gameServer.udpServerAddress.sin_family = AF_INET;
-    gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
+    #ifdef DEBUG
+    gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP);
+    #else
+    gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(INADDR_ANY); // all interfaces
+    #endif
     gameServer.udpServerAddress.sin_port = htons(UDP_PORT);
     addrlen = sizeof(gameServer.udpServerAddress);
     if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.udpServerAddress, addrlen) < 0) {

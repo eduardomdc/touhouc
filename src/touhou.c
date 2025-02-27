@@ -17,9 +17,10 @@
 bool gameOver;
 bool isServer = false;
 bool gameClosed = false;
+char serverIpStr[MAX_SIZE_IP+1] = {0};
 
-void setupGame(char* hostType){
-    if (strcmp(hostType, "server") == 0){
+void setupGame(bool server, char* ipStr){
+    if (server){
         isServer = true;
         SetRandomSeed(time(NULL));
         initServer(); // server side
@@ -30,7 +31,7 @@ void setupGame(char* hostType){
         setupSpawner();
         PlayMusicStream(assets.bgm[DESERTED_HELL]);
     }
-    else if (strcmp(hostType, "client") == 0){
+    else if (!server){
         SetRandomSeed(time(NULL));
         InitAudioDevice();
         gameOver = false;
@@ -38,7 +39,7 @@ void setupGame(char* hostType){
         setupPlayers();
         setupSpawner();
         PlayMusicStream(assets.bgm[DESERTED_HELL]);
-        initClient();
+        initClient(ipStr);
     }
 }
 

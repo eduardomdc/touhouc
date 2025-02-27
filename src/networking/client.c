@@ -5,19 +5,24 @@
 #include <fcntl.h>
 #include "server.h"
 #include "packets.h"
+#include "../touhou.h"
 
 
 Client gameClient = {0};
 
-void initClient(){
+void initClient(char* ipStr){
     if ((gameClient.tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         fprintf(stderr, "Failed to create client tcp socket\n");
         return;
     }
     gameClient.tcpServerAddress.sin_family = AF_INET;
     gameClient.tcpServerAddress.sin_port = htons(TCP_PORT);
+    #ifdef DEBUG
     inet_pton(AF_INET, SERVER_IP, &gameClient.tcpServerAddress.sin_addr);
-    
+    #else
+    inet_pton(AF_INET, ipStr, &gameClient.tcpServerAddress.sin_addr);
+    #endif
+
     int status;
     if ((
         status = connect(
@@ -36,7 +41,11 @@ void initClient(){
     // set up udp address
     gameClient.udpServerAddress.sin_family = AF_INET;
     gameClient.udpServerAddress.sin_port = htons(UDP_PORT);
+    #ifdef DEBUG
     gameClient.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP);
+    #else
+    gameClient.udpServerAddress.sin_addr.s_addr = inet_addr(ipStr);
+    #endif
 
     //set up UDP sock
     if ((gameClient.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
@@ -60,7 +69,11 @@ void initClient(){
 
     gameClient.clientAddress.sin_family = AF_INET;
     gameClient.clientAddress.sin_port = htons(UDP_PORT);
-    gameClient.clientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);;
+    #ifdef DEBUG
+    gameClient.clientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
+    #else
+    gameClient.clientAddress.sin_addr.s_addr = inet_addr(INADDR_ANY);
+    #endif
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind client udp socket to address\n");

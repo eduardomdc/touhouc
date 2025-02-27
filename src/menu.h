@@ -1,9 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#define MAX_SIZE_IP 39 // ipv6 has 39 characters
-
 #include <raylib.h>
+#include "touhou.h"
 
 typedef enum {
     MENU_WINDOW_MAIN,
@@ -12,11 +11,17 @@ typedef enum {
 } MenuWindow;
 
 typedef enum {
-    MENU_OPTION_HOST,
-    MENU_OPTION_JOIN,
-    MENU_OPTION_QUIT,
-    MENU_OPTION_LEN
+    MAIN_MENU_OPTION_HOST,
+    MAIN_MENU_OPTION_JOIN,
+    MAIN_MENU_OPTION_QUIT,
+    MAIN_MENU_OPTION_LEN
 } MainMenuOption;
+
+typedef enum {
+    JOIN_MENU_OPTION_IP,
+    JOIN_MENU_OPTION_JOIN,
+    JOIN_MENU_OPTION_LEN
+} JoinMenuOption;
 
 typedef struct IpBox {
     char text[MAX_SIZE_IP+1];

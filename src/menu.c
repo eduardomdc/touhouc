@@ -31,24 +31,26 @@ void windowMain(Menu* menu){
         case KEY_UP:
             menu->selectedOption--;
             if (menu->selectedOption < 0){
-                menu->selectedOption = MENU_OPTION_LEN-1;
+                menu->selectedOption = MAIN_MENU_OPTION_LEN-1;
             }
             break;
         case KEY_DOWN:
             menu->selectedOption++;
-            if (menu->selectedOption >= MENU_OPTION_LEN){
+            if (menu->selectedOption >= MAIN_MENU_OPTION_LEN){
                 menu->selectedOption = 0;
             }
             break;
         case KEY_SPACE:
             switch (menu->selectedOption){
-            case MENU_OPTION_HOST:
+            case MAIN_MENU_OPTION_HOST:
                 menu->ended = true;
+                setupGame(true, "");
                 break;
-            case MENU_OPTION_JOIN:
+            case MAIN_MENU_OPTION_JOIN:
+                menu->selectedOption = 0;
                 menu->window = MENU_WINDOW_JOIN;
                 break;
-            case MENU_OPTION_QUIT:
+            case MAIN_MENU_OPTION_QUIT:
                 menu->ended = true;
                 gameClosed = true;
                 break;
@@ -75,14 +77,38 @@ void renderJoinWindow(Menu menu){
 
 void windowJoin(Menu* menu){
     renderJoinWindow(*menu);
-    int key = GetCharPressed();
-    while (key) {
-        if ((key >= 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
-        {
-            menu->ipBox.text[menu->ipBox.caret] = (char)key;
-            menu->ipBox.text[menu->ipBox.caret+1] = '\0';
-            menu->ipBox.caret++;
+    if (menu->selectedOption == JOIN_MENU_OPTION_IP){
+        int key = GetCharPressed();
+        while (key) {
+            if ((key >= 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
+            {
+                menu->ipBox.text[menu->ipBox.caret] = (char)key;
+                menu->ipBox.text[menu->ipBox.caret+1] = '\0';
+                menu->ipBox.caret++;
+            }
+            key = GetCharPressed();
         }
-        key = GetCharPressed();
+        if (IsKeyPressed(KEY_BACKSPACE)){
+            menu->ipBox.caret--;
+            if (menu->ipBox.caret < 0) menu->ipBox.caret = 0;
+            menu->ipBox.text[menu->ipBox.caret] = '\0';
+        }
+    } else if (menu->selectedOption == JOIN_MENU_OPTION_JOIN){
+        if (IsKeyPressed(KEY_SPACE)){
+            setupGame(false, menu->ipBox.text);
+            menu->ended = true;
+        }
+    }
+    if (IsKeyPressed(KEY_UP)){
+        menu->selectedOption--;
+        if (menu->selectedOption < 0){
+            menu->selectedOption = JOIN_MENU_OPTION_LEN-1;
+        }
+    }
+    if (IsKeyPressed(KEY_DOWN)){
+        menu->selectedOption++;
+        if (menu->selectedOption >= JOIN_MENU_OPTION_LEN){
+            menu->selectedOption = 0;
+        }
     }
 }
