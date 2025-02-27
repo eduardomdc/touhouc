@@ -16,6 +16,7 @@
 
 bool gameOver;
 bool isServer = false;
+bool gameClosed = false;
 
 void setupGame(char* hostType){
     if (strcmp(hostType, "server") == 0){

@@ -18,5 +18,6 @@ bool onScreen(Vector2 pos, float radius);
 
 extern bool gameOver;
 extern bool isServer;
+extern bool gameClosed;
 
 #endif
