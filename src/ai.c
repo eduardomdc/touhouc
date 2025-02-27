@@ -68,7 +68,7 @@ void angelStateFire(void *enemy){
     Enemy* angel = (Enemy*) enemy;
     updateTimer(&angel->sm.firingTimer);
     if (angel->sm.firingTimer.ready){
-        firingPatterns[SPIRAL](enemy);
+        firingPatterns[FIRING_SPIRAL](enemy);
         resetTimer(&angel->sm.firingTimer);
     }
     
@@ -109,17 +109,22 @@ void jiangshiStateFire(void* enemy){
     Enemy* jiangshi = (Enemy*) enemy;
     updateTimer(&jiangshi->sm.firingTimer);
     if (jiangshi->sm.firingTimer.ready){
-        firingPatterns[SPIRAL](enemy);
+        firingPatterns[FIRING_AT_PLAYER](enemy);
         resetTimer(&jiangshi->sm.firingTimer);
     }
     
     updateTimer(&jiangshi->sm.stateTimer);
     if (jiangshi->sm.stateTimer.ready){
-        jiangshi->sm.state = JIANGSHI_STATE_SIDE_STEP; // sidestep in future
+        jiangshi->sm.state = JIANGSHI_STATE_SIDE_STEP;
     }
 }
 
 void jiangshiStateSideStep(void* enemy){
-    // sidestep
+    Enemy* jiangshi = (Enemy*) enemy;
+    Vector2 target;
+    target.x = Clamp(jiangshi->pos.x + GetRandomValue(-200, 200), 10, hRes-10);
+    target.y = jiangshi->pos.y;
+    jiangshi->sm.targetPos = target;
+    jiangshi->sm.state = JIANGSHI_STATE_MOVE;
     return;
 }
