@@ -107,10 +107,18 @@ void serverCheckForClientConnection(){
     } else {
         gameServer.tcpClientAddress.sin_family = AF_INET;
         gameServer.tcpClientAddress.sin_port = htons(TCP_PORT);
+        #ifdef DEBUG
         gameServer.tcpClientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
+        #else
+        gameServer.tcpClientAddress.sin_addr.s_addr = tempAddr.sin_addr.s_addr;
+        #endif
         gameServer.udpClientAddress.sin_family = AF_INET;
         gameServer.udpClientAddress.sin_port = htons(UDP_PORT);
+        #ifdef DEBUG
         gameServer.udpClientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
+        #else
+        gameServer.udpClientAddress.sin_addr.s_addr = tempAddr.sin_addr.s_addr;
+        #endif
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
         char ipAddr[INET_ADDRSTRLEN];
