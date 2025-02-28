@@ -97,11 +97,10 @@ void renderJoinWindow(Menu menu){
     if (menu.selectedOption == JOIN_MENU_OPTION_IP){
         int caretPosition = MeasureText(menu.ipBox.text, 16);
         DrawRectangle(hRes/6+caretPosition+2, vRes/3+34, 8, 12, BLACK);
-        DrawText(">", hRes/6-16, vRes/3+32, 16, WHITE);
-    } else {
-        DrawText(">", hRes/6-16, vRes/3+64, 16, WHITE);
     }
+    DrawText(">", hRes/6-16, vRes/3+32+32*menu.selectedOption, 16, WHITE);
     DrawText("Join Server", hRes/6, vRes/3+64, 16, WHITE);
+    DrawText("Back", hRes/6, vRes/3+96, 16, WHITE);
     EndDrawing();
 }
 
@@ -109,7 +108,8 @@ void renderJoinWindow(Menu menu){
 
 void windowJoin(Menu* menu){
     renderJoinWindow(*menu);
-    if (menu->selectedOption == JOIN_MENU_OPTION_IP){
+    switch (menu->selectedOption){
+    case JOIN_MENU_OPTION_IP:
         int key = GetCharPressed();
         while (key) {
             if ((key > 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
@@ -127,7 +127,8 @@ void windowJoin(Menu* menu){
             if (menu->ipBox.caret < 0) menu->ipBox.caret = 0;
             menu->ipBox.text[menu->ipBox.caret] = '\0';
         }
-    } else if (menu->selectedOption == JOIN_MENU_OPTION_JOIN){
+        break;
+    case JOIN_MENU_OPTION_JOIN:
         if (IsKeyPressed(KEY_SPACE)){
             if (initClient(menu->ipBox.text)){
                 closeMenu(menu);
@@ -136,6 +137,12 @@ void windowJoin(Menu* menu){
             } else {
                 // failed to connect
             }
+        }
+        break;
+    case JOIN_MENU_OPTION_BACK:
+        if (IsKeyPressed(KEY_SPACE)){
+            menu->window = MENU_WINDOW_MAIN;
+            menu->selectedOption = 0;
         }
     }
     if (IsKeyPressed(KEY_UP)){

@@ -20,6 +20,7 @@ typedef enum {
 typedef enum {
     JOIN_MENU_OPTION_IP,
     JOIN_MENU_OPTION_JOIN,
+    JOIN_MENU_OPTION_BACK,
     JOIN_MENU_OPTION_LEN
 } JoinMenuOption;
 
