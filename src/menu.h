@@ -7,6 +7,8 @@
 typedef enum {
     MENU_WINDOW_MAIN,
     MENU_WINDOW_JOIN,
+    MENU_WINDOW_FAILED_TO_HOST,
+    MENU_WINDOW_FAILED_TO_JOIN,
     MENU_WINDOW_LEN
 } MenuWindow;
 
@@ -43,5 +45,7 @@ extern void (*runWindow[MENU_WINDOW_LEN])(Menu* menu);
 
 void windowMain(Menu* menu);
 void windowJoin(Menu* menu);
+void windowFailedToHost(Menu* menu);
+void windowFailedToJoin(Menu* menu);
 
 #endif

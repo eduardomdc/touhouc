@@ -6,7 +6,9 @@
 
 void (*runWindow[MENU_WINDOW_LEN])() = {
     windowMain,
-    windowJoin
+    windowJoin,
+    windowFailedToHost,
+    windowFailedToJoin,
 };
 
 void runMenu(Menu* menu){
@@ -31,10 +33,11 @@ void renderMainWindow(Menu menu){
     ClearBackground(BLACK);
     DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_MENU].tex, 0, 0, WHITE);
     DrawText("TouhouCoop", hRes/3-32, vRes/3, 32, WHITE);
-    DrawText("Host Game", hRes/3, vRes/2, 16, WHITE);
-    DrawText("Join Game", hRes/3, vRes/2+16, 16, WHITE);
-    DrawText("Quit Game", hRes/3, vRes/2+32, 16, WHITE);
-    DrawText(">", hRes/3-16, vRes/2+16*(menu.selectedOption), 16, WHITE);
+    DrawText("The pure C coop Touhou experience", hRes/3-32, vRes/3+32, 12, WHITE);
+    DrawText("Host Game", hRes/3, vRes/2, 18, WHITE);
+    DrawText("Join Game", hRes/3, vRes/2+18, 18, WHITE);
+    DrawText("Quit Game", hRes/3, vRes/2+18*2, 18, WHITE);
+    DrawText(">", hRes/3-18, vRes/2+18*(menu.selectedOption), 18, WHITE);
     EndDrawing();
 }
 
@@ -66,7 +69,8 @@ void windowMain(Menu* menu){
                     isServer = true;
                     setupGame();
                 } else {
-                    // fail
+                    PlaySound(assets.soundEffects[SFX_BACKSPACE]);
+                    menu->window = MENU_WINDOW_FAILED_TO_HOST;
                 }
                 
                 break;
@@ -135,7 +139,8 @@ void windowJoin(Menu* menu){
                 isServer = false;
                 setupGame();
             } else {
-                // failed to connect
+                PlaySound(assets.soundEffects[SFX_BACKSPACE]);
+                menu->window = MENU_WINDOW_FAILED_TO_JOIN;
             }
         }
         break;
@@ -158,5 +163,33 @@ void windowJoin(Menu* menu){
         if (menu->selectedOption >= JOIN_MENU_OPTION_LEN){
             menu->selectedOption = 0;
         }
+    }
+}
+
+void windowFailedToHost(Menu* menu){
+    BeginDrawing();
+    ClearBackground(BLACK);
+    DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_MENU].tex, 0, 0, RED);
+    DrawText("Failed to host server :(", hRes/6, vRes/3+32, 18, WHITE);
+    EndDrawing();
+    int key = GetKeyPressed();
+    if (key == KEY_SPACE){
+        PlaySound(assets.soundEffects[SFX_OK]);
+        menu->selectedOption = 0;
+        menu->window = MENU_WINDOW_MAIN;
+    }
+}
+
+void windowFailedToJoin(Menu* menu){
+    BeginDrawing();
+    ClearBackground(BLACK);
+    DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_MENU].tex, 0, 0, RED);
+    DrawText("Server unreachable :(", hRes/6, vRes/3+32, 18, WHITE);
+    EndDrawing();
+    int key = GetKeyPressed();
+    if (key == KEY_SPACE){
+        PlaySound(assets.soundEffects[SFX_OK]);
+        menu->selectedOption = 0;
+        menu->window = MENU_WINDOW_JOIN;
     }
 }
