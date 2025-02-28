@@ -125,17 +125,21 @@ void renderUI(){
         renderSprite(lifeIcon, lifeIconPos);
         lifeIconPos.x += lifeIcon->tex.width;
     }
-    lifeIconPos.x = 0;
-    lifeIconPos.y -= lifeIcon->tex.height;
-    for (int i=0; i < players[REIMU].lives; i++){
-        renderSprite(lifeIcon, lifeIconPos);
-        lifeIconPos.x += lifeIcon->tex.width;
+    if (players[REIMU].connected){
+        lifeIconPos.x = 0;
+        lifeIconPos.y -= lifeIcon->tex.height;
+        for (int i=0; i < players[REIMU].lives; i++){
+            renderSprite(lifeIcon, lifeIconPos);
+            lifeIconPos.x += lifeIcon->tex.width;
+        }
     }
     char score_text[28];
     sprintf(score_text, "P1 Score: %d", players[MARISA].score);
     DrawText(score_text, 0, 0, 18, WHITE);
-    sprintf(score_text, "P2 Score: %d", players[REIMU].score);
-    DrawText(score_text, 0, 20, 18, WHITE);
+    if (players[REIMU].connected){
+        sprintf(score_text, "P2 Score: %d", players[REIMU].score);
+        DrawText(score_text, 0, 20, 18, WHITE);
+    }
 }
 
 void renderGame(){
