@@ -34,7 +34,7 @@ void setupGame(){
         setupSpawner();
         //initClient(ipStr);
     }
-    PlayMusicStream(assets.bgm[DESERTED_HELL]);
+    PlayMusicStream(assets.bgm[BGM_RUINS]);
 }
 
 Input handleInput(){
@@ -76,7 +76,7 @@ void updateGame(Input input){
             sendUDPInputData(input, REIMU);
         }
     }
-    UpdateMusicStream(assets.bgm[DESERTED_HELL]);
+    UpdateMusicStream(assets.bgm[BGM_RUINS]);
     // physics
     float delta = GetFrameTime();
     physicsUpdateItems(delta);

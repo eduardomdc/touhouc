@@ -34,12 +34,13 @@ void loadSoundEffects(){
     assets.soundEffects[PLAYER_FIRE] = LoadSound("../assets/sounds/player_fire.wav");
     assets.soundEffects[PLAYER_HIT] = LoadSound("../assets/sounds/player_hit.wav");
     assets.soundEffects[PLAYER_DEATH] = LoadSound("../assets/sounds/player_death.wav");
-    assets.soundEffects[ENEMY_HIT] = LoadSound("../assets/sounds/enemy_hit.wav");
+    assets.soundEffects[SFX_ENEMY_HIT] = LoadSound("../assets/sounds/enemy_hit.wav");
+    assets.soundEffects[SFX_ENEMY_DEATH] = LoadSound("../assets/sounds/enemy_death.wav");
     assets.soundEffects[POINT_PICKUP] = LoadSound("../assets/sounds/point_pickup.wav");
     assets.soundEffects[POWERUP_PICKUP] = LoadSound("../assets/sounds/powerup.wav");
-    assets.soundEffects[SOUND_EFFECT_SELECT] = LoadSound("../assets/sounds/select.wav");
-    assets.soundEffects[SOUND_EFFECT_OK] = LoadSound("../assets/sounds/ok.wav");
-    assets.soundEffects[SOUND_EFFECT_BACKSPACE] = LoadSound("../assets/sounds/backspace.wav");
+    assets.soundEffects[SFX_SELECT] = LoadSound("../assets/sounds/select.wav");
+    assets.soundEffects[SFX_OK] = LoadSound("../assets/sounds/ok.wav");
+    assets.soundEffects[SFX_BACKSPACE] = LoadSound("../assets/sounds/backspace.wav");
 }
 
 void loadItemSprites(){
@@ -49,8 +50,8 @@ void loadItemSprites(){
 }
 
 void loadBGM(){
-    assets.bgm[DESERTED_HELL] = LoadMusicStream("../assets/sounds/bgm_deserted_hell.wav");
-    assets.bgm[MENU_THEME] = LoadMusicStream("../assets/sounds/al_de_baran.mp3");
+    assets.bgm[BGM_RUINS] = LoadMusicStream("../assets/sounds/bgm_ruins.mp3");
+    assets.bgm[MENU_THEME] = LoadMusicStream("../assets/sounds/bgm_al_de_baran.mp3");
 }
 
 void loadAssets(){

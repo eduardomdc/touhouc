@@ -13,6 +13,7 @@ Enemy makeAngel(Vector2 pos){
     enemy.moveSpeed = 100;
     enemy.bulletRadius = 8;
     enemy.bulletSprite = FIRE_BALL_8;
+    enemy.hp = 50;
     enemy.sm = createStateMachine(SM_TYPE_ANGEL);
     return enemy;
 }
@@ -29,6 +30,7 @@ Enemy makeJiangshi(Vector2 pos){
     enemy.bulletSpeed = 150;
     enemy.bulletRadius = 15;
     enemy.bulletSprite = BLUE_FIRE_15;
+    enemy.hp = 100;
     enemy.sm = createStateMachine(SM_TYPE_JIANGSHI);
     return enemy;
 }

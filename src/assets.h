@@ -47,17 +47,18 @@ typedef enum {
     PLAYER_FIRE,
     PLAYER_HIT,
     PLAYER_DEATH,
-    ENEMY_HIT,
+    SFX_ENEMY_HIT,
+    SFX_ENEMY_DEATH,
     POINT_PICKUP,
     POWERUP_PICKUP,
-    SOUND_EFFECT_SELECT,
-    SOUND_EFFECT_OK,
-    SOUND_EFFECT_BACKSPACE,
-    SOUND_EFFECTS_LEN
+    SFX_SELECT,
+    SFX_OK,
+    SFX_BACKSPACE,
+    SFXS_LEN
 } SoundEffects;
 
 typedef enum {
-    DESERTED_HELL,
+    BGM_RUINS,
     MENU_THEME,
     BGM_LEN
 } BGM;
@@ -69,7 +70,7 @@ typedef struct {
     Sprite backgroundSprites[BACKGROUND_SPRITES_LEN];
     Sprite interfaceSprites[INTERFACE_SPRITES_LEN];
     Sprite itemSprites[ITEM_SPRITES_LEN];
-    Sound soundEffects[SOUND_EFFECTS_LEN];
+    Sound soundEffects[SFXS_LEN];
     Music bgm[BGM_LEN];
 } Assets;
 

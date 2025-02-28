@@ -48,17 +48,17 @@ void windowMain(Menu* menu){
             if (menu->selectedOption < 0){
                 menu->selectedOption = MAIN_MENU_OPTION_LEN-1;
             }
-            PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
+            PlaySound(assets.soundEffects[SFX_SELECT]);
             break;
         case KEY_DOWN:
             menu->selectedOption++;
             if (menu->selectedOption >= MAIN_MENU_OPTION_LEN){
                 menu->selectedOption = 0;
             }
-            PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
+            PlaySound(assets.soundEffects[SFX_SELECT]);
             break;
         case KEY_SPACE:
-            PlaySound(assets.soundEffects[SOUND_EFFECT_OK]);
+            PlaySound(assets.soundEffects[SFX_OK]);
             switch (menu->selectedOption){
             case MAIN_MENU_OPTION_HOST:
                 if (initServer()){
@@ -114,7 +114,7 @@ void windowJoin(Menu* menu){
         while (key) {
             if ((key > 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
             {
-                PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
+                PlaySound(assets.soundEffects[SFX_SELECT]);
                 menu->ipBox.text[menu->ipBox.caret] = (char)key;
                 menu->ipBox.text[menu->ipBox.caret+1] = '\0';
                 menu->ipBox.caret++;
@@ -123,7 +123,7 @@ void windowJoin(Menu* menu){
         }
         if (IsKeyPressed(KEY_BACKSPACE)){
             menu->ipBox.caret--;
-            PlaySound(assets.soundEffects[SOUND_EFFECT_BACKSPACE]);
+            PlaySound(assets.soundEffects[SFX_BACKSPACE]);
             if (menu->ipBox.caret < 0) menu->ipBox.caret = 0;
             menu->ipBox.text[menu->ipBox.caret] = '\0';
         }
@@ -146,14 +146,14 @@ void windowJoin(Menu* menu){
         }
     }
     if (IsKeyPressed(KEY_UP)){
-        PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
+        PlaySound(assets.soundEffects[SFX_SELECT]);
         menu->selectedOption--;
         if (menu->selectedOption < 0){
             menu->selectedOption = JOIN_MENU_OPTION_LEN-1;
         }
     }
     if (IsKeyPressed(KEY_DOWN)){
-        PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
+        PlaySound(assets.soundEffects[SFX_SELECT]);
         menu->selectedOption++;
         if (menu->selectedOption >= JOIN_MENU_OPTION_LEN){
             menu->selectedOption = 0;

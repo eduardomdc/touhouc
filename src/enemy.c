@@ -12,13 +12,24 @@ void updateEnemy(Enemy* enemy){
     stateMachine[enemy->sm.machine](enemy);
 }
 
+void enemyGetHit(int idx, int damage){
+    Enemy* enemy = &enemyList[idx];
+    enemy->hp -= damage;
+    PlaySound(assets.soundEffects[SFX_ENEMY_HIT]);
+    sendUDPSfx(SFX_ENEMY_HIT);
+    if (enemy->hp <= 0){
+        enemyDie(idx);
+    }
+}
+
 void enemyDie(int idx){
     Enemy* enemy = &enemyList[idx];
     enemy->alive = false;
     makePointItem(enemy->pos);
     compactRemoveItem(&compactEnemyArray, idx);
     //sendTcpEnemyDeath();
-    sendUDPSfx(ENEMY_HIT);
+    PlaySound(assets.soundEffects[SFX_ENEMY_DEATH]);
+    sendUDPSfx(SFX_ENEMY_DEATH);
 }
 
 void enemyFire(Enemy* enemy){

@@ -15,6 +15,7 @@ typedef struct Enemy {
     float bulletSpeed;
     float bulletRadius;
     float moveSpeed;
+    int hp;
     EnemySprites sprite;
     BulletSprites bulletSprite;
     bool alive;
@@ -24,6 +25,7 @@ extern Sprite enemySprite;
 
 void renderEnemy(Enemy enemy);
 void updateEnemy(Enemy* enemy);
+void enemyGetHit(int idx, int damage);
 void enemyDie(int idx);
 void enemyFire(Enemy* enemy);
 

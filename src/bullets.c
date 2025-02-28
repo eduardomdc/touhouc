@@ -67,9 +67,8 @@ void updatePlayerBullets(){
         Bullet bullet = bullets[i];
         int enemyHit = checkCollisionWithEnemy(bullet);
         if (enemyHit != -1){
-            enemyDie(enemyHit);
+            enemyGetHit(enemyHit, players[bullet.player].damage);
             compactRemoveItem(bulletCArray, i);
-            PlaySound(assets.soundEffects[ENEMY_HIT]);
             continue;
         }
         if (!onScreen(bullet.pos, bullet.radius)){

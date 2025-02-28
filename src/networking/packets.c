@@ -218,7 +218,7 @@ void sendTcpEnemyDeath(){
 }
 
 void receiveTcpEnemyDeath(){
-    PlaySound(assets.soundEffects[ENEMY_HIT]);
+    PlaySound(assets.soundEffects[SFX_ENEMY_DEATH]);
 }
 
 void sendUDPInputData(Input input, PlayerCharacter character){

@@ -21,6 +21,7 @@ typedef struct Bullet {
     float speed;
     float radius;
     BulletSprites sprite;
+    char player; // if player bullet which player fired it (for dmg calculation)
 } Bullet;
 
 void renderBulletCArray(CompactArray compactBulletArray);

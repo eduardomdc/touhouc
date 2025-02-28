@@ -19,6 +19,7 @@ void setupPlayers(){
     marisa.bulletSpeed = 1000;
     marisa.bulletRadius = 5;
     marisa.fireRate = 15;
+    marisa.damage = 10;
     marisa.lives = 3;
     marisa.bulletSpreadAngle = 0.05;
     marisa.fireTimer = createTimer(1/marisa.fireRate);
@@ -37,6 +38,7 @@ void setupPlayers(){
     reimu.bulletSpeed = 1000;
     reimu.bulletRadius = 5;
     reimu.fireRate = 15;
+    reimu.damage = 10;
     reimu.lives = 3;
     reimu.bulletSpreadAngle = 0.05;
     reimu.fireTimer = createTimer(1/reimu.fireRate);
@@ -83,6 +85,7 @@ void renderPlayers(){
 void playerFire(Player* player){
     if (player->fireTimer.ready){
         Bullet bullet;
+        bullet.player = player->character;
         bullet.pos = player->pos;
         bullet.radius = player->bulletRadius;
         Vector2 dir = {0, -1};

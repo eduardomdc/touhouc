@@ -24,6 +24,7 @@ typedef struct Player {
     float bulletSpeed;
     float bulletRadius;
     float bulletSpreadAngle;
+    float damage;
     float fireRate;
     PlayerSprites sprite;
     BulletSprites bulletSprite;
