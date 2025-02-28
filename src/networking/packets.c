@@ -23,7 +23,7 @@ void sendTcpPlayerHit(PlayerCharacter character){
 
 void receiveTcpPlayerHit(){
     // future get which player for hit effects
-    PlaySound(assets.soundEffects[PLAYER_HIT]);
+    PlaySound(assets.soundEffects[SFX_PLAYER_HIT]);
 }
 
 void sendTcpPlayerData(PlayerCharacter character, Player player){

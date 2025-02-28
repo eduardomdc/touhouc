@@ -96,9 +96,9 @@ void playerFire(Player* player){
         bullet.speed = player->bulletSpeed;
         bullet.sprite = player->bulletSprite;
         compactAddItem(&compactPlayerBulletArray, &bullet);
-        PlaySound(assets.soundEffects[PLAYER_FIRE]);
+        PlaySound(assets.soundEffects[SFX_PLAYER_FIRE]);
         resetTimer(&player->fireTimer);
-        sendUDPSfx(PLAYER_FIRE);
+        sendUDPSfx(SFX_PLAYER_FIRE);
     }
 }
 
@@ -116,7 +116,7 @@ void playerPickUp(short item, Player* player){
 void playerGetHit(Player* player){
     if (player->lives > 0){
         player->lives -= 1;
-        PlaySound(assets.soundEffects[PLAYER_HIT]);
+        PlaySound(assets.soundEffects[SFX_PLAYER_HIT]);
         sendTcpPlayerHit(player->character);
     } else if (player->lives == 0 && !gameOver){
         //gameOver = true;

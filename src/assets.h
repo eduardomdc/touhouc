@@ -44,9 +44,9 @@ typedef enum {
 } InterfaceSprites;
 
 typedef enum {
-    PLAYER_FIRE,
-    PLAYER_HIT,
-    PLAYER_DEATH,
+    SFX_PLAYER_FIRE,
+    SFX_PLAYER_HIT,
+    SFX_PLAYER_DEATH,
     SFX_ENEMY_HIT,
     SFX_ENEMY_DEATH,
     POINT_PICKUP,

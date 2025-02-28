@@ -31,9 +31,9 @@ void loadBackgroundSprites(){
 }
 
 void loadSoundEffects(){
-    assets.soundEffects[PLAYER_FIRE] = LoadSound("../assets/sounds/player_fire.wav");
-    assets.soundEffects[PLAYER_HIT] = LoadSound("../assets/sounds/player_hit.wav");
-    assets.soundEffects[PLAYER_DEATH] = LoadSound("../assets/sounds/player_death.wav");
+    assets.soundEffects[SFX_PLAYER_FIRE] = LoadSound("../assets/sounds/player_fire.wav");
+    assets.soundEffects[SFX_PLAYER_HIT] = LoadSound("../assets/sounds/player_hit.mp3");
+    assets.soundEffects[SFX_PLAYER_DEATH] = LoadSound("../assets/sounds/player_death.wav");
     assets.soundEffects[SFX_ENEMY_HIT] = LoadSound("../assets/sounds/enemy_hit.wav");
     assets.soundEffects[SFX_ENEMY_DEATH] = LoadSound("../assets/sounds/enemy_death.wav");
     assets.soundEffects[POINT_PICKUP] = LoadSound("../assets/sounds/point_pickup.wav");
