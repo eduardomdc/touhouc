@@ -4,6 +4,9 @@ project(TouhouC C)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+#debug
+#set(CMAKE_BUILD_TYPE Debug)
+
 find_package(raylib REQUIRED)
 
 set(MY_SOURCES

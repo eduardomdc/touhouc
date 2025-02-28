@@ -72,7 +72,7 @@ void initClient(char* ipStr){
     #ifdef DEBUG
     gameClient.clientAddress.sin_addr.s_addr = inet_addr(CLIENT_IP);
     #else
-    gameClient.clientAddress.sin_addr.s_addr = inet_addr(INADDR_ANY);
+    gameClient.clientAddress.sin_addr.s_addr = INADDR_ANY;
     #endif
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {

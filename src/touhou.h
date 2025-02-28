@@ -6,7 +6,7 @@
 
 #define MAX_SIZE_IP 39 // ipv6 has 39 characters
 
-#define DEBUG
+//#define DEBUG
 
 static const int vRes = 650;
 static const int hRes = 500;

@@ -38,7 +38,7 @@ void initServer(){
     #ifdef DEBUG
     gameServer.tcpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP); // all interfaces
     #else
-    gameServer.tcpServerAddress.sin_addr.s_addr = inet_addr(INADDR_ANY); // all interfaces
+    gameServer.tcpServerAddress.sin_addr.s_addr = INADDR_ANY; // all interfaces
     #endif
     gameServer.tcpServerAddress.sin_port = htons(TCP_PORT);
     socklen_t addrlen = sizeof(gameServer.tcpServerAddress);
@@ -61,7 +61,7 @@ void initServer(){
     #ifdef DEBUG
     gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP);
     #else
-    gameServer.udpServerAddress.sin_addr.s_addr = inet_addr(INADDR_ANY); // all interfaces
+    gameServer.udpServerAddress.sin_addr.s_addr = INADDR_ANY; // all interfaces
     #endif
     gameServer.udpServerAddress.sin_port = htons(UDP_PORT);
     addrlen = sizeof(gameServer.udpServerAddress);
