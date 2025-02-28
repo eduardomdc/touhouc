@@ -20,7 +20,7 @@ void initClient(char* ipStr){
     #ifdef DEBUG
     inet_pton(AF_INET, SERVER_IP, &gameClient.tcpServerAddress.sin_addr);
     #else
-    inet_pton(AF_INET, ipStr, &gameClient.tcpServerAddress.sin_addr);
+    inet_pton(AF_INET, "192.168.0.227", &gameClient.tcpServerAddress.sin_addr);
     #endif
 
     int status;
@@ -44,7 +44,7 @@ void initClient(char* ipStr){
     #ifdef DEBUG
     gameClient.udpServerAddress.sin_addr.s_addr = inet_addr(SERVER_IP);
     #else
-    gameClient.udpServerAddress.sin_addr.s_addr = inet_addr(ipStr);
+    gameClient.udpServerAddress.sin_addr.s_addr = inet_addr("192.168.0.227");
     #endif
 
     //set up UDP sock

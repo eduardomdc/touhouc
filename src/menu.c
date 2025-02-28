@@ -80,12 +80,14 @@ void renderJoinWindow(Menu menu){
     EndDrawing();
 }
 
+#include <stdio.h>
+
 void windowJoin(Menu* menu){
     renderJoinWindow(*menu);
     if (menu->selectedOption == JOIN_MENU_OPTION_IP){
         int key = GetCharPressed();
         while (key) {
-            if ((key >= 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
+            if ((key > 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
             {
                 menu->ipBox.text[menu->ipBox.caret] = (char)key;
                 menu->ipBox.text[menu->ipBox.caret+1] = '\0';
