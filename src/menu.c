@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "touhou.h"
+#include "assets.h"
 
 void (*runWindow[MENU_WINDOW_LEN])() = {
     windowMain,
@@ -7,14 +8,26 @@ void (*runWindow[MENU_WINDOW_LEN])() = {
 };
 
 void runMenu(Menu* menu){
+    UpdateMusicStream(assets.bgm[MENU_THEME]);
     runWindow[menu->window](menu);
 }
 
+Menu enterMenu(){
+    Menu menu = {0};
+    PlayMusicStream(assets.bgm[MENU_THEME]);
+    return menu;
+}
+
+void closeMenu(Menu* menu){
+    StopMusicStream(assets.bgm[MENU_THEME]);
+    menu->ended = true;
+}
 // MAIN WINDOW
 
 void renderMainWindow(Menu menu){
     BeginDrawing();
     ClearBackground(BLACK);
+    DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_MENU].tex, 0, 0, WHITE);
     DrawText("TouhouCoop", hRes/3-32, vRes/3, 32, WHITE);
     DrawText("Host Game", hRes/3, vRes/2, 16, WHITE);
     DrawText("Join Game", hRes/3, vRes/2+16, 16, WHITE);
@@ -33,17 +46,20 @@ void windowMain(Menu* menu){
             if (menu->selectedOption < 0){
                 menu->selectedOption = MAIN_MENU_OPTION_LEN-1;
             }
+            PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
             break;
         case KEY_DOWN:
             menu->selectedOption++;
             if (menu->selectedOption >= MAIN_MENU_OPTION_LEN){
                 menu->selectedOption = 0;
             }
+            PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
             break;
         case KEY_SPACE:
+            PlaySound(assets.soundEffects[SOUND_EFFECT_OK]);
             switch (menu->selectedOption){
             case MAIN_MENU_OPTION_HOST:
-                menu->ended = true;
+                closeMenu(menu);
                 setupGame(true, "");
                 break;
             case MAIN_MENU_OPTION_JOIN:
@@ -51,7 +67,7 @@ void windowMain(Menu* menu){
                 menu->window = MENU_WINDOW_JOIN;
                 break;
             case MAIN_MENU_OPTION_QUIT:
-                menu->ended = true;
+                closeMenu(menu);
                 gameClosed = true;
                 break;
             default:
@@ -66,6 +82,7 @@ void windowMain(Menu* menu){
 void renderJoinWindow(Menu menu){
     BeginDrawing();
     ClearBackground(BLACK);
+    DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_MENU].tex, 0, 0, WHITE);
     DrawText("Server Address", hRes/6, vRes/3, 16, WHITE);
     DrawRectangle(hRes/6, vRes/3+32, 20*16, 16, WHITE);
     DrawText(menu.ipBox.text, hRes/6, vRes/3+32, 16, BLACK);
@@ -89,6 +106,7 @@ void windowJoin(Menu* menu){
         while (key) {
             if ((key > 32) && (key <= 125) && (menu->ipBox.caret < MAX_SIZE_IP))
             {
+                PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
                 menu->ipBox.text[menu->ipBox.caret] = (char)key;
                 menu->ipBox.text[menu->ipBox.caret+1] = '\0';
                 menu->ipBox.caret++;
@@ -97,22 +115,25 @@ void windowJoin(Menu* menu){
         }
         if (IsKeyPressed(KEY_BACKSPACE)){
             menu->ipBox.caret--;
+            PlaySound(assets.soundEffects[SOUND_EFFECT_BACKSPACE]);
             if (menu->ipBox.caret < 0) menu->ipBox.caret = 0;
             menu->ipBox.text[menu->ipBox.caret] = '\0';
         }
     } else if (menu->selectedOption == JOIN_MENU_OPTION_JOIN){
         if (IsKeyPressed(KEY_SPACE)){
+            closeMenu(menu);
             setupGame(false, menu->ipBox.text);
-            menu->ended = true;
         }
     }
     if (IsKeyPressed(KEY_UP)){
+        PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
         menu->selectedOption--;
         if (menu->selectedOption < 0){
             menu->selectedOption = JOIN_MENU_OPTION_LEN-1;
         }
     }
     if (IsKeyPressed(KEY_DOWN)){
+        PlaySound(assets.soundEffects[SOUND_EFFECT_SELECT]);
         menu->selectedOption++;
         if (menu->selectedOption >= JOIN_MENU_OPTION_LEN){
             menu->selectedOption = 0;

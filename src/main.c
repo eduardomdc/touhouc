@@ -2,6 +2,7 @@
 #include "networking/client.h"
 #include "touhou.h"
 #include "menu.h"
+#include "assets.h"
 
 void exitGame(){
     if (!isServer){
@@ -14,7 +15,9 @@ void exitGame(){
 int main(){
     InitWindow(hRes, vRes, "TouhouC");
     SetTargetFPS(fps);
-    Menu menu = {0};
+    InitAudioDevice();
+    loadAssets();
+    Menu menu = enterMenu();
     while(!WindowShouldClose() && !gameClosed){
         if (!menu.ended){
             runMenu(&menu);

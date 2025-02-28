@@ -32,7 +32,8 @@ typedef enum {
 } EnemySprites;
 
 typedef enum {
-    CHAPEL,
+    BACKGROUND_SPRITE_CHAPEL,
+    BACKGROUND_SPRITE_MENU,
     BACKGROUND_SPRITES_LEN
 } BackgroundSprites;
 
@@ -49,11 +50,15 @@ typedef enum {
     ENEMY_HIT,
     POINT_PICKUP,
     POWERUP_PICKUP,
+    SOUND_EFFECT_SELECT,
+    SOUND_EFFECT_OK,
+    SOUND_EFFECT_BACKSPACE,
     SOUND_EFFECTS_LEN
 } SoundEffects;
 
 typedef enum {
     DESERTED_HELL,
+    MENU_THEME,
     BGM_LEN
 } BGM;
 

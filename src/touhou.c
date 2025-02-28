@@ -24,23 +24,18 @@ void setupGame(bool server, char* ipStr){
         isServer = true;
         SetRandomSeed(time(NULL));
         initServer(); // server side
-        InitAudioDevice();
         gameOver = false;
-        loadAssets();
         setupPlayers();
-        setupSpawner();
-        PlayMusicStream(assets.bgm[DESERTED_HELL]);
+        setupSpawner();   
     }
     else if (!server){
         SetRandomSeed(time(NULL));
-        InitAudioDevice();
         gameOver = false;
-        loadAssets();
         setupPlayers();
         setupSpawner();
-        PlayMusicStream(assets.bgm[DESERTED_HELL]);
         initClient(ipStr);
     }
+    PlayMusicStream(assets.bgm[DESERTED_HELL]);
 }
 
 Input handleInput(){
@@ -147,7 +142,7 @@ void renderUI(){
 void renderGame(){
     BeginDrawing();
     ClearBackground(BLACK);
-    DrawTexture(assets.backgroundSprites[CHAPEL].tex, 0, 0, WHITE);
+    DrawTexture(assets.backgroundSprites[BACKGROUND_SPRITE_CHAPEL].tex, 0, 0, WHITE);
     renderBulletCArray(compactPlayerBulletArray);
     renderPlayers();
     renderItems();

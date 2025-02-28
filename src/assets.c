@@ -26,7 +26,8 @@ void loadInterfaceSprites(){
 }
 
 void loadBackgroundSprites(){
-    assets.backgroundSprites[CHAPEL] = loadSprite("../assets/textures/background500x700.png");
+    assets.backgroundSprites[BACKGROUND_SPRITE_CHAPEL] = loadSprite("../assets/textures/background500x700.png");
+    assets.backgroundSprites[BACKGROUND_SPRITE_MENU] = loadSprite("../assets/textures/menu_background500x700.png");
 }
 
 void loadSoundEffects(){
@@ -36,6 +37,9 @@ void loadSoundEffects(){
     assets.soundEffects[ENEMY_HIT] = LoadSound("../assets/sounds/enemy_hit.wav");
     assets.soundEffects[POINT_PICKUP] = LoadSound("../assets/sounds/point_pickup.wav");
     assets.soundEffects[POWERUP_PICKUP] = LoadSound("../assets/sounds/powerup.wav");
+    assets.soundEffects[SOUND_EFFECT_SELECT] = LoadSound("../assets/sounds/select.wav");
+    assets.soundEffects[SOUND_EFFECT_OK] = LoadSound("../assets/sounds/ok.wav");
+    assets.soundEffects[SOUND_EFFECT_BACKSPACE] = LoadSound("../assets/sounds/backspace.wav");
 }
 
 void loadItemSprites(){
@@ -46,6 +50,7 @@ void loadItemSprites(){
 
 void loadBGM(){
     assets.bgm[DESERTED_HELL] = LoadMusicStream("../assets/sounds/bgm_deserted_hell.wav");
+    assets.bgm[MENU_THEME] = LoadMusicStream("../assets/sounds/al_de_baran.mp3");
 }
 
 void loadAssets(){

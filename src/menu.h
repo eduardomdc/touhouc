@@ -35,6 +35,8 @@ typedef struct Menu {
     bool ended;
 } Menu;
 
+Menu enterMenu();
+void closeMenu(Menu* menu);
 void runMenu(Menu* menu);
 extern void (*runWindow[MENU_WINDOW_LEN])(Menu* menu);
 
