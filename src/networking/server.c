@@ -9,14 +9,14 @@
 
 Server gameServer = {0};
 
-void initServer(){
+bool initServer(){
     gameServer.bulletPacketTimer = createTimer(0.1);
     gameServer.playerPacketTimer = createTimer(0.02);
 
     // TCP SERVER
     if ((gameServer.serverTCPSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         fprintf(stderr, "Failed to create server tcp socket\n");
-        return;
+        return false;
     }
 
     int opt = 1;
@@ -27,7 +27,7 @@ void initServer(){
         &opt,
         sizeof(opt))) {
         fprintf(stderr, "Failed to set server socket options\n");
-        return;
+        return false;
     }
 
     //set non-blocking mode, server can listen for new client connections without blocking game
@@ -44,18 +44,18 @@ void initServer(){
     socklen_t addrlen = sizeof(gameServer.tcpServerAddress);
     if (bind(gameServer.serverTCPSock, (struct sockaddr*)&gameServer.tcpServerAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind server socket to address\n");
-        return;
+        return false;
     }
 
     if (listen(gameServer.serverTCPSock, MAX_CONNECTION_QUEUE) < 0) {
         fprintf(stderr, "Failed to set listen to tcp server socket\n");
-        return;
+        return false;
     }
 
     // UDP Server
     if ((gameServer.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         fprintf(stderr, "Failed to create server udp socket\n");
-        return;
+        return false;
     }
     gameServer.udpServerAddress.sin_family = AF_INET;
     #ifdef DEBUG
@@ -67,7 +67,7 @@ void initServer(){
     addrlen = sizeof(gameServer.udpServerAddress);
     if (bind(gameServer.udpSock, (struct sockaddr*)&gameServer.udpServerAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind server udp socket to address\n");
-        return;
+        return false;
     }
 
     //set non-blocking mode
@@ -82,7 +82,7 @@ void initServer(){
         &opt,
         sizeof(opt))) {
         fprintf(stderr, "Failed to set server udp socket options\n");
-        return;
+        return false;
     }
 
     gameServer.active = true;
@@ -91,6 +91,8 @@ void initServer(){
     printf("IP address is: %s\n", ipAddr);
     printf("udp port is: %d\n", (int) ntohs(gameServer.udpServerAddress.sin_port));
     printf("tcp port is: %d\n", (int) ntohs(gameServer.tcpServerAddress.sin_port));
+
+    return true;
 }
 
 void serverCheckForClientConnection(){

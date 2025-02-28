@@ -24,7 +24,7 @@ typedef struct Server {
 
 extern Server gameServer;
 
-void initServer();
+bool initServer();
 void serverCheckForClientConnection();
 void serverReceiveUdp();
 void sendGameUpdate();

@@ -12,7 +12,7 @@ static const int vRes = 650;
 static const int hRes = 500;
 static const int fps = 120;
 
-void setupGame(bool server, char* ipStr);
+void setupGame();
 void loadSprites();
 void renderGame();
 Input handleInput();

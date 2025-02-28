@@ -45,7 +45,11 @@ void setupPlayers(){
     reimu.hitBoxColor = ORANGE;
     reimu.score = 0;
     reimu.alive = true;
-    reimu.connected = false;
+    if (isServer){
+        reimu.connected = false;
+    } else {
+        reimu.connected = true;
+    }
     players[REIMU] = reimu;
 }
 

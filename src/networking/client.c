@@ -10,10 +10,10 @@
 
 Client gameClient = {0};
 
-void initClient(char* ipStr){
+bool initClient(char* ipStr){
     if ((gameClient.tcpSock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         fprintf(stderr, "Failed to create client tcp socket\n");
-        return;
+        return false;
     }
     gameClient.tcpServerAddress.sin_family = AF_INET;
     gameClient.tcpServerAddress.sin_port = htons(TCP_PORT);
@@ -32,7 +32,7 @@ void initClient(char* ipStr){
             )
         ) < 0) {
         fprintf(stderr, "Failed to connect to server\n");
-        return;
+        return false;
     }
     //set non-blocking mode
     int flags = fcntl(gameClient.tcpSock, F_GETFL, 0);
@@ -50,7 +50,7 @@ void initClient(char* ipStr){
     //set up UDP sock
     if ((gameClient.udpSock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         fprintf(stderr, "Failed to create client udp socket\n");
-        return;
+        return false;
     }
     //set non-blocking mode
     flags = fcntl(gameClient.udpSock, F_GETFL, 0);
@@ -77,7 +77,7 @@ void initClient(char* ipStr){
     socklen_t addrlen = sizeof(gameClient.clientAddress);
     if (bind(gameClient.udpSock, (struct sockaddr*)&gameClient.clientAddress, addrlen) < 0) {
         fprintf(stderr, "Failed to bind client udp socket to address\n");
-        return;
+        return false;
     }
 
     fprintf(stderr, "Connected to server!\n");
@@ -87,6 +87,7 @@ void initClient(char* ipStr){
 
     printf("client IP address is: %s\n", inet_ntoa(gameClient.clientAddress.sin_addr));
     printf("port is: %d\n", (int) ntohs(gameClient.clientAddress.sin_port));
+    return true;
 }
 
 void clientReceiveTcp(){

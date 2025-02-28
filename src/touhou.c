@@ -19,21 +19,20 @@ bool isServer = false;
 bool gameClosed = false;
 char serverIpStr[MAX_SIZE_IP+1] = {0};
 
-void setupGame(bool server, char* ipStr){
-    if (server){
-        isServer = true;
+void setupGame(){
+    if (isServer){
         SetRandomSeed(time(NULL));
-        initServer(); // server side
+        //initServer(); // server side
         gameOver = false;
         setupPlayers();
         setupSpawner();   
     }
-    else if (!server){
+    else {
         SetRandomSeed(time(NULL));
         gameOver = false;
         setupPlayers();
         setupSpawner();
-        initClient(ipStr);
+        //initClient(ipStr);
     }
     PlayMusicStream(assets.bgm[DESERTED_HELL]);
 }

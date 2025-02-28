@@ -1,6 +1,8 @@
 #include "menu.h"
 #include "touhou.h"
 #include "assets.h"
+#include "networking/client.h"
+#include "networking/server.h"
 
 void (*runWindow[MENU_WINDOW_LEN])() = {
     windowMain,
@@ -59,8 +61,14 @@ void windowMain(Menu* menu){
             PlaySound(assets.soundEffects[SOUND_EFFECT_OK]);
             switch (menu->selectedOption){
             case MAIN_MENU_OPTION_HOST:
-                closeMenu(menu);
-                setupGame(true, "");
+                if (initServer()){
+                    closeMenu(menu);
+                    isServer = true;
+                    setupGame();
+                } else {
+                    // fail
+                }
+                
                 break;
             case MAIN_MENU_OPTION_JOIN:
                 menu->selectedOption = 0;
@@ -121,8 +129,13 @@ void windowJoin(Menu* menu){
         }
     } else if (menu->selectedOption == JOIN_MENU_OPTION_JOIN){
         if (IsKeyPressed(KEY_SPACE)){
-            closeMenu(menu);
-            setupGame(false, menu->ipBox.text);
+            if (initClient(menu->ipBox.text)){
+                closeMenu(menu);
+                isServer = false;
+                setupGame();
+            } else {
+                // failed to connect
+            }
         }
     }
     if (IsKeyPressed(KEY_UP)){
