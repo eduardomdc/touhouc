@@ -94,8 +94,8 @@ void initServer(){
 }
 
 void serverCheckForClientConnection(){
-    socklen_t addrlen;
     struct sockaddr_in tempAddr;
+    socklen_t addrlen = sizeof(tempAddr);
     if ((
         gameServer.clientTCPSock = accept(
             gameServer.serverTCPSock, 
@@ -121,11 +121,19 @@ void serverCheckForClientConnection(){
         #endif
         gameServer.clientIsConnected = true;
         fprintf(stderr, "Client connected!\n");
+        // Debugging: Print the IP address
         char ipAddr[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &gameServer.tcpClientAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+        inet_ntop(AF_INET, &tempAddr.sin_addr, ipAddr, INET_ADDRSTRLEN);
         printf("client IP address is: %s\n", ipAddr);
+
+        inet_ntop(AF_INET, &gameServer.tcpClientAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+        printf("tcp client IP address is: %s\n", ipAddr);
         printf("tcp client port is: %d\n", (int) ntohs(gameServer.tcpClientAddress.sin_port));
+
+        inet_ntop(AF_INET, &gameServer.udpClientAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
+        printf("udp client IP address is: %s\n", ipAddr);
         printf("udp client port is: %d\n", (int) ntohs(gameServer.udpClientAddress.sin_port));
+
         players[REIMU].connected = true;
         sendTcpPlayerData(MARISA, players[MARISA]);
     }
