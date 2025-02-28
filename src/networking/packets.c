@@ -105,20 +105,25 @@ void receiveUDPBulletArray() {
     }
 }
 
-void sendUDPPlayerFire(){
+void sendUDPSfx(short sfx){
     if (!gameServer.clientIsConnected) return;
     UdpHeader udpHeader;
-    udpHeader.packetType = UDP_PLAYER_FIRE;
+    udpHeader.packetType = UDP_SFX;
+    UdpSfx udpSfx;
+    udpSfx.sfx = sfx;
     resetPacketBuffer();
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
+    writePacketBuffer(&udpSfx, sizeof(UdpSfx));
     socklen_t addrlen = sizeof(gameServer.udpClientAddress);
     if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
         fprintf(stderr, "Failed to send UDP player fire data\n");
     };
 }
 
-void receiveUDPPlayerFire(){
-    PlaySound(assets.soundEffects[PLAYER_FIRE]);
+void receiveUDPSfx(){
+    UdpSfx udpSfx;
+    readPacketBuffer(&udpSfx, sizeof(UdpSfx));
+    PlaySound(assets.soundEffects[udpSfx.sfx]);
 }
 
 void sendUDPPlayerData(PlayerCharacter character){

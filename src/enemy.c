@@ -17,7 +17,8 @@ void enemyDie(int idx){
     enemy->alive = false;
     makePointItem(enemy->pos);
     compactRemoveItem(&compactEnemyArray, idx);
-    sendTcpEnemyDeath();
+    //sendTcpEnemyDeath();
+    sendUDPSfx(ENEMY_HIT);
 }
 
 void enemyFire(Enemy* enemy){

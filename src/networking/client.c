@@ -137,12 +137,12 @@ void clientReceiveUdp(){
                 }
                 receiveUDPPlayerData();
                 break;
-            case UDP_PLAYER_FIRE:
-                if ( bytesRead != (sizeof(UdpHeader)) ){
-                    fprintf(stderr,"Received malformed udp player fire packet %d bytes\n", bytesRead);
+            case UDP_SFX:
+                if ( bytesRead != (sizeof(UdpHeader) + sizeof(UdpSfx)) ){
+                    fprintf(stderr,"Received malformed udp sfx packet %d bytes\n", bytesRead);
                     continue;
                 }
-                receiveUDPPlayerFire();
+                receiveUDPSfx();
                 break;
             case UDP_ENEMY_DATA:
                 if ( bytesRead < (sizeof(UdpHeader)+sizeof(UdpEnemyArray)) ){

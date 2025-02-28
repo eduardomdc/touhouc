@@ -95,7 +95,7 @@ void playerFire(Player* player){
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[PLAYER_FIRE]);
         resetTimer(&player->fireTimer);
-        sendUDPPlayerFire();
+        sendUDPSfx(PLAYER_FIRE);
     }
 }
 

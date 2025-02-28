@@ -47,7 +47,7 @@ void receiveTcpEnemyDeath();
 typedef enum {
     UDP_BULLET_ARRAY,
     UDP_PLAYER_DATA,
-    UDP_PLAYER_FIRE,
+    UDP_SFX,
     UDP_ENEMY_DATA,
     UDP_ITEM_DATA,
     UDP_INPUT_DATA,
@@ -66,6 +66,10 @@ typedef struct UdpBulletArray {
 typedef struct UdpEnemyArray {
     int len;
 } __attribute__((packed)) UdpEnemyArray;
+
+typedef struct UdpSfx {
+    short sfx;
+} __attribute__((packed)) UdpSfx;
 
 typedef struct UdpPlayerData {
     PlayerCharacter character;
@@ -88,8 +92,8 @@ void sendUDPBulletArray(Team team);
 void sendUDPPlayerData(PlayerCharacter character);
 void receiveUDPPlayerData();
 void receiveUDPBulletArray();
-void sendUDPPlayerFire();
-void receiveUDPPlayerFire();
+void sendUDPSfx(short sfx);
+void receiveUDPSfx();
 void sendUDPEnemyData();
 void receiveUDPEnemyData();
 void sendUDPItemData();
