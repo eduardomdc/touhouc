@@ -72,7 +72,7 @@ void windowMain(Menu* menu){
                     PlaySound(assets.soundEffects[SFX_BACKSPACE]);
                     menu->window = MENU_WINDOW_FAILED_TO_HOST;
                 }
-                
+
                 break;
             case MAIN_MENU_OPTION_JOIN:
                 menu->selectedOption = 0;
@@ -88,7 +88,7 @@ void windowMain(Menu* menu){
         default:
             break;
         }
-    }   
+    }
 }
 
 void renderJoinWindow(Menu menu){
@@ -146,6 +146,7 @@ void windowJoin(Menu* menu){
         break;
     case JOIN_MENU_OPTION_BACK:
         if (IsKeyPressed(KEY_SPACE)){
+            PlaySound(assets.soundEffects[SFX_BACKSPACE]);
             menu->window = MENU_WINDOW_MAIN;
             menu->selectedOption = 0;
         }
