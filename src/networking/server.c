@@ -21,7 +21,7 @@ bool initServer(){
 
     int opt = 1;
     if (setsockopt(
-        gameServer.serverTCPSock, 
+        gameServer.serverTCPSock,
         SOL_SOCKET,
         SO_REUSEADDR, // dont wait for os to free address
         &opt,
@@ -76,7 +76,7 @@ bool initServer(){
     //set re-use address option
     opt = 1;
     if (setsockopt(
-        gameServer.udpSock, 
+        gameServer.udpSock,
         SOL_SOCKET,
         SO_REUSEADDR, // dont wait for os to free address
         &opt,
@@ -100,10 +100,10 @@ void serverCheckForClientConnection(){
     socklen_t addrlen = sizeof(tempAddr);
     if ((
         gameServer.clientTCPSock = accept(
-            gameServer.serverTCPSock, 
+            gameServer.serverTCPSock,
             (struct sockaddr*)&tempAddr,
             &addrlen
-        )) 
+        ))
     < 0) {
         return;
     } else {
@@ -139,7 +139,7 @@ void serverCheckForClientConnection(){
         players[REIMU].connected = true;
         sendTcpPlayerData(MARISA, players[MARISA]);
     }
-   
+
 }
 
 void sendGameUpdate(){
@@ -162,7 +162,7 @@ void sendGameUpdate(){
 void serverReceiveUdp(){
     if (!gameServer.clientIsConnected) return;
     UdpHeader header = {0};
-    
+
     int bytesRead = 0;
     struct sockaddr_in sender;
     socklen_t addrlen = sizeof(sender);
@@ -170,7 +170,7 @@ void serverReceiveUdp(){
         (bytesRead = recvfrom(gameServer.udpSock, packetBuffer.bytes, MAX_PACKAGE_BUFFER_SIZE, 0, (struct sockaddr*)&sender, &addrlen)) > 0
     ){
         if (sender.sin_addr.s_addr == gameServer.udpServerAddress.sin_addr.s_addr){
-            continue; 
+            continue;
         }
         resetPacketBuffer();
         readPacketBuffer(&header, sizeof(UdpHeader));
@@ -180,10 +180,6 @@ void serverReceiveUdp(){
                     char ipAddr[INET_ADDRSTRLEN];
                     inet_ntop(AF_INET, &sender.sin_addr, ipAddr, INET_ADDRSTRLEN);
                     fprintf(stderr,"from ip %s:%d Received malformed udp input data packet %d bytes, should be %d header.packetType=%d\n", ipAddr, (int) ntohs(sender.sin_port), bytesRead, sizeof(UdpHeader)+sizeof(UdpInputData), header.packetType);
-                    // fprintf(stderr, "Packet contents: ");
-                    // for (int i = 0; i < bytesRead; i++) {
-                    //     fprintf(stderr, "%02x ", packetBuffer.bytes[i]);
-                    // }
                     continue;
                 }
                 receiveUDPInputData();

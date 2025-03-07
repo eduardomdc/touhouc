@@ -16,7 +16,6 @@ void renderBulletCArray(CompactArray compactBulletArray){
     for (int i=0; i < compactBulletArray.freeIndex; i++){
         Bullet bullet = bullets[i];
         renderSpriteCentered(&assets.bulletSprites[bullet.sprite], bullet.pos);
-        //DrawCircleV(bullet.pos, bullet.radius, RED);
     }
 }
 

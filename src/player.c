@@ -1,5 +1,6 @@
 #include "player.h"
 #include "items.h"
+#include "timer.h"
 #include "touhou.h"
 #include "bullets.h"
 #include "sprite.h"
@@ -12,41 +13,30 @@ Player players[PLAYER_CHARACTER_LEN] = {0};
 
 void setupPlayers(){
     // set up Marisa (host character)
-    Player marisa;
-    marisa.character = MARISA;
-    marisa.pos.x = hRes/2;
-    marisa.pos.y = vRes/2;
-    marisa.bulletSpeed = 1500;
-    marisa.bulletRadius = 5;
-    marisa.fireRate = 15;
-    marisa.damage = 10;
-    marisa.lives = 3;
-    marisa.bulletSpreadAngle = 0.02;
-    marisa.fireTimer = createTimer(1/marisa.fireRate);
-    marisa.sprite = SPRITE_MARISA;
-    marisa.bulletSprite = BLUE_ARROW_8;
-    marisa.hitBoxColor = BLUE;
-    marisa.score = 0;
-    marisa.alive = true;
-    marisa.connected = true;
+    Player marisa = {
+        .character = MARISA,
+        .pos = {hRes/2, vRes/2},
+        .bulletSpeed = 1500,
+        .bulletRadius = 5,
+        .fireRate = 15,
+        .damage = 10,
+        .lives = 3,
+        .bulletSpreadAngle = 0.02,
+        .fireTimer = createTimer(1.0/15),
+        .sprite = SPRITE_MARISA,
+        .bulletSprite = BLUE_ARROW_8,
+        .hitBoxColor = BLUE,
+        .score = 0,
+        .alive = true,
+        .connected = true
+    };
     players[MARISA] = marisa;
     // set up Reimu (client character)
-    Player reimu;
+    Player reimu = marisa;
     reimu.character = REIMU;
-    reimu.pos.x = hRes/2;
-    reimu.pos.y = vRes/2;
-    reimu.bulletSpeed = 1500;
-    reimu.bulletRadius = 5;
-    reimu.fireRate = 15;
-    reimu.damage = 10;
-    reimu.lives = 3;
-    reimu.bulletSpreadAngle = 0.02;
-    reimu.fireTimer = createTimer(1/reimu.fireRate);
     reimu.sprite = SPRITE_REIMU;
     reimu.bulletSprite = RED_CARD_12;
     reimu.hitBoxColor = ORANGE;
-    reimu.score = 0;
-    reimu.alive = true;
     if (isServer){
         reimu.connected = false;
     } else {
