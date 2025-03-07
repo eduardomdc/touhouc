@@ -1,7 +1,7 @@
 #include "spawner.h"
 #include "compact_array.h"
 #include "touhou.h"
-#include "enemy_factory.h"
+#include "enemy.h"
 #include "items.h"
 
 Spawner spawner;

@@ -29,4 +29,10 @@ void enemyGetHit(int idx, int damage);
 void enemyDie(int idx);
 void enemyFire(Enemy* enemy);
 
+typedef struct EnemyData{
+    Enemy angel;
+    Enemy jiangshi;
+} EnemyData;
+extern EnemyData enemyData;
+
 #endif
