@@ -19,8 +19,6 @@ typedef struct {
     Timer firingTimer;
 } StateMachine;
 
-StateMachine createStateMachine(SmType machine);
-
 void angelStateMachine(void* enemy);
 void jiangshiStateMachine(void* enemy);
 extern void (*stateMachine[SM_TYPE_LEN])(void*);

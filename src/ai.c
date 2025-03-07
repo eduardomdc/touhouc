@@ -24,13 +24,6 @@ void (*jiangshiState[JIANGSHI_STATE_LEN])(void*) = {
     jiangshiStateFire,
 };
 
-StateMachine createStateMachine(SmType machine){
-    StateMachine sm = {0};
-    sm.state = 0; // 0 is always initial state
-    sm.machine = machine;
-    return sm;
-}
-
 // ANGEL STATE MACHINE
 void angelStateMachine(void *enemy){
     Enemy* angel = (Enemy*) enemy;
