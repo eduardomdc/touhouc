@@ -1,36 +1,8 @@
 #include "enemy_factory.h"
 #include "ai.h"
+#include "assets.h"
 
-Enemy makeAngel(Vector2 pos){
-    Enemy enemy;
-    enemy.pos = pos;
-    enemy.radius = 8;
-    enemy.alive = true;
-    enemy.sprite = SPRITE_ANGEL;
-    Vector2 dir = {0, 1};
-    enemy.fireDirection = dir;
-    enemy.bulletSpeed = 100;
-    enemy.moveSpeed = 100;
-    enemy.bulletRadius = 8;
-    enemy.bulletSprite = FIRE_BALL_8;
-    enemy.hp = 50;
-    enemy.sm = createStateMachine(SM_TYPE_ANGEL);
-    return enemy;
-}
-
-Enemy makeJiangshi(Vector2 pos){
-    Enemy enemy;
-    enemy.pos = pos;
-    enemy.radius = 8;
-    enemy.alive = true;
-    enemy.sprite = SPRITE_JIANGSHI;
-    Vector2 dir = {0, 1};
-    enemy.fireDirection = dir;
-    enemy.moveSpeed = 300;
-    enemy.bulletSpeed = 150;
-    enemy.bulletRadius = 15;
-    enemy.bulletSprite = BLUE_FIRE_15;
-    enemy.hp = 100;
-    enemy.sm = createStateMachine(SM_TYPE_JIANGSHI);
-    return enemy;
-}
+EnemyData enemyData = {
+    .angel = {.radius = 8, .alive = true, .sprite = SPRITE_ANGEL, .fireDirection = {0,1}, .bulletSpeed = 100, .bulletSprite = FIRE_BALL_8, .bulletRadius = 8, .moveSpeed = 100, .hp = 50, .sm = {.machine = SM_TYPE_ANGEL}},
+    .jiangshi = {.radius = 8, .alive = true, .sprite = SPRITE_JIANGSHI, .fireDirection = {0,1}, .bulletSpeed = 150, .bulletSprite = BLUE_FIRE_15, .bulletRadius = 15, .moveSpeed = 300, .hp = 100, .sm = {.machine = SM_TYPE_JIANGSHI}}
+};

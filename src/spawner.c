@@ -17,13 +17,15 @@ void setupSpawner(){
 
 void spawnAngel(){
     Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
-    Enemy newEnemy = makeAngel(spawnLocation);
+    Enemy newEnemy = enemyData.angel;
+    newEnemy.pos = spawnLocation;
     compactAddItem(&compactEnemyArray, &newEnemy);
 }
 
 void spawnJiangshi(){
     Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
-    Enemy newEnemy = makeJiangshi(spawnLocation);
+    Enemy newEnemy = enemyData.jiangshi;
+    newEnemy.pos = spawnLocation;
     compactAddItem(&compactEnemyArray, &newEnemy);
 }
 

@@ -1,5 +1,9 @@
 #include <raylib.h>
 #include "enemy.h"
 
-Enemy makeAngel(Vector2 pos);
-Enemy makeJiangshi(Vector2 pos);
+typedef struct EnemyData{
+    Enemy angel;
+    Enemy jiangshi;
+} EnemyData;
+
+extern EnemyData enemyData;

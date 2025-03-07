@@ -5,7 +5,6 @@
 #include "touhou.h"
 #include <raylib.h>
 #include <raymath.h>
-#include <stdio.h>
 
 void (*stateMachine[SM_TYPE_LEN])(void*) = {
     angelStateMachine,
@@ -31,7 +30,6 @@ StateMachine createStateMachine(SmType machine){
     sm.machine = machine;
     return sm;
 }
-
 
 // ANGEL STATE MACHINE
 void angelStateMachine(void *enemy){
@@ -71,13 +69,12 @@ void angelStateFire(void *enemy){
         firingPatterns[FIRING_SPIRAL](enemy);
         resetTimer(&angel->sm.firingTimer);
     }
-    
+
     updateTimer(&angel->sm.stateTimer);
     if (angel->sm.stateTimer.ready){
         angel->sm.state = ANGEL_STATE_INITIAL;
     }
 }
-
 
 // JIANGSHI STATE MACHINE
 void jiangshiStateMachine(void *enemy){
@@ -112,7 +109,7 @@ void jiangshiStateFire(void* enemy){
         firingPatterns[FIRING_AT_PLAYER](enemy);
         resetTimer(&jiangshi->sm.firingTimer);
     }
-    
+
     updateTimer(&jiangshi->sm.stateTimer);
     if (jiangshi->sm.stateTimer.ready){
         jiangshi->sm.state = JIANGSHI_STATE_SIDE_STEP;
