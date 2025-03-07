@@ -25,7 +25,7 @@ void enemyGetHit(int idx, int damage){
 void enemyDie(int idx){
     Enemy* enemy = &enemyList[idx];
     enemy->alive = false;
-    makePointItem(enemy->pos);
+    makeItem(SCORE_ITEM, enemy->pos);
     compactRemoveItem(&compactEnemyArray, idx);
     //sendTcpEnemyDeath();
     PlaySound(assets.soundEffects[SFX_ENEMY_DEATH]);

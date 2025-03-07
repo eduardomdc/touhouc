@@ -1,7 +1,6 @@
 #include <raylib.h>
 #include <raymath.h>
 #include "firing_patterns.h"
-#include "bullets.h"
 #include "enemy.h"
 #include "player.h"
 
@@ -28,7 +27,7 @@ void fireAtPlayer(void* enemyPtr){
     } else {
         return;
     }
-    
+
     Vector2 dir = Vector2Normalize(Vector2Subtract(players[randomPlayer].pos, enemy->pos));
     enemy->fireDirection = dir;
     enemyFire(enemy);

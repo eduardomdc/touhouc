@@ -49,9 +49,7 @@ void renderItems();
 void updateItems();
 void physicsUpdateItems(float dt);
 
-void makePointItem(Vector2 pos);
-void makePowerUpItem(Vector2 pos);
-void makeOneUpItem(Vector2 pos);
+void makeItem(ItemType itemType, Vector2 pos);
 
 extern Item items[MAX_ITEMS];
 extern CompactArray itemsCArray;

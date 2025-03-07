@@ -1,6 +1,7 @@
 #include "items.h"
 #include "player.h"
 #include "touhou.h"
+#include <raylib.h>
 #include <raymath.h>
 
 Item items[MAX_ITEMS] = {0};
@@ -79,26 +80,7 @@ void itemEffectIncreaseFireRate(Player* player) {
     playerSetFireRate(player, player->fireRate*1.2);
 }
 
-void makePointItem(Vector2 pos){
-    Item item;
-    item.type = SCORE_ITEM;
-    item.pos = pos;
-    item.speed = 0;
-    compactAddItem(&itemsCArray, &item);
-}
-
-void makePowerUpItem(Vector2 pos){
-    Item item;
-    item.type = POWER_UP_ITEM;
-    item.pos = pos;
-    item.speed = 0;
-    compactAddItem(&itemsCArray, &item);
-}
-
-void makeOneUpItem(Vector2 pos){
-    Item item;
-    item.type = ONE_UP_ITEM;
-    item.pos = pos;
-    item.speed = 0;
+void makeItem(ItemType itemType, Vector2 pos){
+    Item item = {pos, 0, itemType};
     compactAddItem(&itemsCArray, &item);
 }

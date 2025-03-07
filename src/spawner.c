@@ -42,12 +42,12 @@ void updateSpawner(){
     }
     if (spawner.oneUpSpawnTimer.ready){
         Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
-        makeOneUpItem(spawnLocation);
+        makeItem(ONE_UP_ITEM, spawnLocation);
         resetTimer(&spawner.oneUpSpawnTimer);
     }
     if (spawner.powerUpSpawnTimer.ready){
         Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
-        makePowerUpItem(spawnLocation);
+        makeItem(POWER_UP_ITEM, spawnLocation);
         resetTimer(&spawner.powerUpSpawnTimer);
     }
 }
