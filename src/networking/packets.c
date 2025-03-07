@@ -9,8 +9,25 @@
 #include "../bullets.h"
 #include "../spawner.h"
 #include <string.h>
+#include <sys/socket.h>
 
 PacketBuffer packetBuffer = {0};
+
+void sendPacketBufferToClients(int protocol, const char* packetName){
+    switch (protocol) {
+    case SOCK_DGRAM:
+        socklen_t addrlen = sizeof(gameServer.udpClientAddress);
+        if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
+            fprintf(stderr, "Failed to send %s udp data\n", packetName);
+        };
+        break;
+    case SOCK_STREAM:
+        if (send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0) < 0){
+            fprintf(stderr, "Failed to send %s tcp data\n", packetName);
+        }
+        break;
+    }
+}
 
 void sendTcpPlayerHit(PlayerCharacter character){
     TcpHeader tcpHeader = {TCP_PLAYER_HIT};
@@ -18,7 +35,7 @@ void sendTcpPlayerHit(PlayerCharacter character){
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
     writePacketBuffer(&tcpPlayerHit, sizeof(TcpPlayerHit));
-    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
+    sendPacketBufferToClients(SOCK_STREAM, "player hit");
 }
 
 void receiveTcpPlayerHit(){
@@ -32,7 +49,7 @@ void sendTcpPlayerData(PlayerCharacter character, Player player){
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(tcpHeader));
     writePacketBuffer(&data, sizeof(data));
-    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
+    sendPacketBufferToClients(SOCK_STREAM, "player data");
 }
 
 void receiveTcpPlayerData(){
@@ -50,7 +67,7 @@ void sendTcpPlayerItemPickup(PlayerCharacter character, ItemType itemType){
     resetPacketBuffer();
     writePacketBuffer(&tcpHeader, sizeof(TcpHeader));
     writePacketBuffer(&tcpPlayerItemPickup, sizeof(TcpPlayerItemPickUp));
-    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
+    sendPacketBufferToClients(SOCK_STREAM, "player item pickup");
 }
 
 void receiveTcpPlayerItemPickup(){
@@ -82,11 +99,7 @@ void sendUDPBulletArray(Team team) {
         default:
             return;
     }
-
-    socklen_t addrlen = sizeof(gameServer.udpClientAddress);
-    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP bullet array packet\n");
-    }
+    sendPacketBufferToClients(SOCK_DGRAM, "bullet array");
 }
 
 void receiveUDPBulletArray() {
@@ -114,10 +127,7 @@ void sendUDPSfx(short sfx){
     resetPacketBuffer();
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     writePacketBuffer(&udpSfx, sizeof(UdpSfx));
-    socklen_t addrlen = sizeof(gameServer.udpClientAddress);
-    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP player fire data\n");
-    };
+    sendPacketBufferToClients(SOCK_DGRAM, "sfx");
 }
 
 void receiveUDPSfx(){
@@ -131,19 +141,14 @@ void sendUDPPlayerData(PlayerCharacter character){
     udpHeader.packetType = UDP_PLAYER_DATA;
     resetPacketBuffer();
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
-    
-    UdpPlayerData udpPlayerData;
-    udpPlayerData.character = character;
-    udpPlayerData.pos = players[character].pos;
-    udpPlayerData.alive = players[character].alive;
-    udpPlayerData.score = players[character].score;
-    udpPlayerData.lives = players[character].lives;
-    writePacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
-    
-    socklen_t addrlen = sizeof(gameServer.udpClientAddress);
-    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP player data\n");
+    UdpPlayerData udpPlayerData = {
+        .character = character,
+        .pos = players[character].pos,
+        .alive = players[character].alive,
+        .score = players[character].score
     };
+    writePacketBuffer(&udpPlayerData, sizeof(UdpPlayerData));
+    sendPacketBufferToClients(SOCK_DGRAM, "player data");
 }
 
 void receiveUDPPlayerData(){
@@ -176,10 +181,7 @@ void sendUDPItemData(){
     writePacketBuffer(&udpHeader, sizeof(udpHeader));
     writePacketBuffer(&udpItemData, sizeof(UdpItemData));
     writePacketBuffer(items, sizeof(Item)*udpItemData.len);
-    socklen_t addrlen = sizeof(gameServer.udpClientAddress);
-    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP item data\n");
-    };
+    sendPacketBufferToClients(SOCK_DGRAM, "item data");
 }
 
 void receiveUDPItemData(){
@@ -196,10 +198,7 @@ void sendUDPEnemyData(){
     writePacketBuffer(&udpHeader, sizeof(udpHeader));
     writePacketBuffer(&udpEnemyArray, sizeof(udpEnemyArray));
     writePacketBuffer(enemyList, compactEnemyArray.freeIndex*sizeof(Enemy));
-    socklen_t addrlen = sizeof(gameServer.udpClientAddress);
-    if (sendto(gameServer.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameServer.udpClientAddress, addrlen) < 0){
-        fprintf(stderr, "Failed to send UDP enemy data\n");
-    }
+    sendPacketBufferToClients(SOCK_DGRAM, "enemy data");
 }
 
 void receiveUDPEnemyData(){
@@ -214,7 +213,7 @@ void sendTcpEnemyDeath(){
     TcpHeader header = {TCP_ENEMY_DEATH};
     resetPacketBuffer();
     writePacketBuffer(&header, sizeof(TcpHeader));
-    send(gameServer.clientTCPSock, packetBuffer.bytes, packetBuffer.len, 0);
+    sendPacketBufferToClients(SOCK_STREAM, "enemy death");
 }
 
 void receiveTcpEnemyDeath(){
@@ -228,9 +227,6 @@ void sendUDPInputData(Input input, PlayerCharacter character){
     writePacketBuffer(&udpHeader, sizeof(UdpHeader));
     writePacketBuffer(&udpInputData, sizeof(UdpInputData));
     socklen_t addrlen = sizeof(gameClient.udpServerAddress);
-    //char ipAddr[INET_ADDRSTRLEN];
-    //inet_ntop(AF_INET, &gameClient.udpServerAddress.sin_addr, ipAddr, INET_ADDRSTRLEN);
-    //fprintf(stderr, "Sending upd input data to %s\n", ipAddr, (int) ntohs(gameClient.udpServerAddress.sin_port));
     int bytesSent = sendto(gameClient.udpSock, packetBuffer.bytes, packetBuffer.len, 0, (struct sockaddr*)&gameClient.udpServerAddress, addrlen);
     if (bytesSent < 0){
         fprintf(stderr, "Failed to send input data to server\n");
