@@ -44,7 +44,7 @@ void renderMainWindow(Menu menu){
 void windowMain(Menu* menu){
     renderMainWindow(*menu);
     int key;
-    while (key = GetKeyPressed()){
+    while ((key = GetKeyPressed())){
         switch (key){
         case KEY_UP:
             menu->selectedOption--;
