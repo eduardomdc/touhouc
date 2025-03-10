@@ -22,7 +22,6 @@ char serverIpStr[MAX_SIZE_IP+1] = {0};
 void setupGame(){
     if (isServer){
         SetRandomSeed(time(NULL));
-        //initServer(); // server side
         gameOver = false;
         setupPlayers();
         setupSpawner();
@@ -32,7 +31,6 @@ void setupGame(){
         gameOver = false;
         setupPlayers();
         setupSpawner();
-        //initClient(ipStr);
     }
     PlayMusicStream(assets.bgm[BGM_RUINS]);
 }
@@ -145,17 +143,9 @@ void renderGame(){
 
 bool onScreen(Vector2 pos, float radius){
     // checks if a circle is visible in the game screen
-    if (pos.x+radius < 0){
-        return false;
-    }
-    if (pos.x-radius > hRes){
-        return false;
-    }
-    if (pos.y+radius < 0){
-        return false;
-    }
-    if (pos.y-radius > vRes){
-        return false;
-    }
+    if (pos.x+radius < 0) return false;
+    if (pos.x-radius > hRes) return false;
+    if (pos.y+radius < 0) return false;
+    if (pos.y-radius > vRes) return false;
     return true;
 }
