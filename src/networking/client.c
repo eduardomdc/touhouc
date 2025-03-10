@@ -92,8 +92,10 @@ void clientReceiveTcp(){
                 break;
             case TCP_PLAYER_ITEM_PICK_UP:
                 receiveTcpPlayerItemPickup();
+                break;
             case TCP_ENEMY_DEATH:
                 receiveTcpEnemyDeath();
+                break;
             default:
                 return;
         }
