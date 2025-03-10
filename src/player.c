@@ -74,17 +74,11 @@ void renderPlayers(){
 
 void playerFire(Player* player){
     if (player->fireTimer.ready){
-        Bullet bullet;
-        bullet.player = player->character;
-        bullet.pos = player->pos;
-        bullet.radius = player->bulletRadius;
         Vector2 dir = {0, -1};
         float random = 2*((float)rand()/(float)(RAND_MAX))-1;
         float exitAngle = random*player->bulletSpreadAngle;
         dir = Vector2Rotate(dir, exitAngle);
-        bullet.direction = dir;
-        bullet.speed = player->bulletSpeed;
-        bullet.sprite = player->bulletSprite;
+        Bullet bullet = {.player = player->character, .pos = player->pos, .radius = player->bulletRadius, .direction = dir, .speed = player->bulletSpeed, .sprite = player->bulletSprite};
         compactAddItem(&compactPlayerBulletArray, &bullet);
         PlaySound(assets.soundEffects[SFX_PLAYER_FIRE]);
         resetTimer(&player->fireTimer);
@@ -109,7 +103,7 @@ void playerGetHit(Player* player){
         PlaySound(assets.soundEffects[SFX_PLAYER_HIT]);
         sendTcpPlayerHit(player->character);
     } else if (player->lives == 0 && !gameOver){
-        //gameOver = true;
-        //PlaySound(assets.soundEffects[PLAYER_DEATH]);
+        gameOver = true;
+        PlaySound(assets.soundEffects[SFX_PLAYER_DEATH]);
     }
 }
