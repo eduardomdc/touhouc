@@ -108,8 +108,6 @@ void renderJoinWindow(Menu menu){
     EndDrawing();
 }
 
-#include <stdio.h>
-
 void windowJoin(Menu* menu){
     renderJoinWindow(*menu);
     switch (menu->selectedOption){

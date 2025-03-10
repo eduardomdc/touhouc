@@ -15,7 +15,7 @@ void setupPlayers(){
     // set up Marisa (host character)
     Player marisa = {
         .character = MARISA,
-        .pos = {hRes/2, vRes/2},
+        .pos = {hRes/2.0, vRes/2.0},
         .bulletSpeed = 1500,
         .bulletRadius = 5,
         .fireRate = 15,
@@ -103,7 +103,7 @@ void playerGetHit(Player* player){
         PlaySound(assets.soundEffects[SFX_PLAYER_HIT]);
         sendTcpPlayerHit(player->character);
     } else if (player->lives == 0 && !gameOver){
-        gameOver = true;
+        gameOver = true; player->alive = false;
         PlaySound(assets.soundEffects[SFX_PLAYER_DEATH]);
     }
 }

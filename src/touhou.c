@@ -25,7 +25,7 @@ void setupGame(){
         //initServer(); // server side
         gameOver = false;
         setupPlayers();
-        setupSpawner();   
+        setupSpawner();
     }
     else {
         SetRandomSeed(time(NULL));
@@ -40,24 +40,12 @@ void setupGame(){
 Input handleInput(){
     Input input = {0};
     Vector2 inputDirection = {0,0};
-    if (IsKeyDown(KEY_UP)){
-        inputDirection.y -= 1;
-    }
-    if (IsKeyDown(KEY_DOWN)){
-        inputDirection.y += 1;
-    }
-    if (IsKeyDown(KEY_LEFT)){
-        inputDirection.x -= 1;
-    }
-    if (IsKeyDown(KEY_RIGHT)){
-        inputDirection.x += 1;
-    }
-    if (IsKeyDown(KEY_A)){
-        inputDirection.x += 1;
-    }
-    if (IsKeyDown(KEY_SPACE)){
-        input.firing = true;
-    }
+    if (IsKeyDown(KEY_UP)) inputDirection.y -= 1;
+    if (IsKeyDown(KEY_DOWN)) inputDirection.y += 1;
+    if (IsKeyDown(KEY_LEFT)) inputDirection.x -= 1;
+    if (IsKeyDown(KEY_RIGHT)) inputDirection.x += 1;
+    if (IsKeyDown(KEY_A)) inputDirection.x += 1;
+    if (IsKeyDown(KEY_SPACE)) input.firing = true;
 
     Vector2 inputDir = Vector2Normalize(inputDirection);
     input.dir = inputDir;
