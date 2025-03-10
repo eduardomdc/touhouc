@@ -1,5 +1,6 @@
 #include "spawner.h"
 #include "compact_array.h"
+#include "timer.h"
 #include "touhou.h"
 #include "enemy.h"
 #include "items.h"
@@ -15,41 +16,29 @@ void setupSpawner(){
     spawner.powerUpSpawnTimer = createTimer(6);
 }
 
-void spawnAngel(){
-    Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
-    Enemy newEnemy = enemyData.angel;
-    newEnemy.pos = spawnLocation;
-    compactAddItem(&compactEnemyArray, &newEnemy);
+void spawnEnemy(Enemy enemyData, Timer* spawnTimer){
+    updateTimer(spawnTimer);
+    if (spawnTimer->ready){
+        Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
+        Enemy newEnemy = enemyData;
+        newEnemy.pos = spawnLocation;
+        compactAddItem(&compactEnemyArray, &newEnemy);
+        resetTimer(spawnTimer);
+    }
 }
 
-void spawnJiangshi(){
-    Vector2 spawnLocation = {GetRandomValue(10, hRes-10), -10};
-    Enemy newEnemy = enemyData.jiangshi;
-    newEnemy.pos = spawnLocation;
-    compactAddItem(&compactEnemyArray, &newEnemy);
+void spawnItem(int itemType, Timer* spawnTimer){
+    updateTimer(spawnTimer);
+    if (spawnTimer->ready){
+        Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
+        makeItem(itemType, spawnLocation);
+        resetTimer(spawnTimer);
+    }
 }
 
 void updateSpawner(){
-    updateTimer(&spawner.angelSpawnTimer);
-    updateTimer(&spawner.jiangshiSpawnTimer);
-    updateTimer(&spawner.oneUpSpawnTimer);
-    updateTimer(&spawner.powerUpSpawnTimer);
-    if (spawner.angelSpawnTimer.ready){
-        spawnAngel();
-        resetTimer(&spawner.angelSpawnTimer);
-    }
-    if (spawner.jiangshiSpawnTimer.ready){
-        spawnJiangshi();
-        resetTimer(&spawner.jiangshiSpawnTimer);
-    }
-    if (spawner.oneUpSpawnTimer.ready){
-        Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
-        makeItem(ONE_UP_ITEM, spawnLocation);
-        resetTimer(&spawner.oneUpSpawnTimer);
-    }
-    if (spawner.powerUpSpawnTimer.ready){
-        Vector2 spawnLocation = {GetRandomValue(10, hRes-10), 0};
-        makeItem(POWER_UP_ITEM, spawnLocation);
-        resetTimer(&spawner.powerUpSpawnTimer);
-    }
+    spawnItem(ONE_UP_ITEM, &spawner.oneUpSpawnTimer);
+    spawnItem(POWER_UP_ITEM, &spawner.powerUpSpawnTimer);
+    spawnEnemy(enemyData.angel, &spawner.angelSpawnTimer);
+    spawnEnemy(enemyData.jiangshi, &spawner.jiangshiSpawnTimer);
 }

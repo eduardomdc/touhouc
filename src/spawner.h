@@ -16,7 +16,6 @@ typedef struct Spawner {
 
 void setupSpawner();
 void updateSpawner();
-void spawnEnemy();
 
 extern Spawner spawner;
 extern Enemy enemyList[MAX_ENEMIES];
